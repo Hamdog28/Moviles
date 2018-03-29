@@ -1,7 +1,9 @@
 package com.example.anthony_pc.pocketrecipe;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.Call;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private LoginButton loginButton;
     TextView titulo;
     CallbackManager callbackManager;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,16 +58,21 @@ public class MainActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                String userId = loginResult.getAccessToken().getUserId();
+                progressDialog = new ProgressDialog(getApplicationContext());
+                progressDialog.setMessage("Cargando...");
+                progressDialog.show();
+
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-                        Toast.makeText(getApplicationContext(),"nice",Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(),RegistroActivity.class);
-                        startActivity(intent);
+                        displayInfo(object);
                     }
                 });
+
                 Bundle parameters = new Bundle();
                 parameters.putString("fields","first_name, last_name, email, id");
+                graphRequest.setParameters(parameters);
                 graphRequest.executeAsync();
             }
 
@@ -87,6 +95,24 @@ public class MainActivity extends AppCompatActivity {
 
         mQueue = Volley.newRequestQueue(this);
         parseJson("https://moviles-backoffice.herokuapp.com/persona/?format=json");
+    }
+
+    public void displayInfo(JSONObject object){
+        String first_name , last_name, email, id;
+        email = "";
+        try{
+            first_name = object.getString("first_name");
+            last_name = object.getString("last_name");
+            email = object.getString("email");
+            id = object.getString("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        TextInputEditText correoTxt = findViewById(R.id.correoTxt);
+        correoTxt.setText(email);
+        Intent intent = new Intent(this,RegistroActivity.class );
+        startActivity(intent);
     }
 
     public void parseJson(String url){
@@ -114,5 +140,11 @@ public class MainActivity extends AppCompatActivity {
         });
         mQueue.add(jsonArrayRequest);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
