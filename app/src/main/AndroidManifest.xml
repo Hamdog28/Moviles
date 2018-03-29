@@ -3,7 +3,6 @@
     package="com.example.anthony_pc.pocketrecipe">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +19,8 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
 <meta-data/>
 
@@ -28,6 +28,7 @@
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -39,6 +40,7 @@
             </intent-filter>
         </activity>
 
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="d9b04332cad62ad15f31b8ef9a79e146cfc5a913" />
 
@@ -46,7 +48,9 @@
             android:name=".InicioActivity"
             android:label="@string/title_activity_inicio"
             android:theme="@style/AppTheme" />
-        <activity android:name=".RegistroActivity"></activity>
+        <activity android:name=".RegistroActivity">
+
+        </activity>
     </application>
 
 </manifest>
