@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Pocket Recipe</string>
+    <string name="facebook_app_id">526894247711472</string>
+    <string name="fb_login_protocol_scheme">fb526894247711472</string>
+
 </resources>
