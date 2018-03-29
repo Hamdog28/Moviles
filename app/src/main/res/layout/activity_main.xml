@@ -81,6 +81,15 @@
             android:layout_marginRight="20dp"
             android:background="@android:color/darker_gray" />
 
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="23dp" />
+        <!--
         <ImageButton
             android:id="@+id/facebook_button"
             android:layout_width="250dp"
@@ -92,7 +101,7 @@
             android:foregroundGravity="center_vertical"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/facebook_image" />
-
+-->
         <Button
             android:id="@+id/iniciar_button"
             android:layout_width="wrap_content"
