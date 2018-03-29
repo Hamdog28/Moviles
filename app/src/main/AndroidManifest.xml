@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".InicioActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
             android:value="d9b04332cad62ad15f31b8ef9a79e146cfc5a913" />
 
         <activity
-            android:name=".InicioActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_inicio"
             android:theme="@style/AppTheme" />
         <activity android:name=".RegistroActivity"></activity>

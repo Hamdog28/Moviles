@@ -1,8 +1,15 @@
 package com.example.anthony_pc.pocketrecipe;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.AttributeSet;
+import android.view.InflateException;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,14 +31,7 @@ public class InicioActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -55,7 +56,9 @@ public class InicioActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.inicio, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.inicio, menu);
+        //setMenuBackground();
         return true;
     }
 
@@ -97,5 +100,35 @@ public class InicioActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    protected void setMenuBackground(){
+        // Log.d(TAG, "Enterting setMenuBackGround");
+        getLayoutInflater().setFactory( new LayoutInflater.Factory() {
+            public View onCreateView(String name, Context context, AttributeSet attrs) {
+                if ( name.equalsIgnoreCase( "com.android.internal.view.menu.IconMenuItemView" ) ) {
+                    try { // Ask our inflater to create the view
+                        LayoutInflater f = getLayoutInflater();
+                        final View view = f.createView( name, null, attrs );
+                        /* The background gets refreshed each time a new item is added the options menu.
+                        * So each time Android applies the default background we need to set our own
+                        * background. This is done using a thread giving the background change as runnable
+                        * object */
+                        new Handler().post(new Runnable() {
+                            public void run () {
+                                // sets the background color
+                                view.setBackgroundResource( R.color.colorPrimary);
+                                // sets the text color
+                                ((TextView) view).setTextColor(Color.WHITE);
+                                // sets the text size
+                                ((TextView) view).setTextSize(18);
+                            }
+                        } );
+                        return view;
+                    }
+                    catch ( InflateException e ) {}
+                    catch ( ClassNotFoundException e ) {}
+                }
+                return null;
+            }});
     }
 }
