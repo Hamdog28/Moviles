@@ -1,8 +1,10 @@
 package com.example.anthony_pc.pocketrecipe;
 
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,14 +21,24 @@ import org.json.JSONObject;
 
 import io.fabric.sdk.android.Fabric;
 
+
 public class MainActivity extends AppCompatActivity {
     private RequestQueue mQueue;
+
+    TextView titulo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
         setContentView(R.layout.activity_main);
+
+
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/greatvibes_regular.ttf");
+        titulo = findViewById(R.id.titulo);
+        titulo.setTypeface(custom_font);
+
+
         mQueue = Volley.newRequestQueue(this);
         parseJson("https://moviles-backoffice.herokuapp.com/persona/?format=json");
     }
