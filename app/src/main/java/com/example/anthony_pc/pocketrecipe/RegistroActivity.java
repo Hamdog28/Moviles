@@ -13,11 +13,11 @@ public class RegistroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/greatvibes_regular.ttf");
-        TextView titulo = findViewById(R.id.titulo);
+        TextView titulo = (TextView) findViewById(R.id.titulo);
         titulo.setTypeface(custom_font);
 
         Typeface font = Typeface.createFromAsset( getAssets(), "fontawesome-webfont.ttf" );
-        TextView atras = findViewById(R.id.atras);
+        TextView atras =(TextView)  findViewById(R.id.atras);
         atras.setTypeface(font);
 
     }

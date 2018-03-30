@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Moviles_app.iml" filepath="$PROJECT_DIR$/Moviles_app.iml" />
+      <module fileurl="file://C:\Users\Anthony-PC\AndroidStudioProjects\PocketRecipe\Moviles_app.iml" filepath="C:\Users\Anthony-PC\AndroidStudioProjects\PocketRecipe\Moviles_app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PocketRecipe.iml" filepath="$PROJECT_DIR$/PocketRecipe.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
