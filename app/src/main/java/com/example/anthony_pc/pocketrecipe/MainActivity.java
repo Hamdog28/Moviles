@@ -35,6 +35,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.util.Arrays;
+
 import io.fabric.sdk.android.Fabric;
 
 
@@ -51,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Answers());
         setContentView(R.layout.activity_main);
         callbackManager = CallbackManager.Factory.create();
-        loginButton = findViewById(R.id.login_button);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
 
-        loginButton.setReadPermissions("email","public_profile");
+        loginButton.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
+                        progressDialog.dismiss();
                         displayInfo(object);
                     }
                 });
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/greatvibes_regular.ttf");
-        titulo = findViewById(R.id.titulo);
+        titulo = (TextView) findViewById(R.id.titulo);
         titulo.setTypeface(custom_font);
 
 
@@ -109,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        TextInputEditText correoTxt = findViewById(R.id.correoTxt);
+        TextInputEditText correoTxt = (TextInputEditText) findViewById(R.id.correoTxt);
         correoTxt.setText(email);
         Intent intent = new Intent(this,RegistroActivity.class );
         startActivity(intent);
