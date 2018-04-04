@@ -24,6 +24,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -34,17 +35,21 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: '  libs')
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.facebook.android:facebook-android-sdk:4.31.0'
+    implementation files('libs/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
+    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support:support-vector-drawable:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile('com.crashlytics.sdk.android:answers:1.4.1@aar') {
         transitive = true;
     }
+    compile 'de.hdodenhof:circleimageview:2.2.0'
     compile 'com.android.volley:volley:1.1.0'
     compile 'com.facebook.android:facebook-login:4.31.0'
     implementation 'com.android.support:design:26.1.0'
@@ -53,10 +58,10 @@ dependencies {
 }
 
 configurations.all {
-    resolutionStrategy.eachDependency{ DependencyResolveDetails details ->
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
         def requested = details.requested
-        if(requested.group == 'com.android.support'){
-            if(!requested.name.startsWith("multidex")){
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
                 details.useVersion '25.3.0'
             }
         }
