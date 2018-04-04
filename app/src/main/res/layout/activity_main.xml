@@ -63,6 +63,7 @@
             android:textColorHint="@android:color/white">
 
             <android.support.design.widget.TextInputEditText
+                android:id="@+id/passwordTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@android:color/white"
@@ -109,8 +110,9 @@
             android:layout_height="50dp"
             android:layout_below="@+id/textInputLayout3"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="28dp"
             android:background="@drawable/button_shape"
+            android:onClick="ingresar"
             android:text="          Iniciar Sesión          "
             android:textColor="@android:color/white"
             android:textSize="18sp" />
@@ -123,6 +125,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15dp"
             android:background="@drawable/button_border"
+            android:onClick="crearCuenta"
             android:shadowColor="@null"
             android:text="CREAR CUENTA"
             android:textColor="@android:color/white"

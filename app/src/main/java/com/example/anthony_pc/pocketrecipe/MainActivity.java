@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.Call;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import com.facebook.login.widget.LoginButton;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 
 import java.util.Arrays;
@@ -42,10 +44,13 @@ import io.fabric.sdk.android.Fabric;
 
 public class MainActivity extends AppCompatActivity {
     private RequestQueue mQueue;
-    private LoginButton loginButton;
+    LoginButton loginButton;
     TextView titulo;
     CallbackManager callbackManager;
     ProgressDialog progressDialog;
+    Button crearCuenta;
+    TextInputEditText emailTxt, passwordTxt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Answers());
         setContentView(R.layout.activity_main);
         callbackManager = CallbackManager.Factory.create();
+        crearCuenta = (Button) findViewById(R.id.crearCuenta_button);
         loginButton = (LoginButton) findViewById(R.id.login_button);
+        emailTxt = (TextInputEditText) findViewById(R.id.correoTxt);
+        passwordTxt = (TextInputEditText) findViewById(R.id.passwordTxt);
 
         loginButton.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
 
@@ -103,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
     public void displayInfo(JSONObject object){
         String first_name , last_name, email, id;
         email = "";
+        last_name = "";
+        first_name = "";
         try{
             first_name = object.getString("first_name");
             last_name = object.getString("last_name");
@@ -115,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
         TextInputEditText correoTxt = (TextInputEditText) findViewById(R.id.correoTxt);
         correoTxt.setText(email);
         Intent intent = new Intent(this,RegistroActivity.class );
+        intent.putExtra("first_name", first_name);
+        intent.putExtra("last_name", last_name);
+        intent.putExtra("email", email);
         startActivity(intent);
     }
 
@@ -149,5 +162,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void crearCuenta(View view){
+        Intent intent = new Intent(this, RegistroActivity.class);
+        intent.putExtra("first_name", "");
+        intent.putExtra("last_name", "");
+        intent.putExtra("email", "");
+        startActivity(intent);
+    }
+
+    public void ingresar(View view){
+        Intent intent = new Intent(this, InicioActivity.class);
+        //String email = emailTxt.getText().toString();
+       // String password = passwordTxt.getText().toString();
+        startActivity(intent);
     }
 }
