@@ -1,6 +1,7 @@
 package com.example.anthony_pc.pocketrecipe;
 
 import android.graphics.Typeface;
+import android.media.Image;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -75,11 +76,13 @@ public class RegistroActivity extends AppCompatActivity {
                 String correo = "tony@gmail.com";
                 String contrasena = "123456";
                 String descripcion = "no idea";
+                //Image imagen = R.drawable.ic_menu_camera;
 
                 params.put("nombre",nombre);
                 params.put("correo",correo);
                 params.put("contrasena",contrasena);
                 params.put("descripcion",descripcion);
+                //params.put("foto", imagen);
 
                 return params;
             }
