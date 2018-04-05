@@ -12,10 +12,10 @@ public class Usuario {
     private Drawable foto;
     private String correo;
 
-    public Usuario(int id, String nombre, Drawable foto, String correo) {
+    public Usuario(int id, String nombre, /*Drawable foto,*/ String correo) {
         this.id = id;
         this.nombre = nombre;
-        this.foto = foto;
+        //this.foto = foto;
         this.correo = correo;
     }
 

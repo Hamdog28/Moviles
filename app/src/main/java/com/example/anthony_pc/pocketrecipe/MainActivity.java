@@ -1,5 +1,6 @@
 package com.example.anthony_pc.pocketrecipe;
 
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -13,12 +14,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.answers.Answers;
 import com.facebook.CallbackManager;
@@ -38,6 +41,8 @@ import org.w3c.dom.Text;
 
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     Button crearCuenta;
     TextInputEditText emailTxt, passwordTxt;
+    private Globals instance;
 
 
     @Override
@@ -57,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
         setContentView(R.layout.activity_main);
+        instance = Globals.getInstance();
         callbackManager = CallbackManager.Factory.create();
         crearCuenta = (Button) findViewById(R.id.crearCuenta_button);
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -138,10 +145,25 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            Log.e("parse",String.valueOf(response.getJSONObject(0).getString("id")));
+                            for (int i  = 0; i <response.length(); i++){
+                                int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
+                                String nombre = response.getJSONObject(i).getString("nombre");
+                                String correo = response.getJSONObject(0).getString("correo");
+
+                                Usuario usuario = new Usuario(id,nombre,correo);
+                                instance.addUser(usuario);
+
+
+                            }
+                            Log.e("parsLASDJFKASDe",String.valueOf(instance.getUserList().size()));
+                            //response.length()
+                            //int id = Integer.parseInt(response.getJSONObject(0))
+                           // Usuario usuario = new Usuario();
+
+                            /*Log.e("parse",String.valueOf(response.getJSONObject(0).getString("id")));
                             Log.e("parse",String.valueOf(response.getJSONObject(0).getString("nombre")));
                             Log.e("parse",String.valueOf(response.getJSONObject(0).getString("correo")));
-                            Log.e("parse",String.valueOf(response.getJSONObject(0).getString("contrasena")));
+                            Log.e("parse",String.valueOf(response.getJSONObject(0).getString("contrasena")));*/
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -178,4 +200,6 @@ public class MainActivity extends AppCompatActivity {
        // String password = passwordTxt.getText().toString();
         startActivity(intent);
     }
+
+
 }
