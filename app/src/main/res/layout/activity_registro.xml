@@ -101,7 +101,9 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
             android:layout_toStartOf="@+id/textInputLayout3"
-            android:text="@string/font_awesome_back" />
+            android:text="@string/font_awesome_back"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/register_button"
