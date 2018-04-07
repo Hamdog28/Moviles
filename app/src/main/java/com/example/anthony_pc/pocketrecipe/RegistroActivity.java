@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
@@ -74,7 +75,7 @@ public class RegistroActivity extends AppCompatActivity {
         TextView atras =(TextView)  findViewById(R.id.atras);
         atras.setTypeface(font);
 
-       // insertUser("https://moviles-backoffice.herokuapp.com/persona/");
+
 
         new downloadImage((ImageView)findViewById(R.id.image)).execute(getIntent().getExtras().getString("persona"));
 
@@ -84,9 +85,10 @@ public class RegistroActivity extends AppCompatActivity {
         String name = editTextName.getText().toString();
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
+        insertUser("https://moviles-backoffice.herokuapp.com/persona/",name,email,password);
     }
 
-    public void insertUser(String url){
+    public void insertUser(String url, final String nombre, final String email, final String contrasena){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -102,28 +104,29 @@ public class RegistroActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                String nombre = "tony alfaro";
+                /*String nombre = "tony alfaro";
                 String correo = "tony@gmail.com";
                 String contrasena = "123456";
-                String descripcion = "no idea";
-                Drawable imagen = getResources().getDrawable(android.R.drawable.presence_online);
-                Bitmap bm = BitmapFactory.decodeResource(Resources.getSystem(), android.R.drawable.star_big_on);
+                String descripcion = "no idea";*/
+                ImageView image = (ImageView) findViewById(R.id.image);
+                Bitmap image2 = ((BitmapDrawable)image.getDrawable()).getBitmap();
+                //Drawable imagen = getResources().getDrawable(android.R.drawable.presence_online);
+                //Bitmap bm = BitmapFactory.decodeResource(Resources.getSystem(), android.R.drawable.star_big_on);
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                image2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
                 final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
                 Log.e("foto",imageString);
                 params.put("nombre",nombre);
-                params.put("correo",correo);
+                params.put("correo",email);
                 params.put("contrasena",contrasena);
-                params.put("descripcion",descripcion);
+                //params.put("descripcion",descripcion);
                 params.put("foto","data:image/JPEG;base64,"+ imageString);
 
-                byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                ImageView image = (ImageView) findViewById(R.id.image);
-                image.setImageBitmap(decodedByte);
+                //byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
+                //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                //image.setImageBitmap(decodedByte);
 
                 return params;
             }
