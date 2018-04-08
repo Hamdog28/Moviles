@@ -53,7 +53,7 @@ public class RegistroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
-        Log.e("persona",getIntent().getExtras().getString("persona"));
+        //Log.e("persona","ASDFasdfasdf");
         FacebookSdk.sdkInitialize(this);
         editTextEmail = (TextInputEditText) findViewById(R.id.editTextEmail);
         editTextName = (TextInputEditText) findViewById(R.id.editTextName);
@@ -64,8 +64,10 @@ public class RegistroActivity extends AppCompatActivity {
 
         editTextName.setText(name);
         editTextEmail.setText(email);
-        if(editTextName.getText().equals(" "))
+        if(editTextName.getText().equals(" ")) {
+            Log.e("persona","ASDFasdfasdf");
             editTextName.setText("");
+        }
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/greatvibes_regular.ttf");
         TextView titulo = (TextView) findViewById(R.id.titulo);
