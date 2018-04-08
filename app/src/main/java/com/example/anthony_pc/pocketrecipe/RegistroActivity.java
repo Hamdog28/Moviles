@@ -30,6 +30,7 @@ public class RegistroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+        getSupportActionBar().hide();
         editTextEmail = (TextInputEditText) findViewById(R.id.editTextEmail);
         editTextName = (TextInputEditText) findViewById(R.id.editTextName);
         editTextPassword = (TextInputEditText) findViewById(R.id.editTextPassword);

@@ -49,11 +49,12 @@
         <activity
             android:name=".InicioActivity"
             android:label="@string/title_activity_inicio"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".RegistroActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".RegistroActivity" />
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:name=".AjustesActivity"
+            android:label="@string/title_activity_ajustes"></activity>
+
     </application>
 
 </manifest>

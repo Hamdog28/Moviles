@@ -1,5 +1,6 @@
 package com.example.anthony_pc.pocketrecipe;
 
+import android.app.ActionBar;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Typeface;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
         setContentView(R.layout.activity_main);
+
+
+        getSupportActionBar().hide();
+
         instance = Globals.getInstance();
         callbackManager = CallbackManager.Factory.create();
         crearCuenta = (Button) findViewById(R.id.crearCuenta_button);
