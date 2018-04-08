@@ -1,5 +1,6 @@
 package com.example.anthony_pc.pocketrecipe;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -9,13 +10,13 @@ import android.graphics.drawable.Drawable;
 public class Usuario {
     private int id;
     private String nombre;
-    private Drawable foto;
+    private Bitmap foto;
     private String correo;
 
-    public Usuario(int id, String nombre, /*Drawable foto,*/ String correo) {
+    public Usuario(int id, String nombre, Bitmap foto, String correo) {
         this.id = id;
         this.nombre = nombre;
-        //this.foto = foto;
+        this.foto = foto;
         this.correo = correo;
     }
 
@@ -35,11 +36,11 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public Drawable getFoto() {
+    public Bitmap getFoto() {
         return foto;
     }
 
-    public void setFoto(Drawable foto) {
+    public void setFoto(Bitmap foto) {
         this.foto = foto;
     }
 

@@ -131,6 +131,14 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignEnd="@+id/textInputLayout2"
+            android:layout_alignParentTop="true"
+            android:gravity="center" />
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

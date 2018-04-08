@@ -48,6 +48,8 @@ public class RegistroActivity extends AppCompatActivity {
     TextInputEditText editTextName, editTextEmail, editTextPassword;
     int PICK_IMAGE_REQUEST =111;
     Bitmap bitmap;
+    private Globals instance;
+    ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,10 @@ public class RegistroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
         //Log.e("persona","ASDFasdfasdf");
         FacebookSdk.sdkInitialize(this);
+        instance = Globals.getInstance();
+        image = (ImageView)findViewById(R.id.image);
+        image.setImageBitmap(instance.getUserList().get(0).getFoto());
+
         editTextEmail = (TextInputEditText) findViewById(R.id.editTextEmail);
         editTextName = (TextInputEditText) findViewById(R.id.editTextName);
         editTextPassword = (TextInputEditText) findViewById(R.id.editTextPassword);

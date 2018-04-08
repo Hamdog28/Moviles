@@ -4,15 +4,25 @@ import android.app.ActionBar;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.telecom.Call;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +53,10 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 
+import java.io.InputStream;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +65,7 @@ import io.fabric.sdk.android.Fabric;
 
 
 public class MainActivity extends AppCompatActivity {
+    ImageView image;
     private RequestQueue mQueue;
     LoginButton loginButton;
     TextView titulo;
@@ -67,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         Fabric.with(this, new Answers());
         setContentView(R.layout.activity_main);
 
-
         getSupportActionBar().hide();
+        image = (ImageView)findViewById(R.id.image);
 
         instance = Globals.getInstance();
         callbackManager = CallbackManager.Factory.create();
@@ -82,16 +97,11 @@ public class MainActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                String userId = loginResult.getAccessToken().getUserId();
-                progressDialog = new ProgressDialog(getApplicationContext());
-                progressDialog.setMessage("Cargando...");
-                progressDialog.show();
 
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Profile profile = Profile.getCurrentProfile();
-                        progressDialog.dismiss();
                         displayInfo(object,profile);
                     }
                 });
@@ -160,11 +170,28 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         try {
                             for (int i  = 0; i <response.length(); i++){
+                                Bitmap foto = BitmapFactory.decodeResource(Resources.getSystem(), android.R.drawable.star_big_on);;
                                 int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
                                 String nombre = response.getJSONObject(i).getString("nombre");
-                                String correo = response.getJSONObject(0).getString("correo");
+                                String correo = response.getJSONObject(i).getString("correo");
+                                String url = response.getJSONObject(i).getString("foto");
+                                //image.setImageBitmap(foto);
+                                //Log.e("foto",url);
+                                try {
+                                    Log.e("foto",url);
+                                    InputStream is = new java.net.URL(url).openStream();
+                                    foto = BitmapFactory.decodeStream(is);
+                                   // Drawable d = Drawable.createFromStream(is, "");
+                                   // foto = ((BitmapDrawable)d).getBitmap();
+                                    //((BitmapDrawable)image.getDrawable()).getBitmap();
 
-                                Usuario usuario = new Usuario(id,nombre,correo);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                image.setImageBitmap(foto);
+
+                                Usuario usuario = new Usuario(id,nombre,foto,correo);
                                 instance.addUser(usuario);
 
 
