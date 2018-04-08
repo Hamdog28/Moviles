@@ -49,12 +49,15 @@
         <activity
             android:name=".InicioActivity"
             android:label="@string/title_activity_inicio"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RegistroActivity" />
         <activity
             android:name=".AjustesActivity"
-            android:label="@string/title_activity_ajustes"></activity>
-
+            android:label="@string/title_activity_ajustes" />
+        <activity
+            android:name=".CURecetaActivity"
+            android:label="@string/title_activity_cureceta"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

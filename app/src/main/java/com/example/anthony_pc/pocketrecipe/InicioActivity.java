@@ -2,6 +2,7 @@ package com.example.anthony_pc.pocketrecipe;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -115,7 +116,8 @@ public class InicioActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_create) {
-
+            Intent intent = new Intent(this, RegistroActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
 
