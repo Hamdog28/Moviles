@@ -90,8 +90,9 @@ public class MainActivity extends AppCompatActivity {
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
+                        Profile profile = Profile.getCurrentProfile();
                         progressDialog.dismiss();
-                        displayInfo(object);
+                        displayInfo(object,profile);
                     }
                 });
 
@@ -122,27 +123,33 @@ public class MainActivity extends AppCompatActivity {
         parseJson("https://moviles-backoffice.herokuapp.com/persona/?format=json");
     }
 
-    public void displayInfo(JSONObject object){
-        String first_name , last_name, email, id;
+    public void displayInfo(JSONObject object,Profile profile ){
+        String first_name , last_name, email;
         email = "";
         last_name = "";
         first_name = "";
-        try{
-            first_name = object.getString("first_name");
-            last_name = object.getString("last_name");
-            email = object.getString("email");
-            id = object.getString("id");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        if(profile != null) {
+            try {
+                first_name = object.getString("first_name");
+                last_name = object.getString("last_name");
+                email = object.getString("email");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        TextInputEditText correoTxt = (TextInputEditText) findViewById(R.id.correoTxt);
-        correoTxt.setText(email);
-        Intent intent = new Intent(this,RegistroActivity.class );
-        intent.putExtra("first_name", first_name);
-        intent.putExtra("last_name", last_name);
-        intent.putExtra("email", email);
-        startActivity(intent);
+            TextInputEditText correoTxt = (TextInputEditText) findViewById(R.id.correoTxt);
+            correoTxt.setText(email);
+            Intent intent = new Intent(this, RegistroActivity.class);
+            intent.putExtra("first_name", first_name);
+            intent.putExtra("last_name", last_name);
+            intent.putExtra("email", email);
+
+            intent.putExtra("persona", profile.getProfilePictureUri(100, 100).toString());
+
+            startActivity(intent);
+        }else{
+            Toast.makeText(this,"Perfil de facebook no existe",Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void parseJson(String url){
@@ -194,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void crearCuenta(View view){
-        Profile profile = Profile.getCurrentProfile();
         Intent intent = new Intent(this, RegistroActivity.class);
         intent.putExtra("first_name", "");
         intent.putExtra("last_name", "");
