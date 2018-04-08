@@ -64,8 +64,8 @@ public class RegistroActivity extends AppCompatActivity {
 
         editTextName.setText(name);
         editTextEmail.setText(email);
-        if(editTextName.getText().equals(" ")) {
-            Log.e("persona","ASDFasdfasdf");
+        Log.e("persona",editTextName.getText().toString());
+        if(editTextName.getText().toString().equals(" ")) {
             editTextName.setText("");
         }
 
