@@ -11,7 +11,10 @@
     <string name="action_settings">Settings</string>
 
     <string name="font_awesome_back">&#xf060;</string>
+    <string name="font_awesome_add">&#xf067;</string>
     <string name="title_activity_settings">Settings</string>
+
+    <string name="add_ingrediente">&#160; &#xf067; Agregar ingrediente &#160;</string>
 
     <!-- Strings related to Settings -->
 
@@ -86,4 +89,16 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_ajustes">Ajustes</string>
     <string name="title_activity_cureceta">CURecetaActivity</string>
+
+    <string-array name="dificultad">
+        <item>Baja</item>
+        <item>Media</item>
+        <item>Alta</item>
+    </string-array>
+
+    <string-array name="costo">
+        <item>Bajo - $</item>
+        <item>Medi0 - $$</item>
+        <item>Alto - $$$</item>
+    </string-array>
 </resources>
