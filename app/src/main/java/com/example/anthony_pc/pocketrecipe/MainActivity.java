@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     Button crearCuenta;
     TextInputEditText emailTxt, passwordTxt;
-    private Globals instance;
+    private Globals instance= Globals.getInstance();
 
 
     @Override
@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
         image = (ImageView)findViewById(R.id.image);
-
-        instance = Globals.getInstance();
         callbackManager = CallbackManager.Factory.create();
         crearCuenta = (Button) findViewById(R.id.crearCuenta_button);
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -102,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         Profile profile = Profile.getCurrentProfile();
+                        instance.setProfile(profile);
                         displayInfo(object,profile);
                     }
                 });
@@ -178,9 +177,11 @@ public class MainActivity extends AppCompatActivity {
                                 //image.setImageBitmap(foto);
                                 //Log.e("foto",url);
                                 try {
-                                    Log.e("foto",url);
+
                                     InputStream is = new java.net.URL(url).openStream();
+                                    Log.e("foto",url);
                                     foto = BitmapFactory.decodeStream(is);
+
                                    // Drawable d = Drawable.createFromStream(is, "");
                                    // foto = ((BitmapDrawable)d).getBitmap();
                                     //((BitmapDrawable)image.getDrawable()).getBitmap();
@@ -190,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                                 image.setImageBitmap(foto);
+                                instance.setUserID(id);
 
                                 Usuario usuario = new Usuario(id,nombre,foto,correo);
                                 instance.addUser(usuario);

@@ -27,13 +27,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private Globals instance= Globals.getInstance();
+    CircleImageView profile_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+        profile_image = (CircleImageView)findViewById(R.id.profile_image);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,7 +64,7 @@ public class InicioActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-
+        profile_image.setImageBitmap(instance.getUserList().get(instance.getUserID()).getFoto());
     }
 
     @Override

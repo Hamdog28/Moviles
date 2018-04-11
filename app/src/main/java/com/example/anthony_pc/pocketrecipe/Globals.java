@@ -1,5 +1,7 @@
 package com.example.anthony_pc.pocketrecipe;
 
+import com.facebook.Profile;
+
 import java.util.ArrayList;
 
 /**
@@ -9,12 +11,17 @@ import java.util.ArrayList;
 public class Globals {
 
     private static ArrayList<Usuario> usersList = new ArrayList<>();
+    private static Profile profile;
+    private static int userID;
 
     private static Globals instance;
 
     public static Globals getInstance(){
         if(instance == null){
+
             instance = new Globals();
+            instance.profile = null;
+            instance.userID = -1;
         }
         return instance;
     }
@@ -25,5 +32,21 @@ public class Globals {
 
     public ArrayList<Usuario> getUserList(){
         return usersList;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        Globals.profile = profile;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        Globals.userID = userID;
     }
 }
