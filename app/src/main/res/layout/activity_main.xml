@@ -2,10 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.anthony_pc.pocketrecipe.MainActivity">
+    tools:context="com.example.anthony_pc.pocketrecipe.MainActivity"
+    android:theme="@style/Widget.Design.TextInputLayout">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,7 +40,9 @@
             android:layout_below="@+id/titulo"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
-            android:textColorHint="@android:color/white">
+            android:textColorHint="@android:color/white"
+
+            >
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/correoTxt"
@@ -49,6 +53,8 @@
                 android:hint="Correo"
                 android:inputType="textEmailAddress"
                 android:textColor="@android:color/white"
+                android:textColorHighlight="@android:color/white"
+                android:textColorHint="@android:color/white"
                 android:textColorLink="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 

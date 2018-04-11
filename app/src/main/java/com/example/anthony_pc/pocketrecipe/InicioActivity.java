@@ -2,6 +2,7 @@ package com.example.anthony_pc.pocketrecipe;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -56,7 +57,16 @@ public class InicioActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                // Do whatever you want here
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                //navigationView.setNavigationItemSelectedListener();
+                navigationView.getMenu().getItem(0).setChecked(true);
+            }
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -93,6 +103,7 @@ public class InicioActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             return true;
@@ -101,11 +112,15 @@ public class InicioActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
 
 
         if (id == R.id.nav_home) {
@@ -120,7 +135,8 @@ public class InicioActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_create) {
-
+            Intent intent = new Intent(this, CURecetaActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
 
@@ -133,6 +149,7 @@ public class InicioActivity extends AppCompatActivity
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
     protected void setMenuBackground(){

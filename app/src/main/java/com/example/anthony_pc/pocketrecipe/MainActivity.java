@@ -90,17 +90,31 @@ public class MainActivity extends AppCompatActivity {
         emailTxt = (TextInputEditText) findViewById(R.id.correoTxt);
         passwordTxt = (TextInputEditText) findViewById(R.id.passwordTxt);
 
+
+
+
         loginButton.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
+
+                String userId = loginResult.getAccessToken().getUserId();
+
+
+
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
+
+
                         Profile profile = Profile.getCurrentProfile();
+
                         instance.setProfile(profile);
+
+
+
                         displayInfo(object,profile);
                     }
                 });
@@ -118,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
-
+                Toast.makeText(getApplicationContext(), "Error no se por que",Toast.LENGTH_SHORT).show();
             }
         });
 
