@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,13 +54,16 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -98,23 +102,11 @@ public class MainActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
-
-                String userId = loginResult.getAccessToken().getUserId();
-
-
-
                 GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
-
-
                         Profile profile = Profile.getCurrentProfile();
-
                         instance.setProfile(profile);
-
-
-
                         displayInfo(object,profile);
                     }
                 });
@@ -144,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
         mQueue = Volley.newRequestQueue(this);
         parseJson("https://moviles-backoffice.herokuapp.com/persona/?format=json");
+
     }
 
     public void displayInfo(JSONObject object,Profile profile ){
@@ -183,46 +176,35 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         try {
                             for (int i  = 0; i <response.length(); i++){
-                                Bitmap foto = BitmapFactory.decodeResource(Resources.getSystem(), android.R.drawable.star_big_on);;
+                                //Log.e("foto",String.valueOf(i));
                                 int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
                                 String nombre = response.getJSONObject(i).getString("nombre");
                                 String correo = response.getJSONObject(i).getString("correo");
-                                String url = response.getJSONObject(i).getString("foto");
-                                //image.setImageBitmap(foto);
-                                //Log.e("foto",url);
-                                try {
+                                String url = response.getJSONObject(i).getString("url");
+                                Bitmap foto = null;
 
-                                    InputStream is = new java.net.URL(url).openStream();
-                                    Log.e("foto",url);
-                                    foto = BitmapFactory.decodeStream(is);
+                                Log.e("foto",url);
+                                if(!url.equals("")) {
+                                    DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(image);
+                                    foto = downloadTask.execute(url).get();
+                                    Log.e("foto",String.valueOf(foto));
 
-                                   // Drawable d = Drawable.createFromStream(is, "");
-                                   // foto = ((BitmapDrawable)d).getBitmap();
-                                    //((BitmapDrawable)image.getDrawable()).getBitmap();
-
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                }else{
+                                    Log.e("else","else");
                                 }
-                                image.setImageBitmap(foto);
-                                instance.setUserID(id);
 
                                 Usuario usuario = new Usuario(id,nombre,foto,correo);
                                 instance.addUser(usuario);
-
-
+                                instance.setActualUser(usuario);
                             }
-                            Log.e("parsLASDJFKASDe",String.valueOf(instance.getUserList().size()));
-                            //response.length()
-                            //int id = Integer.parseInt(response.getJSONObject(0))
-                           // Usuario usuario = new Usuario();
 
-                            /*Log.e("parse",String.valueOf(response.getJSONObject(0).getString("id")));
-                            Log.e("parse",String.valueOf(response.getJSONObject(0).getString("nombre")));
-                            Log.e("parse",String.valueOf(response.getJSONObject(0).getString("correo")));
-                            Log.e("parse",String.valueOf(response.getJSONObject(0).getString("contrasena")));*/
 
                         } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
                     }
@@ -236,6 +218,35 @@ public class MainActivity extends AppCompatActivity {
         mQueue.add(jsonArrayRequest);
 
     }
+
+
+    private class DownloadImageWithURLTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        private Globals instance= Globals.getInstance();
+
+        public DownloadImageWithURLTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String pathToFile = urls[0];
+            Bitmap bitmap = null;
+            try {
+                InputStream in = new java.net.URL(pathToFile).openStream();
+                bitmap = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            //bmImage.setImageBitmap(result);
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

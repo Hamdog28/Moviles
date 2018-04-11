@@ -111,7 +111,6 @@
             android:layout_height="100dp"
             android:layout_below="@+id/textInputLayout3"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="65dp"
             android:gravity="center" />
 
         <Button

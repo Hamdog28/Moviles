@@ -12,7 +12,8 @@ public class Globals {
 
     private static ArrayList<Usuario> usersList = new ArrayList<>();
     private static Profile profile;
-    private static int userID;
+
+    private static Usuario actualUser;
 
     private static Globals instance;
 
@@ -20,10 +21,18 @@ public class Globals {
         if(instance == null){
 
             instance = new Globals();
-            instance.profile = null;
-            instance.userID = -1;
+            profile = null;
+            actualUser = null;
         }
         return instance;
+    }
+
+    public Usuario getActualUser() {
+        return actualUser;
+    }
+
+    public void setActualUser(Usuario actualUser) {
+        Globals.actualUser = actualUser;
     }
 
     public void addUser(Usuario usuario){
@@ -42,11 +51,4 @@ public class Globals {
         Globals.profile = profile;
     }
 
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        Globals.userID = userID;
-    }
 }

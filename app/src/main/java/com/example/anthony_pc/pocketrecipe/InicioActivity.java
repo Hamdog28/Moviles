@@ -26,7 +26,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,13 +37,12 @@ public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private Globals instance= Globals.getInstance();
     CircleImageView profile_image;
+    TextView nombreTxt,correoTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
-        profile_image = (CircleImageView)findViewById(R.id.profile_image);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -74,7 +76,15 @@ public class InicioActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        profile_image.setImageBitmap(instance.getUserList().get(instance.getUserID()).getFoto());
+        View viewNav = navigationView.getHeaderView(0);
+        profile_image = viewNav.findViewById(R.id.profile_image);
+        nombreTxt = viewNav.findViewById(R.id.nombreTxt);
+        correoTxt = viewNav.findViewById(R.id.correoTxt);
+
+        nombreTxt.setText(instance.getActualUser().getNombre());
+        correoTxt.setText(instance.getActualUser().getCorreo());
+
+        profile_image.setImageBitmap(instance.getActualUser().getFoto());
     }
 
     @Override
