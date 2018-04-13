@@ -39,6 +39,7 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareLinkContent;
