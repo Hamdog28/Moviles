@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.anthony_pc.pocketrecipe.Activitys.RegistroActivity">
+    tools:context="com.example.anthony_pc.pocketrecipe.Activites.RegistroActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

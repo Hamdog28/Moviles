@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activitys.MainActivity"
+            android:name=".Activites.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,15 +49,15 @@
             android:value="d9b04332cad62ad15f31b8ef9a79e146cfc5a913" />
 
         <activity
-            android:name=".Activitys.InicioActivity"
+            android:name=".Activites.InicioActivity"
             android:label="@string/title_activity_inicio"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activitys.RegistroActivity" />
+        <activity android:name=".Activites.RegistroActivity" />
         <activity
             android:name=".AjustesActivity"
             android:label="@string/title_activity_ajustes" />
         <activity
-            android:name=".Activitys.CURecetaActivity"
+            android:name=".Activites.CURecetaActivity"
             android:label="@string/title_activity_cureceta"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

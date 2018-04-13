@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="10dp"
-    tools:context="com.example.anthony_pc.pocketrecipe.Activitys.InicioActivity">
+    tools:context="com.example.anthony_pc.pocketrecipe.Activites.InicioActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

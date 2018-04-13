@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.anthony_pc.pocketrecipe.Activitys.InicioActivity"
+    tools:context="com.example.anthony_pc.pocketrecipe.Activites.InicioActivity"
     tools:showIn="@layout/app_bar_inicio">
 
 
