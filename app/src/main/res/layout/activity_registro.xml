@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.anthony_pc.pocketrecipe.RegistroActivity">
+    tools:context="com.example.anthony_pc.pocketrecipe.Activitys.RegistroActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
                 android:id="@+id/editTextPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:backgroundTint="@android:color/white"
                 android:hint="Contraseña"
                 android:inputType="textPassword"
@@ -49,6 +50,7 @@
                 android:id="@+id/editTextName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:backgroundTint="@android:color/white"
                 android:hint="Nombre"
                 android:inputType="text"
@@ -62,7 +64,10 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="70dp"
             android:fontFamily="cursive"
+            android:foregroundGravity="center_horizontal"
             android:gravity="center_vertical"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
             android:text="Regístrate"
             android:textColor="@color/cardview_light_background"
             android:textSize="50sp"
@@ -87,31 +92,21 @@
                 android:id="@+id/editTextEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:backgroundTint="@android:color/white"
                 android:hint="Correo"
                 android:inputType="textEmailAddress"
                 android:textColor="@android:color/white" />
         </android.support.design.widget.TextInputLayout>
 
-        <TextView
-            android:id="@+id/atras"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_toStartOf="@+id/textInputLayout3"
-            android:text="@string/font_awesome_back"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
 
         <ImageView
             android:id="@+id/image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_below="@+id/textInputLayout3"
+            android:layout_alignBottom="@+id/register_button"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="65dp"
+            android:layout_marginBottom="95dp"
             android:gravity="center" />
 
         <Button
@@ -120,7 +115,7 @@
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="35dp"
             android:background="@drawable/button_shape"
             android:gravity="center_vertical"
             android:onClick="registerClick"
@@ -129,6 +124,18 @@
             android:textSize="18sp"
             tools:layout_editor_absoluteX="72dp"
             tools:layout_editor_absoluteY="410dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/transparent"
+            android:onClick="Atras"
+            android:padding="1dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/atras" />
 
     </RelativeLayout>
 

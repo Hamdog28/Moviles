@@ -6,13 +6,15 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activitys.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,15 +49,15 @@
             android:value="d9b04332cad62ad15f31b8ef9a79e146cfc5a913" />
 
         <activity
-            android:name=".InicioActivity"
+            android:name=".Activitys.InicioActivity"
             android:label="@string/title_activity_inicio"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RegistroActivity" />
+        <activity android:name=".Activitys.RegistroActivity" />
         <activity
             android:name=".AjustesActivity"
             android:label="@string/title_activity_ajustes" />
         <activity
-            android:name=".CURecetaActivity"
+            android:name=".Activitys.CURecetaActivity"
             android:label="@string/title_activity_cureceta"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

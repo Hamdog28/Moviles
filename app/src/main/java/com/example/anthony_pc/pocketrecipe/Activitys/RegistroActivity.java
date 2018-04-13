@@ -1,4 +1,4 @@
-package com.example.anthony_pc.pocketrecipe;
+package com.example.anthony_pc.pocketrecipe.Activitys;
 
 import android.content.Intent;
 import android.content.res.Resources;
@@ -39,6 +39,7 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.example.anthony_pc.pocketrecipe.R;
 import com.facebook.FacebookSdk;
 import com.facebook.share.model.ShareLinkContent;
 
@@ -75,14 +76,16 @@ public class RegistroActivity extends AppCompatActivity {
         TextView titulo = (TextView) findViewById(R.id.titulo);
         titulo.setTypeface(custom_font);
 
-        Typeface font = Typeface.createFromAsset( getAssets(), "fontawesome-webfont.ttf" );
-        TextView atras =(TextView)  findViewById(R.id.atras);
-        atras.setTypeface(font);
-
-
 
         new downloadImage((ImageView)findViewById(R.id.image)).execute(getIntent().getExtras().getString("persona"));
 
+    }
+
+
+
+    public boolean Atras(View view){
+        finish();
+        return true;
     }
 
     public void registerClick(View view){

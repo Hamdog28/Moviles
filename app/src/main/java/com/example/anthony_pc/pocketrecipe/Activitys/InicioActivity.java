@@ -1,19 +1,17 @@
-package com.example.anthony_pc.pocketrecipe;
+package com.example.anthony_pc.pocketrecipe.Activitys;
 
-import android.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.net.Uri;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -28,13 +26,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
+import com.example.anthony_pc.pocketrecipe.fragments.inicio.Inicio_Fragment;
+
 public class InicioActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Inicio_Fragment.OnFragmentInteractionListener, FavoritosFragment.OnFragmentInteractionListener{
+
+    Fragment fragment;
+    FragmentManager fragmentManager = getSupportFragmentManager();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+
+
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -48,6 +57,13 @@ public class InicioActivity extends AppCompatActivity
         // Update the action bar title with the TypefaceSpan instance
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(s);
+
+
+            fragment = new Inicio_Fragment();
+            fragmentManager.beginTransaction().add(R.id.container, fragment).commit();
+
+
+        getSupportFragmentManager().beginTransaction().add(R.id.container,fragment);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -118,12 +134,22 @@ public class InicioActivity extends AppCompatActivity
 
 
 
+
+
         if (id == R.id.nav_home) {
             // Handle the camera action
+            fragment = new Inicio_Fragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
 
         } else if (id == R.id.nav_account) {
 
         } else if (id == R.id.nav_favorite) {
+            fragment = new FavoritosFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
 
 
         } else if (id == R.id.nav_cart) {
@@ -176,6 +202,12 @@ public class InicioActivity extends AppCompatActivity
                 }
                 return null;
             }});
+    }
+
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
 

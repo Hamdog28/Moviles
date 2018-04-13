@@ -1,4 +1,4 @@
-package com.example.anthony_pc.pocketrecipe;
+package com.example.anthony_pc.pocketrecipe.Activitys;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.anthony_pc.pocketrecipe.R;
 
 import java.util.ArrayList;
 import java.util.List;
