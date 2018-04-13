@@ -24,11 +24,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.inicio.Inicio_Fragment;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class InicioActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Inicio_Fragment.OnFragmentInteractionListener, FavoritosFragment.OnFragmentInteractionListener{
@@ -36,13 +41,14 @@ public class InicioActivity extends AppCompatActivity
     Fragment fragment;
     FragmentManager fragmentManager = getSupportFragmentManager();
 
+    private Globals instance= Globals.getInstance();
+    CircleImageView profile_image;
+    TextView nombreTxt,correoTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
-
-
 
 
 
@@ -85,7 +91,15 @@ public class InicioActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
+        View viewNav = navigationView.getHeaderView(0);
+        profile_image = viewNav.findViewById(R.id.profile_image);
+        nombreTxt = viewNav.findViewById(R.id.nombreTxt);
+        correoTxt = viewNav.findViewById(R.id.correoTxt);
 
+        nombreTxt.setText(instance.getActualUser().getNombre());
+        correoTxt.setText(instance.getActualUser().getCorreo());
+
+        profile_image.setImageBitmap(instance.getActualUser().getFoto());
     }
 
     @Override

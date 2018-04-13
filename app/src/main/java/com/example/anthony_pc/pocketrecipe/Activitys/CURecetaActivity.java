@@ -49,7 +49,9 @@ public class CURecetaActivity extends AppCompatActivity {
         TextView agregar =(TextView)  findViewById(R.id.agregarIngrediente_button);
         agregar.setTypeface(font);
 
+    }
 
+    public void agarrarDatos(){
 
     }
     public void showstatesList() {
@@ -99,17 +101,11 @@ public class CURecetaActivity extends AppCompatActivity {
 
                     builder.show();
 
-
-
                 }
             });
-
             valueTV.setLayoutParams(params);
-
             ((LinearLayout) linearLayout).addView(valueTV);
         }
-
-
     }
 
     @Override
