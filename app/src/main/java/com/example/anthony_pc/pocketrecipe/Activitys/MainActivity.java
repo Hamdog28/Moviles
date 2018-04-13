@@ -15,12 +15,9 @@ import android.os.AsyncTask;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-<<<<<<< HEAD:app/src/main/java/com/example/anthony_pc/pocketrecipe/Activitys/MainActivity.java
-=======
 import android.support.v7.widget.Toolbar;
 import android.telecom.Call;
 import android.util.Base64;
->>>>>>> 71a2248c18909e2237589b3fb96298041c64ef2b:app/src/main/java/com/example/anthony_pc/pocketrecipe/MainActivity.java
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
