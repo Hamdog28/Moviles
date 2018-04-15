@@ -7,7 +7,8 @@
     android:layout_margin="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.anthony_pc.pocketrecipe.Activites.CURecetaActivity"
-    tools:showIn="@layout/activity_cureceta">
+    tools:showIn="@layout/activity_cureceta"
+    android:id="@+id/container">
 
     <View android:layout_width="fill_parent" android:id="@+id/focus_view" android:layout_height="0dp" android:focusable="true" android:focusableInTouchMode="true"><requestFocus/></View>
 
@@ -25,13 +26,13 @@
             tools:layout_editor_absoluteY="8dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/nombreRecetaTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nombre de la receta*" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/nombreRecetaTxt"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -50,7 +51,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/duracionHorasTxt"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -67,7 +68,7 @@
                     android:text="hora(s)" />
 
                 <EditText
-                    android:id="@+id/editText3"
+                    android:id="@+id/duracionMinTxt"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -96,7 +97,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editText4"
+                    android:id="@+id/porcionesTxt"
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -123,6 +124,7 @@
                 android:text="Dificultad" />
 
             <Spinner
+                android:id="@+id/spinnerDificultad"
                 style="@style/spinner_style"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -136,7 +138,7 @@
                 android:text="Costo ($)" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spinnerCosto"
                 style="@style/spinner_style"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -180,6 +182,7 @@
                 android:text="Preparación* (resaltar cada paso con una línea nueva)" />
 
             <EditText
+                android:id="@+id/preparacionTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -193,6 +196,7 @@
                 android:text="Notas" />
 
             <EditText
+                android:id="@+id/notasTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -206,6 +210,7 @@
                 android:text="Tags/Etiquetas (inicie cada tag con un #y separelo con un cambio de línea)" />
 
             <EditText
+                android:id="@+id/tagsTxt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -219,10 +224,13 @@
                 android:text="Agregue una foto" />
 
             <ImageButton
+                android:id="@+id/imageBtn"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@android:drawable/ic_menu_gallery" />
+                android:background="@android:drawable/ic_menu_gallery"
+                android:scaleType="centerInside"
+                android:onClick="agarrarImagenGaleria"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -246,7 +254,7 @@
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/radioColones"
+                        android:id="@+id/radioSi"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -256,7 +264,7 @@
                         android:textSize="14sp" />
 
                     <RadioButton
-                        android:id="@+id/radioDolares"
+                        android:id="@+id/radioNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -268,7 +276,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/register_button2"
+                android:id="@+id/crear_receta"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
@@ -283,7 +291,8 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="72dp"
-                tools:layout_editor_absoluteY="410dp" />
+                tools:layout_editor_absoluteY="410dp"
+                android:onClick="agarrarDatos"/>
 
         </LinearLayout>
 
