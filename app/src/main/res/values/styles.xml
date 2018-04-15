@@ -22,7 +22,8 @@
         <item name="hintTextAppearance">@style/AppTheme.TextFloatLabelAppearance</item>
         <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
         <item name="errorTextAppearance">@style/AppTheme.TextErrorAppearance</item>
-        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
+        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow
+        </item>
         <item name="colorControlNormal">#c5c5c5</item>
         <item name="colorControlActivated">#ffff</item>
         <item name="colorControlHighlight">#ffff</item>

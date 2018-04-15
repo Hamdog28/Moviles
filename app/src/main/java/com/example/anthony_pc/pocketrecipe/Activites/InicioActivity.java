@@ -29,13 +29,17 @@ import android.widget.TextView;
 
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.fragments.carrito.CarritoFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.inicio.Inicio_Fragment;
+import com.example.anthony_pc.pocketrecipe.fragments.perfil.PerfilFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class InicioActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Inicio_Fragment.OnFragmentInteractionListener, FavoritosFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, Inicio_Fragment.OnFragmentInteractionListener,
+        FavoritosFragment.OnFragmentInteractionListener,PerfilFragment.OnFragmentInteractionListener,
+        CarritoFragment.OnFragmentInteractionListener{
 
     Fragment fragment;
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -43,6 +47,7 @@ public class InicioActivity extends AppCompatActivity
     private Globals instance= Globals.getInstance();
     CircleImageView profile_image;
     TextView nombreTxt,correoTxt;
+    int aux = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +73,7 @@ public class InicioActivity extends AppCompatActivity
             fragmentManager.beginTransaction().add(R.id.container, fragment).commit();
 
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container,fragment);
+        //getSupportFragmentManager().beginTransaction().add(R.id.container,fragment);
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -80,7 +85,8 @@ public class InicioActivity extends AppCompatActivity
                 // Do whatever you want here
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 //navigationView.setNavigationItemSelectedListener();
-                navigationView.getMenu().getItem(0).setChecked(true);
+                if (aux == 0)
+                    navigationView.getMenu().getItem(0).setChecked(true);
             }
         };
         drawer.addDrawerListener(toggle);
@@ -144,35 +150,66 @@ public class InicioActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        aux = 1;
 
 
+        Bundle bundle = new Bundle();
 
+        bundle.putString("edttext", "From Activity");
 
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+            setActionBarTitle("Pocket Recipe");
+            aux = 0;
             fragment = new Inicio_Fragment();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
 
         } else if (id == R.id.nav_account) {
+            setActionBarTitle("Perfil");
+
+            bundle.putString("seccion", "perfil");
+
+
+            fragment = new PerfilFragment();
+            Fragment fragment1 = new FavoritosFragment();
+            fragment1.setArguments(bundle);
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container2, fragment1)
+                    .commit();
 
         } else if (id == R.id.nav_favorite) {
+            setActionBarTitle("Favoritos");
+            bundle.putString("seccion", "Favoritos");
             fragment = new FavoritosFragment();
+            fragment.setArguments(bundle);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
 
 
         } else if (id == R.id.nav_cart) {
+            setActionBarTitle("Carrito");
+            fragment = new CarritoFragment();
+            //fragmentManager.beginTransaction()
+              //      .replace(R.id.container, fragment)
+                //    .commit();
 
 
         } else if (id == R.id.nav_create) {
+            aux = 0;
             Intent intent = new Intent(this, CURecetaActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_settings) {
+            setActionBarTitle("Ajustes");
 
 
         }
@@ -216,7 +253,9 @@ public class InicioActivity extends AppCompatActivity
                 return null;
             }});
     }
-
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {

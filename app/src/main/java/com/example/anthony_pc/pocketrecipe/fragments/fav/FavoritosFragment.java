@@ -5,11 +5,14 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 
+import com.example.anthony_pc.pocketrecipe.Activites.InicioActivity;
 import com.example.anthony_pc.pocketrecipe.R;
 
 import java.util.ArrayList;
@@ -44,6 +47,7 @@ public class FavoritosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favoritos, container, false);
 
 
+
         grid = (GridView) view.findViewById(R.id.grid);
 
 
@@ -54,7 +58,37 @@ public class FavoritosFragment extends Fragment {
 
         adapter = new Adapter(getContext(),R.layout.grid_view_items,List);
         grid.setAdapter(adapter);
+        setGridViewHeightBasedOnChildren( grid,2);
+
         return view;
+    }
+
+    public void setGridViewHeightBasedOnChildren(GridView gridView, int columns) {
+        ListAdapter listAdapter = gridView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int items = listAdapter.getCount();
+        int rows = 0;
+
+        View listItem = listAdapter.getView(0, null, gridView);
+        listItem.measure(0, 0);
+        totalHeight = listItem.getMeasuredHeight();
+
+        float x = 1;
+        if( items > columns ){
+            x = items/columns;
+            rows = (int) (x + 1);
+            totalHeight *= rows-1;
+        }
+
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.height = totalHeight;
+        gridView.setLayoutParams(params);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
