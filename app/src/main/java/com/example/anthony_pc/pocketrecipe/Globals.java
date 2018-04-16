@@ -2,6 +2,7 @@ package com.example.anthony_pc.pocketrecipe;
 
 import com.facebook.Profile;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 public class Globals {
 
     private static ArrayList<Usuario> usersList = new ArrayList<>();
+    private static ArrayList<Receta> recipeList = new ArrayList<>();
+    private static ArrayList<Ingrediente> ingredienteList = new ArrayList<>();
     private static Profile profile;
 
     private static Usuario actualUser;
@@ -47,8 +50,26 @@ public class Globals {
         return profile;
     }
 
+
+
     public void setProfile(Profile profile) {
         Globals.profile = profile;
+    }
+
+    public ArrayList<Receta> getRecipeList() {
+        return recipeList;
+    }
+
+    public void addRecipe(Receta receta){
+        recipeList.add(receta);
+    }
+
+    public void addIngrediente(Ingrediente ingrediente){
+        ingredienteList.add(ingrediente);
+    }
+
+    public ArrayList<Ingrediente> getIngredienteList() {
+        return ingredienteList;
     }
 
 }

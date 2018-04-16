@@ -88,7 +88,7 @@
             android:paddingRight="10dp">
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/publicacionesTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -169,7 +169,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/descripcion"
+        android:id="@+id/descripcionTV"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -185,7 +185,7 @@
             android:id="@+id/container2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/descripcion"
+            android:layout_below="@+id/descripcionTV"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 

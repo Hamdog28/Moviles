@@ -66,7 +66,6 @@ public class CURecetaActivity extends AppCompatActivity {
     Spinner spinnerDificultad, spinnerCosto;
     ImageButton imageBtn;
     RadioGroup radioGroupPublico;
-    Button crearReceta;
     String url = "https://moviles-backoffice.herokuapp.com/receta/";
     String urlTag = "https://moviles-backoffice.herokuapp.com/tag/";
     private Globals instance= Globals.getInstance();
@@ -149,6 +148,11 @@ public class CURecetaActivity extends AppCompatActivity {
                     String picturePath = cursor.getString(columnIndex);
                     cursor.close();
                     imageBtn.setBackground(new BitmapDrawable(picturePath));
+                    Log.e("imgpath",picturePath);
+                    String fileNameSegments[] = picturePath.split("/");
+                    Log.e("imgpath",Arrays.deepToString(fileNameSegments));
+                    String fileName = fileNameSegments[fileNameSegments.length -1];
+                    Log.e("imgpath",fileName);
                     break;
                 }
         }

@@ -24,7 +24,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.answers.Answers;
 import com.example.anthony_pc.pocketrecipe.Globals;
+import com.example.anthony_pc.pocketrecipe.Ingrediente;
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.Receta;
 import com.example.anthony_pc.pocketrecipe.Usuario;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -41,6 +43,7 @@ import org.json.JSONObject;
 
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
@@ -111,7 +114,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         mQueue = Volley.newRequestQueue(this);
-        parseJson("https://moviles-backoffice.herokuapp.com/persona/?format=json");
+
+        getAllUsers("https://moviles-backoffice.herokuapp.com/persona/?format=json");
+        getAllIngredients("https://moviles-backoffice.herokuapp.com/ingrediente/?format=json");
+        getAllRecipes("https://moviles-backoffice.herokuapp.com/receta/?format=json");
+
 
     }
 
@@ -144,7 +151,39 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void parseJson(String url){
+    public void getAllIngredients(String url){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i  = 0; i <response.length(); i++){
+                                //Log.e("foto",String.valueOf(i));
+                                int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
+                                String nombre = response.getJSONObject(i).getString("nombre");
+                                int recetaID = Integer.parseInt(response.getJSONObject(i).getString("receta"));
+                                int cantidad = Integer.parseInt(response.getJSONObject(i).getString("url"));
+
+                                Ingrediente ingrediente = new Ingrediente(id,recetaID,nombre,cantidad);
+                                instance.addIngrediente(ingrediente);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(jsonArrayRequest);
+
+    }
+
+    public void getAllUsers(String url){
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONArray>() {
@@ -157,9 +196,10 @@ public class MainActivity extends AppCompatActivity {
                                 String nombre = response.getJSONObject(i).getString("nombre");
                                 String correo = response.getJSONObject(i).getString("correo");
                                 String url = response.getJSONObject(i).getString("url");
+                                String descripcion = response.getJSONObject(i).getString("descripcion");
                                 Bitmap foto = null;
 
-                                Log.e("foto",url);
+
                                 if(!url.equals("")) {
                                     DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(image);
                                     foto = downloadTask.execute(url).get();
@@ -169,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                                     Log.e("else","else");
                                 }
 
-                                Usuario usuario = new Usuario(id,nombre,foto,correo);
+                                Usuario usuario = new Usuario(id,nombre,foto,correo,descripcion);
                                 instance.addUser(usuario);
                                 instance.setActualUser(usuario);
                             }
@@ -195,10 +235,80 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void getAllRecipes(String url){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i  = 0; i <response.length(); i++){
+
+                                int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
+                                int autor = Integer.parseInt(response.getJSONObject(i).getString("autor"));
+                                String nombre = response.getJSONObject(i).getString("nombre");
+                                String duracion = response.getJSONObject(i).getString("duracion");
+                                String url = response.getJSONObject(i).getString("url");
+                                String procedimiento = response.getJSONObject(i).getString("procedimiento");
+                                String notas = response.getJSONObject(i).getString("notas");
+                                String dificultad = response.getJSONObject(i).getString("dificultad");
+                                int porciones = Integer.parseInt(response.getJSONObject(i).getString("porciones"));
+                                Boolean publico = Boolean.valueOf(response.getJSONObject(i).getString("publico"));
+                                String publicacion = response.getJSONObject(i).getString("publicacion");
+                                String costo = response.getJSONObject(i).getString("costo");
+                                Float calificacion = Float.parseFloat(response.getJSONObject(i).getString("calificacion"));
+                                int cantidad_calificaciones = Integer.parseInt(response.getJSONObject(i).getString("cantidad_calificaciones"));
+                                Bitmap foto = null;
+
+
+                                if(!url.equals("")) {
+                                    DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(image);
+                                    foto = downloadTask.execute(url).get();
+                                    Log.e("fotoREceta",String.valueOf(foto));
+
+                                }else{
+                                    Log.e("else","else");
+                                }
+
+                                Receta receta = new Receta(id,nombre,duracion,procedimiento,dificultad,porciones,foto,costo,calificacion,cantidad_calificaciones,
+                                        publico,notas,listaIngredientes(id),autor,publicacion);
+                                instance.addRecipe(receta);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(jsonArrayRequest);
+
+    }
+
+    public ArrayList<String> listaIngredientes(int id){
+        ArrayList<String> listaIngredientes = new ArrayList<>();
+        for(Ingrediente i : instance.getIngredienteList()){
+            if(i.getRecetaID() == id){
+                listaIngredientes.add(i.getNombre());
+            }
+        }
+        return listaIngredientes;
+    }
+
 
     private class DownloadImageWithURLTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
-        private Globals instance= Globals.getInstance();
+
 
         public DownloadImageWithURLTask(ImageView bmImage) {
             this.bmImage = bmImage;

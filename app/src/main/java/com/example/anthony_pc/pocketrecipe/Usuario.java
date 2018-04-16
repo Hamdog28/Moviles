@@ -11,13 +11,15 @@ public class Usuario {
     private int id;
     private String nombre;
     private Bitmap foto;
+    private String descripcion;
     private String correo;
 
-    public Usuario(int id, String nombre, Bitmap foto, String correo) {
+    public Usuario(int id, String nombre, Bitmap foto, String correo, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.foto = foto;
         this.correo = correo;
+        this.descripcion = descripcion;
     }
 
     public int getId() {
@@ -50,5 +52,13 @@ public class Usuario {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

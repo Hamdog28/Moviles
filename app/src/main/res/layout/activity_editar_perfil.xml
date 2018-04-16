@@ -59,7 +59,7 @@
                 android:text="Descripcion" />
 
             <EditText
-                android:id="@+id/descripcion"
+                android:id="@+id/descripcionTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -75,12 +75,13 @@
                 android:text="Foto" />
 
             <ImageButton
+                android:id="@+id/photoImg"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@android:drawable/ic_menu_gallery" />
-
-
+                android:background="@android:drawable/ic_menu_gallery"
+                android:onClick="agarrarImagenGaleria"
+                android:scaleType="fitXY"/>
 
             <Button
                 android:id="@+id/register_button2"
@@ -98,7 +99,8 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="72dp"
-                tools:layout_editor_absoluteY="410dp" />
+                tools:layout_editor_absoluteY="410dp"
+                android:onClick="editarUsuairo"/>
 
         </LinearLayout>
 

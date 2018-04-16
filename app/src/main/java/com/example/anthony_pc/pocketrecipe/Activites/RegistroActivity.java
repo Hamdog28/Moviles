@@ -129,7 +129,7 @@ public class RegistroActivity extends AppCompatActivity {
                 params.put("correo",email);
                 params.put("contrasena",contrasena);
                 //params.put("descripcion",descripcion);
-               // params.put("foto","data:image/JPEG;base64,"+ imageString);
+                params.put("foto","data:image/JPEG;base64,"+ imageString);
 
                 //byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
                 //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);

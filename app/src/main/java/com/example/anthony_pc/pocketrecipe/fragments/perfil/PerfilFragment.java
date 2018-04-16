@@ -13,9 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.example.anthony_pc.pocketrecipe.Activites.EditarPerfilActivity;
+import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +37,14 @@ public class PerfilFragment extends Fragment {
         // Required empty public constructor
     }
 
+    CircleImageView profileImage;
+    TextView nombreTV,publicacioneTV,descripcionTV;
+
+
+
+
+    private Globals instance= Globals.getInstance();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +55,17 @@ public class PerfilFragment extends Fragment {
         setHasOptionsMenu(true);
         ImageButton imageButton = v.findViewById(R.id.settings_button);
         mPopupMenu = new PopupMenu(getContext(), imageButton);
+
+        profileImage = v.findViewById(R.id.profile_image);
+        nombreTV = v.findViewById(R.id.nombre);
+        publicacioneTV = v.findViewById(R.id.publicacionesTV);
+        descripcionTV = v.findViewById(R.id.descripcionTV);
+
+        profileImage.setImageBitmap(instance.getActualUser().getFoto());
+        nombreTV.setText(instance.getActualUser().getNombre());
+
+        descripcionTV.setText(instance.getActualUser().getDescripcion());
+
 
 
 
