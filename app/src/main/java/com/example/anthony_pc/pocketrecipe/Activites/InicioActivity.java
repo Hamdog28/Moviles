@@ -163,6 +163,7 @@ public class InicioActivity extends AppCompatActivity
             setActionBarTitle("Pocket Recipe");
             aux = 0;
             fragment = new Inicio_Fragment();
+            fragmentManager.popBackStack();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
@@ -174,6 +175,7 @@ public class InicioActivity extends AppCompatActivity
 
 
             fragment = new PerfilFragment();
+            fragmentManager.popBackStack();
             Fragment fragment1 = new FavoritosFragment();
             fragment1.setArguments(bundle);
 
@@ -189,6 +191,7 @@ public class InicioActivity extends AppCompatActivity
             setActionBarTitle("Favoritos");
             bundle.putString("seccion", "Favoritos");
             fragment = new FavoritosFragment();
+            fragmentManager.popBackStack();
             fragment.setArguments(bundle);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)

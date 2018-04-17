@@ -12,7 +12,9 @@
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,7 +69,6 @@
                 android:inputType="textMultiLine" />
 
 
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,6 +76,7 @@
                 android:text="Foto" />
 
             <ImageButton
+
                 android:id="@+id/photoImg"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -82,6 +84,8 @@
                 android:background="@android:drawable/ic_menu_gallery"
                 android:onClick="agarrarImagenGaleria"
                 android:scaleType="fitXY"/>
+
+
 
             <Button
                 android:id="@+id/register_button2"

@@ -199,7 +199,8 @@ public class CURecetaActivity extends AppCompatActivity {
                     dificultadString, costoString, imageString, String.valueOf(privacidad));
             Receta receta = new Receta(lastID+1,nombreRecetaString,duracionHorasString,preparacionTxtString,dificultadString,
                     Integer.parseInt(porcionesTxtString), image2,costoString,0f,0,
-                    Boolean.parseBoolean(privacidadString),notasTxtString,(ArrayList)ingredientes,instance.getActualUser().getId(),String.valueOf(currentTime));
+                    Boolean.parseBoolean(privacidadString),notasTxtString,(ArrayList)ingredientes,
+                    instance.getActualUser().getId(),String.valueOf(currentTime),tagsTxtString);
             instance.addRecipe(receta);
             String idReceta = String.valueOf(lastID+1);
             for(String i : tagsTxtString){
@@ -290,7 +291,7 @@ public class CURecetaActivity extends AppCompatActivity {
     }
 
     public ArrayList<String> leerHashtags(String[] hashtag){
-        int length = hashtag.length;
+
         ArrayList<String> hashtags = new ArrayList<String>();
         for(String i : hashtag){
             if(!i.equals(""))

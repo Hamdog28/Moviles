@@ -1,21 +1,31 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
 import android.Manifest;
+
+import android.app.Activity;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import android.graphics.drawable.BitmapDrawable;
+
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import android.util.Log;
+import android.view.View;
+
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -28,11 +38,23 @@ import com.android.volley.toolbox.Volley;
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
 
+
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
+
 public class EditarPerfilActivity extends AppCompatActivity {
+
+    private static final int GALLERY_INTENT = 1;
+
+    private static final int PERMISSION_REQUEST = 0;
+
+
 
     EditText nombreTxt, contrasenaTxt, descripcionTxt;
     ImageButton photoImg;
@@ -56,6 +78,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
         setContentView(R.layout.activity_editar_perfil);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Editar Perfil");
+
         url = url + String.valueOf(instance.getActualUser().getId())+"/";
 
         nombreTxt = (EditText)findViewById(R.id.nombre);
@@ -67,6 +90,8 @@ public class EditarPerfilActivity extends AppCompatActivity {
         descripcionTxt.setText(instance.getActualUser().getDescripcion());
         photoImg.setImageBitmap(instance.getActualUser().getFoto());
 
+
+
         int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
@@ -77,6 +102,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
+
     }
 
     public void agarrarImagenGaleria(View view){
@@ -122,6 +148,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
         final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
         uploadUser(nombre,contrasena,descripcion,id,imageString,correo);
+
     }
 
     public void uploadUser(final String nombre, final String contrasena, final String descripcion, final String id,final String imagen,final String correo){
@@ -171,11 +198,10 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     public boolean onSupportNavigateUp(){
         finish();
         return true;
     }
+
 }

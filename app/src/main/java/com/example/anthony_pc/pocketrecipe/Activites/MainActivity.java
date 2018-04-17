@@ -392,9 +392,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ingresar(View view){
+
         Intent intent = new Intent(this, InicioActivity.class);
         //String email = emailTxt.getText().toString();
        // String password = passwordTxt.getText().toString();
+        finish();
         startActivity(intent);
     }
 
