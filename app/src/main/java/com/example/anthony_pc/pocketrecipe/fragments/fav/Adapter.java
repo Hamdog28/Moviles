@@ -51,7 +51,7 @@ public class Adapter extends ArrayAdapter {
         imageView.setImageDrawable(List.get(position).getImage());
         rating.setRating(List.get(position).getStars());
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        v.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {

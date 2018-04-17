@@ -1,8 +1,12 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,12 +18,16 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.anthony_pc.pocketrecipe.R;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +67,6 @@ public class RecetaActivity extends AppCompatActivity {
         setTitle("Carne");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        ImageButton favorito = (ImageButton) findViewById(R.id.favorito);
 
 
         lay_ingrediente = (LinearLayout) findViewById(R.id.ingredientes_layout);
@@ -82,9 +89,22 @@ public class RecetaActivity extends AppCompatActivity {
             }
         });
 
-        //populateIngredients();
-        //populateProcedure();
+        ImageView foto = (ImageView)findViewById(R.id.foto);
+        ImageView imagen = (ImageView)findViewById(R.id.imagen);
+
+        foto.setImageDrawable(getResources().getDrawable(R.drawable.foto_perfil));
+        imagen.setImageDrawable(getResources().getDrawable(R.drawable.carne));
+
+
+
+        populateIngredients();
+        populateProcedure();
         populateTags();
+    }
+
+    public boolean Atras(View view){
+        finish();
+        return true;
     }
 
     private void populateIngredients() {
