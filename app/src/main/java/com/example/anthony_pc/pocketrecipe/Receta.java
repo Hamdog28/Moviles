@@ -27,10 +27,11 @@ public class Receta {
 
 
     private ArrayList<String> listaIngredientes;
+    private ArrayList<String> listaTags;
 
     public Receta(int id, String nombre, String duracion, String procedimiento, String dificultad, int porciones, Bitmap foto,
                   String costo, Float calificacion, int cantCalificaciones, Boolean publico, String notas,
-                  ArrayList<String> listaIngredientes,int autor,String publicacion ) {
+                  ArrayList<String> listaIngredientes,int autor,String publicacion, ArrayList<String> listaTags) {
         this.id = id;
         this.nombre = nombre;
         this.duracion = duracion;
@@ -46,6 +47,7 @@ public class Receta {
         this.listaIngredientes = listaIngredientes;
         this.autor = autor;
         this.publicacion = publicacion;
+        this.listaTags = listaTags;
     }
 
     public int getId() {
@@ -166,5 +168,13 @@ public class Receta {
 
     public void setPublicacion(String publicacion) {
         this.publicacion = publicacion;
+    }
+
+    public ArrayList<String> getListaTags() {
+        return listaTags;
+    }
+
+    public void setListaTags(ArrayList<String> listaTags) {
+        this.listaTags = listaTags;
     }
 }

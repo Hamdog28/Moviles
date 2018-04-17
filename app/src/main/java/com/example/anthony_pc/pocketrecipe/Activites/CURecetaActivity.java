@@ -46,15 +46,20 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.Receta;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import java.util.Calendar;
+
 
 public class CURecetaActivity extends AppCompatActivity {
 
@@ -160,6 +165,8 @@ public class CURecetaActivity extends AppCompatActivity {
 
     public void agarrarDatos(View view){
 
+        Date currentTime = Calendar.getInstance().getTime();
+
         String nombreRecetaString = nombreRecetaTxt.getText().toString();
         String duracionHorasString = duracionHoras.getText().toString();
         String duracionMinTxtString = duracionMinTxt.getText().toString();
@@ -179,19 +186,25 @@ public class CURecetaActivity extends AppCompatActivity {
         final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
         int privacidad = radioGroupPublico.indexOfChild(findViewById(radioGroupPublico.getCheckedRadioButtonId()));
+        String privacidadString = String.valueOf(privacidad);
 
         if(nombreRecetaString.equals("") || duracionHorasString.equals("") || duracionMinTxtString.equals("")
                 || porcionesTxtString.equals("") || preparacionTxtString.equals("")){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Aviso").setMessage("Complete los campos requeridos").show();
         }else{
-            Log.e("Asdfas","dsfasdf");
+            int lastID = instance.getRecipeList().get(instance.getRecipeList().size()-1).getId();
+            Log.e("LASTID",String.valueOf(lastID));
             insertarReceta(nombreRecetaString,duracionHorasString,duracionMinTxtString,porcionesTxtString, preparacionTxtString, notasTxtString,
                     dificultadString, costoString, imageString, String.valueOf(privacidad));
-            /*for(String i : tagsTxtString){
-                insertarTags(i);
-            }*/
-
+            Receta receta = new Receta(lastID+1,nombreRecetaString,duracionHorasString,preparacionTxtString,dificultadString,
+                    Integer.parseInt(porcionesTxtString), image2,costoString,0f,0,
+                    Boolean.parseBoolean(privacidadString),notasTxtString,(ArrayList)ingredientes,instance.getActualUser().getId(),String.valueOf(currentTime));
+            instance.addRecipe(receta);
+            String idReceta = String.valueOf(lastID+1);
+            for(String i : tagsTxtString){
+                insertarTags(i,idReceta);
+            }
         }
 
         //0 - > Si RadioGroup
@@ -251,7 +264,7 @@ public class CURecetaActivity extends AppCompatActivity {
 
     }
 
-    public void insertarTags(final String tag){
+    public void insertarTags(final String tag,final String id){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlTag, new Response.Listener<String>() {
             @Override
@@ -267,7 +280,8 @@ public class CURecetaActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("tag",tag);
+                params.put("receta",id);
+                params.put("nombre",tag);
                 return params;
             }
         };

@@ -1,5 +1,7 @@
 package com.example.anthony_pc.pocketrecipe;
 
+import android.nfc.Tag;
+
 import com.facebook.Profile;
 
 import java.lang.reflect.Array;
@@ -14,6 +16,8 @@ public class Globals {
     private static ArrayList<Usuario> usersList = new ArrayList<>();
     private static ArrayList<Receta> recipeList = new ArrayList<>();
     private static ArrayList<Ingrediente> ingredienteList = new ArrayList<>();
+    private static ArrayList<Tags> tagList = new ArrayList<>();
+
     private static Profile profile;
 
     private static Usuario actualUser;
@@ -70,6 +74,18 @@ public class Globals {
 
     public ArrayList<Ingrediente> getIngredienteList() {
         return ingredienteList;
+    }
+
+    public int returnLastIDTag(){
+        if(tagList.isEmpty())
+            return 0;
+        return tagList.get(tagList.size()-1).getId()+1;
+    }
+
+    public void addTag(Tags tag){tagList.add(tag);}
+
+    public ArrayList<Tags> getTagList() {
+        return tagList;
     }
 
 }

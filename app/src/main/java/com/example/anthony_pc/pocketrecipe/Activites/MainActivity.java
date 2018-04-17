@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.Ingrediente;
 import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.Receta;
+import com.example.anthony_pc.pocketrecipe.Tags;
 import com.example.anthony_pc.pocketrecipe.Usuario;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
         mQueue = Volley.newRequestQueue(this);
 
         getAllUsers("https://moviles-backoffice.herokuapp.com/persona/?format=json");
+        getAllTags("https://moviles-backoffice.herokuapp.com/tag/?format=json");
         getAllIngredients("https://moviles-backoffice.herokuapp.com/ingrediente/?format=json");
         getAllRecipes("https://moviles-backoffice.herokuapp.com/receta/?format=json");
 
@@ -149,6 +152,37 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this,"Perfil de facebook no existe",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void getAllTags(String url){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i  = 0; i <response.length(); i++){
+                                //Log.e("foto",String.valueOf(i));
+                                int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
+                                String nombre = response.getJSONObject(i).getString("nombre");
+                                int recetaID = Integer.parseInt(response.getJSONObject(i).getString("receta"));
+
+                                Tags tag = new Tags(id,nombre,recetaID);
+                                instance.addTag(tag);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(jsonArrayRequest);
+
     }
 
     public void getAllIngredients(String url){
@@ -271,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
                                 Receta receta = new Receta(id,nombre,duracion,procedimiento,dificultad,porciones,foto,costo,calificacion,cantidad_calificaciones,
-                                        publico,notas,listaIngredientes(id),autor,publicacion);
+                                        publico,notas,listaIngredientes(id),autor,publicacion,listaTags(id));
                                 instance.addRecipe(receta);
                             }
 
@@ -295,6 +329,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public ArrayList<String> listaTags(int id){
+        ArrayList<String> listaTags = new ArrayList<>();
+        for(Tags i : instance.getTagList()){
+            if(i.getIdReceta() == id){
+                listaTags.add(i.getTag());
+            }
+        }
+        return listaTags;
+    }
     public ArrayList<String> listaIngredientes(int id){
         ArrayList<String> listaIngredientes = new ArrayList<>();
         for(Ingrediente i : instance.getIngredienteList()){
