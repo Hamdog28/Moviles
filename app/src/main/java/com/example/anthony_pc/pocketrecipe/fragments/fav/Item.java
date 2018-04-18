@@ -8,13 +8,15 @@ public class Item {
     String ListName;
     Drawable ListImage;
     int ListStars;
+    int ListId;
 
 
-    public Item(String Name, Drawable Image, int Stars)
+    public Item(String Name, Drawable Image, int Stars, int Id)
     {
         this.ListImage = Image;
         this.ListName = Name;
         this.ListStars = Stars;
+        this.ListId = Id;
     }
     public String getName()
     {
@@ -27,6 +29,10 @@ public class Item {
     public int getStars()
     {
         return ListStars;
+    }
+    public int getId()
+    {
+        return ListId;
     }
 
 }

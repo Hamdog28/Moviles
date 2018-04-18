@@ -1,6 +1,7 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -39,8 +43,8 @@ public class RecetaActivity extends AppCompatActivity {
 
 
     boolean fav = false;
-    float total_rating = 18;
-    int total_calificaciones = 5;
+    float total_rating = 1;
+    int total_calificaciones =1;
     float score; // calificacion dada por el susuario
     boolean calificado = false;
     RatingBar rating;
@@ -56,6 +60,7 @@ public class RecetaActivity extends AppCompatActivity {
     LinearLayout lay_ingrediente, lay_pasos, lay_tags;
     List<String> carrito = new ArrayList<String>(Collections.nCopies(ingredientes.length, ""));;
 
+    boolean editable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,7 @@ public class RecetaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         setTitle("Carne");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -87,6 +93,35 @@ public class RecetaActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
+
+        });
+
+
+        final RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
+
+
+
+
+
+        calificacion.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser){
+                        RatingBar rating_aux = (RatingBar)findViewById(R.id.rating);
+
+                        if(!calificado){
+                            total_calificaciones++;
+                            calificado = true;
+                        }
+                        total_rating-=score;
+                        score = calificacion.getRating();
+                        calificacion.setRating(score);
+                        total_rating += score;
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Gracias por su calificacion"+Float.toString(score), Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        rating_aux.setRating((total_rating/total_calificaciones));
+
+                }
         });
 
         ImageView foto = (ImageView)findViewById(R.id.foto);
@@ -102,9 +137,36 @@ public class RecetaActivity extends AppCompatActivity {
         populateTags();
     }
 
-    public boolean Atras(View view){
+    @Override
+    public boolean onSupportNavigateUp(){
         finish();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if (editable)
+            getMenuInflater().inflate(R.menu.menu_receta, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.editar) {
+            Intent intent = new Intent(this, CURecetaActivity.class);
+            intent.putExtra("mensaje","editar");
+            startActivity(intent);
+
+            return true;
+        }
+        return false;
     }
 
     private void populateIngredients() {
@@ -120,11 +182,11 @@ public class RecetaActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if(carrito.get(ingrediente.getId()) != "") {
-                        ingrediente.setCompoundDrawablesWithIntrinsicBounds(R.drawable.shape_remove_ingrediente, 0, 0, 0);
+                        ingrediente.setCompoundDrawablesWithIntrinsicBounds(R.drawable.shape_add_ingrediente, 0, 0, 0);
                         carrito.set(ingrediente.getId(),"");
                     }
                     else {
-                        ingrediente.setCompoundDrawablesWithIntrinsicBounds(R.drawable.shape_add_ingrediente, 0, 0, 0);
+                        ingrediente.setCompoundDrawablesWithIntrinsicBounds(R.drawable.shape_remove_ingrediente, 0, 0, 0);
                         carrito.set(ingrediente.getId(),(String)ingrediente.getText());
                     }
                 }
@@ -210,11 +272,12 @@ public class RecetaActivity extends AppCompatActivity {
     }
 
     public void Like(View view){
+        Snackbar.make(view, "Gracias por su calificacion", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
         RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
         calificacion.getRating();
 
-        Snackbar.make(view, "Gracias por su calificacion", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+
         if(!calificado){
             total_calificaciones++;
             calificado = true;

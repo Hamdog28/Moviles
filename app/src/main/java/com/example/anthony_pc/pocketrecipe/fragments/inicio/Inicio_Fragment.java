@@ -5,12 +5,15 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
 
 import java.util.ArrayList;
 
@@ -21,16 +24,18 @@ import java.util.ArrayList;
  * {@link Inicio_Fragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class Inicio_Fragment extends Fragment {
+public class Inicio_Fragment extends Fragment implements FavoritosFragment.OnFragmentInteractionListener{
 
     private OnFragmentInteractionListener mListener;
     ArrayList<Item_Inicio> List = new ArrayList<>();
     String[] title = {"RECETAS SALUDABLES","RECETAS COMIDA RÁPIDA","RECETAS DULCES", "RECETAS OCACIONES ESPECIALES"};
+    String[] category = {"saludable","comida_rapida","dulce", "ocaciones_especiales"};
     int[] images = {R.drawable.vegetales,R.drawable.comida_rapida,R.drawable.postres,R.drawable.carne};
     ArrayList Imagenes = new ArrayList<>();
 
     InicioAdapter adapter;
-    ListView grid;
+    ListView list;
+
 
     public Inicio_Fragment() {
         // Required empty public constructor
@@ -47,16 +52,17 @@ public class Inicio_Fragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_inicio, container, false);
 
-        grid = (ListView) view.findViewById(R.id.list);
+        list = view.findViewById(R.id.list);
 
 
         for(int i = 0;i<title.length;i++){
 
-            List.add(new Item_Inicio(title[i],(Drawable)getResources().getDrawable(images[i])));
+            List.add(new Item_Inicio(title[i],(Drawable)getResources().getDrawable(images[i]),category[i]));
         }
 
+
         adapter = new InicioAdapter(getContext(),R.layout.list_view_items_inicio,List);
-        grid.setAdapter(adapter);
+        list.setAdapter(adapter);
         return view;
     }
 
@@ -86,6 +92,11 @@ public class Inicio_Fragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
     /**

@@ -7,12 +7,14 @@ public class Item_Inicio {
 
     String ListName;
     Drawable ListImage;
+    String ListCategoria;
 
 
-    public Item_Inicio(String Name,Drawable Image)
+    public Item_Inicio(String Name,Drawable Image,String Categoria)
     {
         this.ListImage = Image;
         this.ListName = Name;
+        this.ListCategoria = Categoria;
     }
     public String getName()
     {
@@ -21,6 +23,10 @@ public class Item_Inicio {
     public Drawable getImage()
     {
         return ListImage;
+    }
+    public String getCategoria()
+    {
+        return ListCategoria;
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.anthony_pc.pocketrecipe.fragments.fav;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class Adapter extends ArrayAdapter {
 
     ArrayList<Item> List = new ArrayList<>();
     Context context;
+    int posicion;
 
     public Adapter(Context context, int textViewResourceId, ArrayList<Item> objects) {
         super(context, textViewResourceId, objects);
@@ -45,7 +47,7 @@ public class Adapter extends ArrayAdapter {
         ImageView imageView = v.findViewById(R.id.imagen);
         RatingBar rating = v.findViewById(R.id.rating);
 
-
+        posicion = position;
 
         textView.setText(List.get(position).getName());
         imageView.setImageDrawable(List.get(position).getImage());
@@ -56,9 +58,11 @@ public class Adapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 //((Activity)context).finish();
+                Log.i("prueba","prueba");
                 Intent intent = new Intent();
                 intent.setClass(context, RecetaActivity.class);
-                intent.putExtra("key", "hola"); //Optional parameters
+                intent.putExtra("key", Integer.toString(List.get(posicion).getId())); //Optional parameters
+
                 context.startActivity(intent);
 
 
