@@ -17,6 +17,7 @@ public class Globals {
     private static ArrayList<Receta> recipeList = new ArrayList<>();
     private static ArrayList<Ingrediente> ingredienteList = new ArrayList<>();
     private static ArrayList<Tags> tagList = new ArrayList<>();
+    private static ArrayList<Favoritos> favoritosList = new ArrayList<>();
 
     private static Profile profile;
 
@@ -55,7 +56,6 @@ public class Globals {
     }
 
 
-
     public void setProfile(Profile profile) {
         Globals.profile = profile;
     }
@@ -84,8 +84,40 @@ public class Globals {
 
     public void addTag(Tags tag){tagList.add(tag);}
 
+    public void addFavoritos(Favoritos favoritos){favoritosList.add(favoritos);}
+
     public ArrayList<Tags> getTagList() {
         return tagList;
+    }
+
+    public ArrayList<Favoritos> getFavoritosList() {
+        return favoritosList;
+    }
+
+    public int returnDeleteID(int idReceta){
+        if(favoritosList.isEmpty())
+            return 0;
+        for(Favoritos i : favoritosList){
+
+            if(i.getIdReceta() == idReceta && i.getIdUsuario() == getActualUser().getId()){
+                return i.getId();
+            }
+        }
+        return -1;
+    }
+
+    public int returnLastIDFav(){
+        if(favoritosList.isEmpty())
+            return 0;
+        return favoritosList.get(favoritosList.size()-1).getId()+1;
+    }
+
+    public void deleteFavorito(int idReceta){
+        for(Favoritos i : favoritosList){
+            if(i.getIdUsuario() == getActualUser().getId() && i.getIdReceta() == idReceta){
+                favoritosList.remove(i);
+            }
+        }
     }
 
 }

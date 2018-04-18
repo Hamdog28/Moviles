@@ -45,13 +45,15 @@ public class PerfilFragment extends Fragment {
 
     private Globals instance= Globals.getInstance();
 
+    View v;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View v = inflater.inflate(R.layout.fragment_perfil, container, false);
+        v = inflater.inflate(R.layout.fragment_perfil, container, false);
         setHasOptionsMenu(true);
         ImageButton imageButton = v.findViewById(R.id.settings_button);
         mPopupMenu = new PopupMenu(getContext(), imageButton);
@@ -98,20 +100,30 @@ public class PerfilFragment extends Fragment {
         return v;
     }
 
-
-/*
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            default:
-            case R.id.editar:
-                Intent intent = new Intent(getContext(), EditarPerfilActivity.class);
-                startActivity(intent);
-                return true;
-        }
+    public void onResume() {
+        super.onResume();
+
+        profileImage.setImageBitmap(instance.getActualUser().getFoto());
+        nombreTV.setText(instance.getActualUser().getNombre());
+
+        descripcionTV.setText(instance.getActualUser().getDescripcion());
+
     }
-*/
+
+    /*
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            // Handle item selection
+            switch (item.getItemId()) {
+                default:
+                case R.id.editar:
+                    Intent intent = new Intent(getContext(), EditarPerfilActivity.class);
+                    startActivity(intent);
+                    return true;
+            }
+        }
+    */
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

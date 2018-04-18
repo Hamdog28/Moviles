@@ -89,6 +89,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
         nombreTxt.setText(instance.getActualUser().getNombre());
         descripcionTxt.setText(instance.getActualUser().getDescripcion());
         photoImg.setImageBitmap(instance.getActualUser().getFoto());
+        contrasenaTxt.setText(instance.getActualUser().getContrasena());
 
 
 
@@ -148,6 +149,11 @@ public class EditarPerfilActivity extends AppCompatActivity {
         final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
         uploadUser(nombre,contrasena,descripcion,id,imageString,correo);
+
+        instance.getActualUser().setNombre(nombre);
+        instance.getActualUser().setCorreo(correo);
+        instance.getActualUser().setDescripcion(descripcion);
+        instance.getActualUser().setFoto(image2);
 
     }
 

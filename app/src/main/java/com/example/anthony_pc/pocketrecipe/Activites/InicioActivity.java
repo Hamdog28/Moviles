@@ -12,6 +12,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.Receta;
 import com.example.anthony_pc.pocketrecipe.fragments.carrito.CarritoFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.inicio.Inicio_Fragment;
@@ -48,7 +50,7 @@ public class InicioActivity extends AppCompatActivity
     CircleImageView profile_image;
     TextView nombreTxt,correoTxt;
     int aux = 0;
-
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +94,7 @@ public class InicioActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
@@ -105,6 +107,34 @@ public class InicioActivity extends AppCompatActivity
         correoTxt.setText(instance.getActualUser().getCorreo());
 
         profile_image.setImageBitmap(instance.getActualUser().getFoto());
+        //imprimirDatos();
+    }
+
+    public void imprimirDatos(){
+        Log.e("cantidad REcetas",String.valueOf(instance.getRecipeList().size()));
+        for(Receta i : instance.getRecipeList()){
+            Log.e("NOMBRE RECETA",i.getNombre());
+            Log.e("","-----------------------");
+            for(String j : i.getListaIngredientes()){
+                Log.e("Ingrediente",j);
+            }
+            Log.e("","-----------------------");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View viewNav = navigationView.getHeaderView(0);
+        profile_image = viewNav.findViewById(R.id.profile_image);
+        nombreTxt = viewNav.findViewById(R.id.nombreTxt);
+        correoTxt = viewNav.findViewById(R.id.correoTxt);
+
+        nombreTxt.setText(instance.getActualUser().getNombre());
+        correoTxt.setText(instance.getActualUser().getCorreo());
+
+        profile_image.setImageBitmap(instance.getActualUser().getFoto());
+
     }
 
     @Override

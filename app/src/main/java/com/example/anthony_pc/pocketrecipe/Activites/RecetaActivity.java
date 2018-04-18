@@ -1,6 +1,7 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +24,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.anthony_pc.pocketrecipe.Favoritos;
+import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
 
 import java.io.BufferedInputStream;
@@ -30,13 +42,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RecetaActivity extends AppCompatActivity {
-
-
-
-
 
     boolean fav = false;
     float total_rating = 18;
@@ -44,6 +54,10 @@ public class RecetaActivity extends AppCompatActivity {
     float score; // calificacion dada por el susuario
     boolean calificado = false;
     RatingBar rating;
+
+    private Globals instance= Globals.getInstance();
+    String url = "https://moviles-backoffice.herokuapp.com/favorito/";
+
 
 
     boolean followed = false;
@@ -54,8 +68,10 @@ public class RecetaActivity extends AppCompatActivity {
     String texto_notas = "Perfecto para fines de semana";
 
     LinearLayout lay_ingrediente, lay_pasos, lay_tags;
-    List<String> carrito = new ArrayList<String>(Collections.nCopies(ingredientes.length, ""));;
+    List<String> carrito = new ArrayList<String>(Collections.nCopies(ingredientes.length, ""));
 
+    String recetaActual = "-1";
+    String deleteStringID = "-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +82,13 @@ public class RecetaActivity extends AppCompatActivity {
 
         setTitle("Carne");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+
+        recetaActual = intent.getStringExtra("id");
+        deleteStringID = String.valueOf(instance.returnDeleteID(Integer.valueOf(recetaActual)));
+
+        Log.e("id",String.valueOf(instance.returnDeleteID(3)));
 
 
 
@@ -131,6 +154,54 @@ public class RecetaActivity extends AppCompatActivity {
             });
         }
     }
+
+    public void insertarFavorito(){
+
+        StringRequest favoritoRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("persona",String.valueOf(instance.getActualUser().getId()));
+                params.put("receta",recetaActual);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(favoritoRequest);
+
+    }
+
+    public void eliminarFavorito(){
+
+        StringRequest eliminarFavorito = new StringRequest(Request.Method.DELETE, url+deleteStringID+"/", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        }){
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(eliminarFavorito);
+
+    }
+
+
 
     private void populateProcedure() {
 
@@ -230,16 +301,17 @@ public class RecetaActivity extends AppCompatActivity {
         ImageButton favorito = (ImageButton) findViewById(R.id.favorito);
         if(!fav) {
             favorito.setBackgroundResource(R.drawable.liked);
-
+            insertarFavorito();
+            Favoritos favoritoObject = new Favoritos(instance.returnLastIDFav(),Integer.valueOf(recetaActual),instance.getActualUser().getId());
+            instance.addFavoritos(favoritoObject);
             fav = true;
-
             Snackbar.make(view, "Receta ha sido agregada a favoritos", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-
         }
         else {
             favorito.setBackgroundResource(R.drawable.like);
-
+            eliminarFavorito();
+            instance.deleteFavorito(Integer.valueOf(recetaActual));
             fav = false;
         }
 
