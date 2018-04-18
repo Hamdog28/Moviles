@@ -86,6 +86,7 @@ public class CURecetaActivity extends AppCompatActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
+    String mensaje;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,8 @@ public class CURecetaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cureceta);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mensaje = getIntent().getStringExtra("mensaje");
 
         setTitle("Crear Receta");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -134,7 +137,17 @@ public class CURecetaActivity extends AppCompatActivity {
         imageBtn = (ImageButton) findViewById(R.id.imageBtn);
         //VINCULAR-----------------RadioGroup-------------------
         radioGroupPublico = (RadioGroup) findViewById(R.id.radioGroup);
-        //queue = Volley.newRequestQueue(this);
+
+        if(mensaje.equals("editar")){
+            nombreRecetaTxt.setText("Carne asada");
+            duracionHoras.setText("2");
+            duracionMinTxt.setText("0");
+            porcionesTxt.setText("4");
+            preparacionTxt.setText("Paso1\npaso2\npaso3\npaso4");
+            notasTxt.setText("Perfecto para fines de semana");
+
+        }
+
     }
 
     public void agarrarImagenGaleria(View view){

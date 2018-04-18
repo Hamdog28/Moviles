@@ -123,5 +123,10 @@
     <string name="title_activity_receta">RecetaActivity</string>
     <string name="nombre">Carne asada</string>
     <string name="title_activity_prueba">PruebaActivity</string>
+    <string name="title_activity_lista_recetas">ListaRecetasActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

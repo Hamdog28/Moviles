@@ -100,6 +100,7 @@ public class PerfilFragment extends Fragment {
         return v;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
@@ -111,19 +112,6 @@ public class PerfilFragment extends Fragment {
 
     }
 
-    /*
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle item selection
-            switch (item.getItemId()) {
-                default:
-                case R.id.editar:
-                    Intent intent = new Intent(getContext(), EditarPerfilActivity.class);
-                    startActivity(intent);
-                    return true;
-            }
-        }
-    */
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -147,6 +135,9 @@ public class PerfilFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    public void verSeguidores(View view){}
+    public void verSeguidos(View view){}
 
 
 

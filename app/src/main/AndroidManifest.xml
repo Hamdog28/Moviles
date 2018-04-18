@@ -14,7 +14,6 @@
 
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -83,6 +82,10 @@
             android:label="@string/title_activity_receta"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activites.ListaRecetasActivity"
+            android:label="@string/title_activity_lista_recetas"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

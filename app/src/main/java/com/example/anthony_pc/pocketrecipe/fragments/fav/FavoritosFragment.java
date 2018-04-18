@@ -6,11 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TabHost;
 
 import com.example.anthony_pc.pocketrecipe.Activites.InicioActivity;
 import com.example.anthony_pc.pocketrecipe.R;
@@ -30,6 +33,7 @@ public class FavoritosFragment extends Fragment {
     String[] title = {"Vegetales","Hamburguesa","Helado", "Carne"};
     int[] images = {R.drawable.vegetales,R.drawable.comida_rapida,R.drawable.postres,R.drawable.carne};
     int[] stars = {3,4,1,2};
+    int[] id = {3,4,1,2};
     ArrayList Imagenes = new ArrayList<>();
 
     Adapter adapter;
@@ -46,20 +50,32 @@ public class FavoritosFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favoritos, container, false);
 
-
+        String mensaje = getArguments().getString("mensaje");
+        String orientacion = getArguments().getString("orientacion");
+        Log.i("mensaje",mensaje);
 
         grid = (GridView) view.findViewById(R.id.grid);
 
 
         for(int i = 0;i<title.length;i++){
 
-            List.add(new Item(title[i],(Drawable)getResources().getDrawable(images[i]),stars[i]));
+            List.add(new Item(title[i],(Drawable)getResources().getDrawable(images[i]),stars[i],id[i]));
         }
 
         adapter = new Adapter(getContext(),R.layout.grid_view_items,List);
-        grid.setAdapter(adapter);
-        setGridViewHeightBasedOnChildren( grid,2);
 
+        grid.setAdapter(adapter);
+        if(orientacion.equals("list")){
+            //list.setAdapter(adapter);
+            grid.setNumColumns(1);
+            setGridViewHeightBasedOnChildren( grid,1);
+        }
+        else{
+
+            setGridViewHeightBasedOnChildren( grid,2);
+        }
+
+        //setGridViewHeightBasedOnChildren( grid,2);
         return view;
     }
 
