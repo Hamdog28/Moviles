@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -40,7 +41,9 @@ public class PerfilFragment extends Fragment {
     CircleImageView profileImage;
     TextView nombreTV,publicacioneTV,descripcionTV;
 
-
+    Button seguir;
+    boolean followed = false;
+    boolean my_profile = true;
 
 
     private Globals instance= Globals.getInstance();
@@ -60,13 +63,19 @@ public class PerfilFragment extends Fragment {
         nombreTV = v.findViewById(R.id.nombre);
         publicacioneTV = v.findViewById(R.id.publicacionesTV);
         descripcionTV = v.findViewById(R.id.descripcionTV);
+        seguir = v.findViewById(R.id.seguir);
 
         profileImage.setImageBitmap(instance.getActualUser().getFoto());
         nombreTV.setText(instance.getActualUser().getNombre());
 
         descripcionTV.setText(instance.getActualUser().getDescripcion());
 
-
+        if (my_profile){
+            seguir.setVisibility(View.GONE);
+        }
+        else{
+            imageButton.setVisibility(View.GONE);
+        }
 
 
         MenuInflater menuInflater = mPopupMenu.getMenuInflater();
@@ -126,7 +135,20 @@ public class PerfilFragment extends Fragment {
     public void verSeguidores(View view){}
     public void verSeguidos(View view){}
 
+    public void Follow(View view){
 
+        if(!followed) {
+            seguir.setText(" Dejar de seguir ");
+
+            followed = true;
+        }
+        else {
+            seguir.setText("Seguir");
+
+            followed = false;
+        }
+
+    }
 
     /**
      * This interface must be implemented by activities that contain this

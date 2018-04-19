@@ -12,6 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +30,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.fragments.inicio.Inicio_Fragment;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -50,6 +53,7 @@ public class RecetaActivity extends AppCompatActivity {
     RatingBar rating;
 
 
+    Button seguir;
     boolean followed = false;
 
     String[] ingredientes = {"carne","aceite","carbon","mantequilla","barbacoa"};
@@ -57,9 +61,10 @@ public class RecetaActivity extends AppCompatActivity {
     String[] tags = {"carne","familia","eventos_especiales","parrilla","rico"};
     String texto_notas = "Perfecto para fines de semana";
 
+    TextView nombre_autor;
     LinearLayout lay_ingrediente, lay_pasos, lay_tags;
     List<String> carrito = new ArrayList<String>(Collections.nCopies(ingredientes.length, ""));;
-
+    Bundle bundle = new Bundle();
     boolean editable = true;
 
     @Override
@@ -74,7 +79,7 @@ public class RecetaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-
+        seguir = (Button) findViewById(R.id.seguir);
         lay_ingrediente = (LinearLayout) findViewById(R.id.ingredientes_layout);
         lay_pasos = (LinearLayout) findViewById(R.id.pasos_layout);
         lay_tags = (LinearLayout) findViewById(R.id.tags_layout);
@@ -100,9 +105,6 @@ public class RecetaActivity extends AppCompatActivity {
         final RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
 
 
-
-
-
         calificacion.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
                 @Override
@@ -117,7 +119,7 @@ public class RecetaActivity extends AppCompatActivity {
                         score = calificacion.getRating();
                         calificacion.setRating(score);
                         total_rating += score;
-                        Snackbar.make(getWindow().getDecorView().getRootView(), "Gracias por su calificacion"+Float.toString(score), Snackbar.LENGTH_LONG)
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Gracias por su calificacion", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         rating_aux.setRating((total_rating/total_calificaciones));
 
@@ -130,6 +132,22 @@ public class RecetaActivity extends AppCompatActivity {
         foto.setImageDrawable(getResources().getDrawable(R.drawable.foto_perfil));
         imagen.setImageDrawable(getResources().getDrawable(R.drawable.carne));
 
+
+        nombre_autor = (TextView)findViewById(R.id.autor);
+        nombre_autor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplicationContext(), InicioActivity.class);
+                intent.putExtra("mensaje","0");
+                intent.putExtra("pantalla","perfil");
+                startActivity(intent);
+
+
+
+            }
+
+        });
 
 
         populateIngredients();
@@ -146,8 +164,11 @@ public class RecetaActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (editable)
+        if (editable){
             getMenuInflater().inflate(R.menu.menu_receta, menu);
+            seguir.setVisibility(View.GONE);
+
+        }
         return true;
     }
 
@@ -163,6 +184,7 @@ public class RecetaActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CURecetaActivity.class);
             intent.putExtra("mensaje","editar");
             startActivity(intent);
+
 
             return true;
         }
@@ -257,7 +279,7 @@ public class RecetaActivity extends AppCompatActivity {
     }
 
     public void Follow(View view){
-        Button seguir = (Button) findViewById(R.id.seguir);
+
         if(!followed) {
             seguir.setText(" Dejar de seguir ");
 
@@ -271,22 +293,7 @@ public class RecetaActivity extends AppCompatActivity {
 
     }
 
-    public void Like(View view){
-        Snackbar.make(view, "Gracias por su calificacion", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
-        calificacion.getRating();
 
-
-        if(!calificado){
-            total_calificaciones++;
-            calificado = true;
-        }
-        total_rating-=score;
-        score = calificacion.getRating();
-        total_rating += score;
-        rating.setRating((total_rating/total_calificaciones));
-    }
 
 
     public void Favorito(View view){

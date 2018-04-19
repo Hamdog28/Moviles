@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.anthony_pc.pocketrecipe.Activites.PruebaActivity"
-    tools:showIn="@layout/activity_prueba">
+    >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -336,8 +335,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:isIndicator="false"
-                android:numStars="5"
-                android:onClick="Like" />
+                android:numStars="5" />
 
             <TextView
                 android:id="@+id/title_comentarios"
