@@ -35,8 +35,8 @@ public class Inicio_Fragment extends Fragment implements FavoritosFragment.OnFra
 
     private OnFragmentInteractionListener mListener;
     ArrayList<Item_Inicio> List = new ArrayList<>();
-    String[] title = {"RECETAS SALUDABLES","RECETAS COMIDA RÁPIDA","RECETAS DULCES", "RECETAS OCACIONES ESPECIALES"};
-    String[] category = {"saludable","comida_rapida","dulce", "ocaciones_especiales"};
+    String[] title = {"RECETAS SALUDABLES","RECETAS COMIDA RÁPIDA","RECETAS DULCES", "TODAS LAS RECETAS"};
+    String[] category = {"saludable","comida_rapida","dulce", "todas"};
     int[] images = {R.drawable.vegetales,R.drawable.comida_rapida,R.drawable.postres,R.drawable.carne};
     ArrayList Imagenes = new ArrayList<>();
 

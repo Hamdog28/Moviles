@@ -7,11 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.anthony_pc.pocketrecipe.Activites.ListaRecetasActivity;
 import com.example.anthony_pc.pocketrecipe.Activites.RecetaActivity;
 import com.example.anthony_pc.pocketrecipe.R;
 
@@ -19,14 +22,16 @@ import java.util.ArrayList;
 
 public class Adapter extends ArrayAdapter {
 
-    ArrayList<Item> List = new ArrayList<>();
-    Context context;
-    int posicion;
+    private ArrayList<Item> List = new ArrayList<>();
+    private Context context;
+    private int posicion;
+    private GridView gridView;
 
-    public Adapter(Context context, int textViewResourceId, ArrayList<Item> objects) {
+    public Adapter(Context context, int textViewResourceId, ArrayList<Item> objects, GridView gridView) {
         super(context, textViewResourceId, objects);
         this.context = context;
-        List = objects;
+        this.List = objects;
+        this.gridView = gridView;
     }
 
     @Override
@@ -48,29 +53,23 @@ public class Adapter extends ArrayAdapter {
         RatingBar rating = v.findViewById(R.id.rating);
 
         posicion = position;
+        //Log.e("nombreeee",String.valueOf(List.get(position).getName()));
 
         textView.setText(List.get(position).getName());
         imageView.setImageBitmap(List.get(position).getImage());
         rating.setRating(List.get(position).getStars());
 
 
-        v.setOnClickListener(new View.OnClickListener() {
-
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                //((Activity)context).finish();
-                Log.i("prueba","prueba");
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.e("ID RECETA", String.valueOf(List.get(i).getId()));
                 Intent intent = new Intent();
                 intent.setClass(context, RecetaActivity.class);
-                intent.putExtra("key", Integer.toString(List.get(posicion).getId())); //Optional parameters
-
+                intent.putExtra("id", String.valueOf(List.get(i).getId())); //Optional parameters/
                 context.startActivity(intent);
-
-
-
             }
         });
-
 
         return v;
 

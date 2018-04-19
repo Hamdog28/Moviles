@@ -1,5 +1,6 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -35,6 +37,7 @@ import java.util.Map;
 
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.Usuario;
 import com.facebook.FacebookSdk;
 
 
@@ -56,7 +59,7 @@ public class RegistroActivity extends AppCompatActivity {
         //Log.e("persona","ASDFasdfasdf");
         FacebookSdk.sdkInitialize(this);
         image = (ImageView)findViewById(R.id.image);
-        image.setImageBitmap(instance.getUserList().get(0).getFoto());
+        image.setImageDrawable(getResources().getDrawable( R.drawable.person_icon ));
 
         editTextEmail = (TextInputEditText) findViewById(R.id.editTextEmail);
         editTextName = (TextInputEditText) findViewById(R.id.editTextName);
@@ -65,19 +68,20 @@ public class RegistroActivity extends AppCompatActivity {
         String name =  getIntent().getExtras().getString("first_name")+" "+getIntent().getExtras().getString("last_name");
         String email = getIntent().getExtras().getString("email");
 
-        editTextName.setText(name);
-        editTextEmail.setText(email);
-        Log.e("persona",editTextName.getText().toString());
-        if(editTextName.getText().toString().equals(" ")) {
-            editTextName.setText("");
+        if(!name.equals(" ")){
+            editTextName.setText(name);
+            editTextEmail.setText(email);
+            new downloadImage((ImageView)findViewById(R.id.image)).execute(getIntent().getExtras().getString("persona"));
         }
+
+
 
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/greatvibes_regular.ttf");
         TextView titulo = (TextView) findViewById(R.id.titulo);
         titulo.setTypeface(custom_font);
 
 
-        new downloadImage((ImageView)findViewById(R.id.image)).execute(getIntent().getExtras().getString("persona"));
+
 
     }
 
@@ -92,48 +96,53 @@ public class RegistroActivity extends AppCompatActivity {
         String name = editTextName.getText().toString();
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
-        insertUser("https://moviles-backoffice.herokuapp.com/persona/",name,email,password);
+        Bitmap image2 = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        if(name.equals("") || email.equals("") || password.equals("")){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Aviso")
+                    .setMessage("Favor ingrese todos los datos")
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).show();
+        }else{
+            insertUser("https://moviles-backoffice.herokuapp.com/persona/",name,email,password,image2);
+            Usuario user = new Usuario(instance.lastIdUser()+1,name,image2,email,"",password);
+            instance.addUser(user);
+        }
+
     }
 
-    public void insertUser(String url, final String nombre, final String email, final String contrasena){
+    public void insertUser(String url, final String nombre, final String email, final String contrasena, final Bitmap image2){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Usuario ingresado correctamente", Toast.LENGTH_SHORT).show();
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "EERRORRRRRR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                /*String nombre = "tony alfaro";
-                String correo = "tony@gmail.com";
-                String contrasena = "123456";
-                String descripcion = "no idea";*/
-                ImageView image = (ImageView) findViewById(R.id.image);
-                Bitmap image2 = ((BitmapDrawable)image.getDrawable()).getBitmap();
-                //Drawable imagen = getResources().getDrawable(android.R.drawable.presence_online);
-                //Bitmap bm = BitmapFactory.decodeResource(Resources.getSystem(), android.R.drawable.star_big_on);
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 image2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
                 final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                Log.e("foto",imageString);
+
                 params.put("nombre",nombre);
                 params.put("correo",email);
                 params.put("contrasena",contrasena);
-                //params.put("descripcion",descripcion);
+                params.put("descripcion","");
                 params.put("foto","data:image/JPEG;base64,"+ imageString);
-
-                //byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
-                //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                //image.setImageBitmap(decodedByte);
 
                 return params;
             }

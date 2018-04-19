@@ -1,6 +1,7 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.graphics.Typeface;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -79,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         emailTxt = (TextInputEditText) findViewById(R.id.correoTxt);
         passwordTxt = (TextInputEditText) findViewById(R.id.passwordTxt);
-
+        emailTxt.setText("luci@gmail.com");
+        passwordTxt.setText("133456");
         loginButton.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -288,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 Usuario usuario = new Usuario(id,nombre,foto,correo,descripcion,contrasena);
                                 instance.addUser(usuario);
-                                instance.setActualUser(usuario);
+
                                 //Log.e("cantidadUsers",String.valueOf(instance.getUserList().size()));
                             }
 
@@ -447,20 +450,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ingresar(View view){
-
-        Intent intent = new Intent(this, InicioActivity.class);
-        //String email = emailTxt.getText().toString();
-       // String password = passwordTxt.getText().toString();
-        //finish();
-        startActivity(intent);
+        Usuario user = checkLogin(emailTxt.getText().toString(), passwordTxt.getText().toString());
+        if( user != null){
+            Intent intent = new Intent(this, InicioActivity.class);
+            instance.setActualUser(user);
+            startActivity(intent);
+        }else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Aviso")
+                    .setMessage("Usuario no encontrado")
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).show();
+        }
     }
 
-    public boolean buscaUsuario(String correo,String contrasena){
+    public Usuario checkLogin(String correo,String contrasena){
         for(Usuario i : instance.getUserList()){
             if(i.getCorreo().equals(correo) && i.getContrasena().equals(contrasena)){
-                return true;
+                return i;
             }
-        }return false;
+        }return null;
     }
 
 

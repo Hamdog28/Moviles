@@ -41,6 +41,7 @@ import com.example.anthony_pc.pocketrecipe.Favoritos;
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.Receta;
+import com.example.anthony_pc.pocketrecipe.Usuario;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -65,8 +66,6 @@ public class RecetaActivity extends AppCompatActivity {
 
     boolean followed = false;
 
-    String key = getIntent().getStringExtra("key");
-
     ArrayList<String> ingredientes = new ArrayList<>();
     ArrayList<String> pasos = new ArrayList<>();
     ArrayList<String> tags = new ArrayList<>();
@@ -81,7 +80,7 @@ public class RecetaActivity extends AppCompatActivity {
 
     Receta receta;
 
-    boolean editable = true;
+    boolean editable = false;
 
 
     @Override
@@ -91,9 +90,22 @@ public class RecetaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent intent = getIntent();
+        ImageButton favorito = (ImageButton) findViewById(R.id.favorito);
         recetaActual = intent.getStringExtra("id");
+        Log.e("RECETA ID", recetaActual);
         receta = null;
         receta = instance.getReceta(Integer.valueOf(recetaActual));
+
+        Usuario user = instance.getUser(receta.getAutor());
+
+        if(instance.checkFav(receta.getId())){
+            favorito.setBackgroundResource(R.drawable.liked);
+            fav = true;
+        }
+
+        if(user.getId() == instance.getActualUser().getId()){
+            editable = true;
+        }
 
         setTitle("Carne");
 
@@ -113,6 +125,9 @@ public class RecetaActivity extends AppCompatActivity {
 
         TextView notas = (TextView)findViewById(R.id.tv_notas);
         notas.setText(receta.getNotas());
+
+        TextView nombre = (TextView)findViewById(R.id.nombre);
+        nombre.setText(receta.getNombre());
 
         rating = (RatingBar)findViewById(R.id.rating);
         rating.setRating(receta.getCantCalificaciones()/receta.getCalificacion());
@@ -156,10 +171,28 @@ public class RecetaActivity extends AppCompatActivity {
         ImageView foto = (ImageView)findViewById(R.id.foto);
         ImageView imagen = (ImageView)findViewById(R.id.imagen);
 
-        foto.setImageDrawable(getResources().getDrawable(R.drawable.foto_perfil));
+        TextView autorNombre = (TextView)findViewById(R.id.autor);
+        autorNombre.setText(user.getNombre());
+
+        foto.setImageBitmap(user.getFoto());
         imagen.setImageBitmap(receta.getFoto());
 
+        TextView publicacionDate = (TextView)findViewById(R.id.publicacionDate);
+        String[] publicacion = receta.getPublicacion().split("T");
+        publicacionDate.setText(publicacion[0]);
 
+        TextView porcionesTV = (TextView)findViewById(R.id.porciones);
+        //Log.e("porciones", receta.getPorciones());
+        porcionesTV.setText(String.valueOf(receta.getPorciones()+" " + "porciones"));
+
+        TextView duracionTV = (TextView)findViewById(R.id.duracion);
+        duracionTV.setText(String.valueOf(receta.getDuracion()+" " + "horas"));
+
+        TextView dificultadTV = (TextView)findViewById(R.id.dificultad);
+        dificultadTV.setText(String.valueOf(receta.getDificultad()));
+
+        TextView costoTV = (TextView)findViewById(R.id.costo);
+        costoTV.setText(String.valueOf(receta.getCosto()));
 
         populateIngredients();
         populateProcedure();
@@ -178,9 +211,7 @@ public class RecetaActivity extends AppCompatActivity {
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
             if(fav) {
-                insertarFavorito();
-                Favoritos favoritoObject = new Favoritos(instance.returnLastIDFav(),Integer.valueOf(recetaActual),instance.getActualUser().getId());
-                instance.addFavoritos(favoritoObject);
+
             }
             finish();
         }
@@ -381,7 +412,9 @@ public class RecetaActivity extends AppCompatActivity {
         ImageButton favorito = (ImageButton) findViewById(R.id.favorito);
         if(!fav) {
             favorito.setBackgroundResource(R.drawable.liked);
-            //insertarFavorito();
+            insertarFavorito();
+            Favoritos favoritoObject = new Favoritos(instance.returnLastIDFav(),Integer.valueOf(recetaActual),instance.getActualUser().getId());
+            instance.addFavoritos(favoritoObject);
 
             fav = true;
             Snackbar.make(view, "Receta ha sido agregada a favoritos", Snackbar.LENGTH_LONG)

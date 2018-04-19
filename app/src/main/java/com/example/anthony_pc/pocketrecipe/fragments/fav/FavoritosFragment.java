@@ -68,10 +68,13 @@ public class FavoritosFragment extends Fragment {
 
             List.add(new Item(title[i],(Drawable)getResources().getDrawable(images[i]),stars[i],id[i]));
         }*/
-        //List = null;
+        List = null;
         List = instance.returnFavoritosList(mensaje);
+        for(Item i : List){
+            Log.e("prueba", i.getName());
+        }
 
-        adapter = new Adapter(getContext(),R.layout.grid_view_items,List);
+        adapter = new Adapter(getContext(),R.layout.grid_view_items,List,grid);
 
         grid.setAdapter(adapter);
         if(orientacion.equals("list")){
@@ -80,7 +83,6 @@ public class FavoritosFragment extends Fragment {
             setGridViewHeightBasedOnChildren( grid,1);
         }
         else{
-
             setGridViewHeightBasedOnChildren( grid,2);
         }
 

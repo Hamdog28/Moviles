@@ -1,6 +1,7 @@
 package com.example.anthony_pc.pocketrecipe;
 
 import android.nfc.Tag;
+import android.util.Log;
 
 import com.example.anthony_pc.pocketrecipe.fragments.fav.Item;
 import com.facebook.Profile;
@@ -78,9 +79,14 @@ public class Globals {
     }
 
     public int returnLastIDTag(){
+        int id = -1;
         if(tagList.isEmpty())
             return 0;
-        return tagList.get(tagList.size()-1).getId()+1;
+        for(Tags i : tagList){
+            if(i.getId()>id){
+                id = i.getId();
+            }
+        }return id;
     }
 
     public void addTag(Tags tag){tagList.add(tag);}
@@ -108,9 +114,14 @@ public class Globals {
     }
 
     public int returnLastIDFav(){
+        int id = -1;
         if(favoritosList.isEmpty())
             return 0;
-        return favoritosList.get(favoritosList.size()-1).getId()+1;
+        for(Favoritos i : favoritosList){
+            if(i.getId()>id){
+                id = i.getId();
+            }
+        }return id;
     }
 
     public void deleteFavorito(int idReceta){
@@ -121,21 +132,39 @@ public class Globals {
         }
     }
 
+    public boolean checkFav(int idReceta){
+        for(Favoritos i : favoritosList){
+            if(i.getIdUsuario() == getActualUser().getId() && i.getIdReceta() == idReceta){
+                return true;
+            }
+        }return false;
+    }
     public ArrayList<Item> returnFavoritosList(String mensaje){
 
         ArrayList<Item> listaItems = new ArrayList<>();
         if(mensaje.equals("favorito")){
             for(Favoritos i : favoritosList){
                 if(i.getIdUsuario() == getActualUser().getId()){
-                    Receta receta = getReceta(i.getId());
+
+
+                    Receta receta = getReceta(i.getIdReceta());
+
                     if(receta != null) {
+                        Log.e("receta",String.valueOf(receta.getNombre()));
                         Item item = new Item(receta.getNombre(), receta.getFoto(), receta.getCalificacion(), receta.getId());
                         listaItems.add(item);
                     }
                 }
             }
 
-        }else {
+        }else if(mensaje.equals("todas")){
+            for (Receta i : recipeList) {
+                Item item = new Item(i.getNombre(), i.getFoto(), i.getCalificacion(), i.getId());
+                listaItems.add(item);
+            }
+        }
+
+        else {
             for (Receta i : recipeList) {
                 Receta receta = getReceta(i.getId());
                 for (String j : i.getListaTags()) {
@@ -146,27 +175,7 @@ public class Globals {
                 }
             }
         }
-        /*else if(mensaje.equals("saludable")){
-            for(Receta i : recipeList){
-                Receta receta = getReceta(i.getId());
-                for(String j : i.getListaTags()){
-                    if(j.equals("saludable")){
-                        Item item = new Item(receta.getNombre(), receta.getFoto(), receta.getCalificacion(), receta.getId());
-                        listaItems.add(item);
-                    }
-                }
-            }
-        }
-        else if(mensaje.equals("comida_rapida")){
-
-        }
-        else if(mensaje.equals("dulce")){
-
-        }
-        else if(mensaje.equals("ocaciones_especiales")){
-
-        }
-*/
+        Log.e("Largo",String.valueOf(listaItems.size()));
         return listaItems;
     }
 
@@ -178,6 +187,19 @@ public class Globals {
         }return null;
     }
 
+    public Usuario getUser(int idUser){
+        for(Usuario i : usersList){
+            if(i.getId() == idUser){
+                return i;
+            }
+        }return null;
+    }
+
+    public int lastIdUser(){
+        if(usersList.isEmpty())
+            return 0;
+        return usersList.get(usersList.size()-1).getId();
+    }
 
 
 }

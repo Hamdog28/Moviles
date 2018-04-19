@@ -68,9 +68,6 @@ public class PerfilFragment extends Fragment {
 
         descripcionTV.setText(instance.getActualUser().getDescripcion());
 
-
-
-
         MenuInflater menuInflater = mPopupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.perfil_settings, mPopupMenu.getMenu());
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +92,6 @@ public class PerfilFragment extends Fragment {
                 return false;
             }
         });
-
 
         return v;
     }

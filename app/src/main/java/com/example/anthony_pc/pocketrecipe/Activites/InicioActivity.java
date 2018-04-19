@@ -218,10 +218,10 @@ public class InicioActivity extends AppCompatActivity
                     .replace(R.id.container, fragment)
                     .commit();
 
-            fragmentManager.beginTransaction()
+            /*fragmentManager.beginTransaction()
                     .replace(R.id.container2, fragment1)
                     .commit();
-
+*/
         } else if (id == R.id.nav_favorite) {
             setActionBarTitle("Favoritos");
             bundle.putString("mensaje", "favorito");
@@ -232,7 +232,6 @@ public class InicioActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-
 
         } else if (id == R.id.nav_cart) {
             setActionBarTitle("Carrito");

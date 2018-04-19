@@ -164,7 +164,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(getApplicationContext(),"Usuario modificado exitosamente", Toast.LENGTH_SHORT).show();
-                        Log.d("Response", response.toString());
+                        finish();
                     }
                 },
                 new Response.ErrorListener()
