@@ -1,6 +1,7 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.graphics.Typeface;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.answers.Answers;
+import com.example.anthony_pc.pocketrecipe.Favoritos;
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.Ingrediente;
 import com.example.anthony_pc.pocketrecipe.R;
@@ -45,6 +48,7 @@ import org.json.JSONObject;
 
 
 import java.io.InputStream;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
@@ -77,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         emailTxt = (TextInputEditText) findViewById(R.id.correoTxt);
         passwordTxt = (TextInputEditText) findViewById(R.id.passwordTxt);
-
+        emailTxt.setText("luci@gmail.com");
+        passwordTxt.setText("133456");
         loginButton.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -119,8 +124,14 @@ public class MainActivity extends AppCompatActivity {
 
         getAllUsers("https://moviles-backoffice.herokuapp.com/persona/?format=json");
         getAllTags("https://moviles-backoffice.herokuapp.com/tag/?format=json");
+
         getAllIngredients("https://moviles-backoffice.herokuapp.com/ingrediente/?format=json");
+
         getAllRecipes("https://moviles-backoffice.herokuapp.com/receta/?format=json");
+
+        getAllFavs("https://moviles-backoffice.herokuapp.com/favorito/?format=json");
+
+
 
 
     }
@@ -169,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 Tags tag = new Tags(id,nombre,recetaID);
                                 instance.addTag(tag);
+                                //Log.e("cantidad tags",String.valueOf(instance.getTagList().size()));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -197,10 +209,43 @@ public class MainActivity extends AppCompatActivity {
                                 int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
                                 String nombre = response.getJSONObject(i).getString("nombre");
                                 int recetaID = Integer.parseInt(response.getJSONObject(i).getString("receta"));
-                                int cantidad = Integer.parseInt(response.getJSONObject(i).getString("url"));
+                                int cantidad = Integer.parseInt(response.getJSONObject(i).getString("cantidad"));
 
                                 Ingrediente ingrediente = new Ingrediente(id,recetaID,nombre,cantidad);
                                 instance.addIngrediente(ingrediente);
+                                //Log.e("cantidad ingredientes",String.valueOf(instance.getIngredienteList().size()));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(jsonArrayRequest);
+
+    }
+
+    public void getAllFavs(String url){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i  = 0; i <response.length(); i++){
+                                //Log.e("foto",String.valueOf(i));
+                                int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
+                                int recetaID = Integer.parseInt(response.getJSONObject(i).getString("receta"));
+                                int persona = Integer.parseInt(response.getJSONObject(i).getString("persona"));
+
+                                Favoritos fav = new Favoritos(id,recetaID,persona);
+                                instance.addFavoritos(fav);
+                                //Log.e("cantidad ingredientes",String.valueOf(instance.getIngredienteList().size()));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -231,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                                 String correo = response.getJSONObject(i).getString("correo");
                                 String url = response.getJSONObject(i).getString("url");
                                 String descripcion = response.getJSONObject(i).getString("descripcion");
+                                String contrasena = response.getJSONObject(i).getString("contrasena");
                                 Bitmap foto = null;
 
 
@@ -240,12 +286,13 @@ public class MainActivity extends AppCompatActivity {
                                     Log.e("foto",String.valueOf(foto));
 
                                 }else{
-                                    Log.e("else","else");
+                                    Log.e("NO FOTO ","NO FOTO");
                                 }
 
-                                Usuario usuario = new Usuario(id,nombre,foto,correo,descripcion);
+                                Usuario usuario = new Usuario(id,nombre,foto,correo,descripcion,contrasena);
                                 instance.addUser(usuario);
-                                instance.setActualUser(usuario);
+
+                                //Log.e("cantidadUsers",String.valueOf(instance.getUserList().size()));
                             }
 
 
@@ -301,12 +348,15 @@ public class MainActivity extends AppCompatActivity {
                                     Log.e("fotoREceta",String.valueOf(foto));
 
                                 }else{
-                                    Log.e("else","else");
+                                    Log.e("NO FOTO","NO FOTO");
                                 }
 
-                                Receta receta = new Receta(id,nombre,duracion,procedimiento,dificultad,porciones,foto,costo,calificacion,cantidad_calificaciones,
+
+                                Receta receta = new Receta(id,nombre,duracion,listaProcedimiento(procedimiento.split("\n")),dificultad,porciones,foto,costo,calificacion,cantidad_calificaciones,
                                         publico,notas,listaIngredientes(id),autor,publicacion,listaTags(id));
                                 instance.addRecipe(receta);
+                                //Log.e("cantidadREcetas",String.valueOf(instance.getRecipeList().size()));
+
                             }
 
                         } catch (JSONException e) {
@@ -325,6 +375,7 @@ public class MainActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
+
         mQueue.add(jsonArrayRequest);
 
     }
@@ -346,6 +397,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return listaIngredientes;
+    }
+    public ArrayList<String> listaProcedimiento(String[] proc){
+        ArrayList<String> listaProcedimiento = new ArrayList<>();
+        for(String i :proc){
+            listaProcedimiento.add(i);
+        }
+        return listaProcedimiento;
     }
 
 
@@ -392,13 +450,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ingresar(View view){
-
-        Intent intent = new Intent(this, InicioActivity.class);
-        //String email = emailTxt.getText().toString();
-       // String password = passwordTxt.getText().toString();
-        finish();
-        startActivity(intent);
+        Usuario user = checkLogin(emailTxt.getText().toString(), passwordTxt.getText().toString());
+        if( user != null){
+            Intent intent = new Intent(this, InicioActivity.class);
+            instance.setActualUser(user);
+            startActivity(intent);
+        }else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Aviso")
+                    .setMessage("Usuario no encontrado")
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }).show();
+        }
     }
+
+    public Usuario checkLogin(String correo,String contrasena){
+        for(Usuario i : instance.getUserList()){
+            if(i.getCorreo().equals(correo) && i.getContrasena().equals(contrasena)){
+                return i;
+            }
+        }return null;
+    }
+
+
 
 
 }

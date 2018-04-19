@@ -89,6 +89,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
         nombreTxt.setText(instance.getActualUser().getNombre());
         descripcionTxt.setText(instance.getActualUser().getDescripcion());
         photoImg.setImageBitmap(instance.getActualUser().getFoto());
+        contrasenaTxt.setText(instance.getActualUser().getContrasena());
 
 
 
@@ -149,6 +150,11 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
         uploadUser(nombre,contrasena,descripcion,id,imageString,correo);
 
+        instance.getActualUser().setNombre(nombre);
+        instance.getActualUser().setCorreo(correo);
+        instance.getActualUser().setDescripcion(descripcion);
+        instance.getActualUser().setFoto(image2);
+
     }
 
     public void uploadUser(final String nombre, final String contrasena, final String descripcion, final String id,final String imagen,final String correo){
@@ -158,7 +164,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(getApplicationContext(),"Usuario modificado exitosamente", Toast.LENGTH_SHORT).show();
-                        Log.d("Response", response.toString());
+                        finish();
                     }
                 },
                 new Response.ErrorListener()

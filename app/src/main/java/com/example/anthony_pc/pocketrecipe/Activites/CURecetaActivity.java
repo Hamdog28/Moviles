@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -73,6 +74,7 @@ public class CURecetaActivity extends AppCompatActivity {
     RadioGroup radioGroupPublico;
     String url = "https://moviles-backoffice.herokuapp.com/receta/";
     String urlTag = "https://moviles-backoffice.herokuapp.com/tag/";
+    String urlIngrediente = "https://moviles-backoffice.herokuapp.com/ingrediente/";
     private Globals instance= Globals.getInstance();
 
     private static final int RESULT_LOAD_IMAGE = 0;
@@ -209,31 +211,50 @@ public class CURecetaActivity extends AppCompatActivity {
         }else{
             int lastID = instance.getRecipeList().get(instance.getRecipeList().size()-1).getId();
             Log.e("LASTID",String.valueOf(lastID));
+
             insertarReceta(nombreRecetaString,duracionHorasString,duracionMinTxtString,porcionesTxtString, preparacionTxtString, notasTxtString,
-                    dificultadString, costoString, imageString, String.valueOf(privacidad));
-            Receta receta = new Receta(lastID+1,nombreRecetaString,duracionHorasString,preparacionTxtString,dificultadString,
+                    dificultadString, costoString, imageString, String.valueOf(privacidad),tagsTxtString,lastID);
+
+            Receta receta = new Receta(lastID+1,nombreRecetaString,duracionHorasString,listaProcedimiento(preparacionTxtString.split("\n")),dificultadString,
                     Integer.parseInt(porcionesTxtString), image2,costoString,0f,0,
                     Boolean.parseBoolean(privacidadString),notasTxtString,(ArrayList)ingredientes,
                     instance.getActualUser().getId(),String.valueOf(currentTime),tagsTxtString);
+
             instance.addRecipe(receta);
-            String idReceta = String.valueOf(lastID+1);
-            for(String i : tagsTxtString){
-                insertarTags(i,idReceta);
-            }
+
         }
 
         //0 - > Si RadioGroup
         //1 - > No
 
     }
+    public ArrayList<String> listaProcedimiento(String[] proc){
+        ArrayList<String> listaProcedimiento = new ArrayList<>();
+        for(String i :proc){
+            listaProcedimiento.add(i);
+        }
+        return listaProcedimiento;
+    }
 
-    public void insertarReceta(final String nombre, final String duracionH, final String duracionM,final String porciones,final String preparacion
-                            ,final String notas, final String dificultad,final String costo,final String imagen,final String privacidad){
+    public void insertarReceta(final String nombre, final String duracionH, final String duracionM, final String porciones, final String preparacion
+                            , final String notas, final String dificultad, final String costo, final String imagen,
+                               final String privacidad, final ArrayList<String> tagsTxtString, final int lastID){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+        StringRequest recetaRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Receta registrada", Toast.LENGTH_SHORT).show();
+                String idReceta = String.valueOf(lastID+1);
+                for(String i : tagsTxtString){
+                    Log.e("id tag", i+ " - " + idReceta);
+                    insertarTags(i,idReceta);
+                }
+                for(String j : ingredientes){
+                    Log.e("id tag", j+ " - " + idReceta);
+                    insertarIngredientes(j,idReceta);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -274,14 +295,47 @@ public class CURecetaActivity extends AppCompatActivity {
                 return params;
             }
         };
+        recetaRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        requestQueue.add(recetaRequest);
+
+    }
+
+
+    public void insertarIngredientes(final String ingrediente, final String idReceta){
+
+        StringRequest ingredienteRequest = new StringRequest(Request.Method.POST, urlIngrediente, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "EERRORRRRRR", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("receta",idReceta);
+                params.put("nombre",ingrediente);
+                params.put("cantidad","0");
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(ingredienteRequest);
 
     }
 
     public void insertarTags(final String tag,final String id){
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlTag, new Response.Listener<String>() {
+        StringRequest tagRequest = new StringRequest(Request.Method.POST, urlTag, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
@@ -301,7 +355,7 @@ public class CURecetaActivity extends AppCompatActivity {
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        requestQueue.add(tagRequest);
     }
 
     public ArrayList<String> leerHashtags(String[] hashtag){
@@ -408,5 +462,7 @@ public class CURecetaActivity extends AppCompatActivity {
 
         builder.show();
     }
+
+
 
 }

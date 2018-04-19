@@ -13,6 +13,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.Receta;
 import com.example.anthony_pc.pocketrecipe.fragments.carrito.CarritoFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.inicio.Inicio_Fragment;
@@ -51,7 +53,11 @@ public class InicioActivity extends AppCompatActivity
     CircleImageView profile_image;
     TextView nombreTxt,correoTxt;
     int aux = 0;
+
     String mensaje, pantalla = "";
+
+
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +70,8 @@ public class InicioActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
-
         SpannableString s = new SpannableString("Pocket Recipe");
-        s.setSpan(new TypefaceSpan ( "greatvibes_regular.ttf"), 0, s.length(),
+        s.setSpan(new TypefaceSpan("greatvibes_regular.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         // Update the action bar title with the TypefaceSpan instance
@@ -81,7 +85,7 @@ public class InicioActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
@@ -95,7 +99,7 @@ public class InicioActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         try {
             mensaje = getIntent().getStringExtra("mensaje");
@@ -147,7 +151,37 @@ public class InicioActivity extends AppCompatActivity
             correoTxt.setText(instance.getActualUser().getCorreo());
 
             profile_image.setImageBitmap(instance.getActualUser().getFoto());
-        }catch(NullPointerException e){}
+
+        } catch (NullPointerException e) {
+
+        }
+    }
+
+    public void imprimirDatos(){
+        Log.e("cantidad REcetas",String.valueOf(instance.getRecipeList().size()));
+        for(Receta i : instance.getRecipeList()){
+            Log.e("NOMBRE RECETA",i.getNombre());
+            Log.e("","-----------------------");
+            for(String j : i.getListaIngredientes()){
+                Log.e("Ingrediente",j);
+            }
+            Log.e("","-----------------------");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View viewNav = navigationView.getHeaderView(0);
+        profile_image = viewNav.findViewById(R.id.profile_image);
+        nombreTxt = viewNav.findViewById(R.id.nombreTxt);
+        correoTxt = viewNav.findViewById(R.id.correoTxt);
+
+        nombreTxt.setText(instance.getActualUser().getNombre());
+        correoTxt.setText(instance.getActualUser().getCorreo());
+
+        profile_image.setImageBitmap(instance.getActualUser().getFoto());
+        profile_image.setImageBitmap(instance.getActualUser().getFoto());
     }
 
     @Override
@@ -228,21 +262,22 @@ public class InicioActivity extends AppCompatActivity
                     .replace(R.id.container, fragment)
                     .commit();
 
-            fragmentManager.beginTransaction()
+            /*fragmentManager.beginTransaction()
                     .replace(R.id.container2, fragment1)
                     .commit();
-
+*/
         } else if (id == R.id.nav_favorite) {
             setActionBarTitle("Favoritos");
-            bundle.putString("mensaje", "saludable");
-            bundle.putString("orientacion", "profile");
+
+            bundle.putString("mensaje", "favorito");
+            bundle.putString("orientacion", "grid");
+
             fragment = new FavoritosFragment();
             fragmentManager.popBackStack();
             fragment.setArguments(bundle);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-
 
         } else if (id == R.id.nav_cart) {
             setActionBarTitle("Carrito");

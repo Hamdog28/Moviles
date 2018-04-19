@@ -3,6 +3,7 @@ package com.example.anthony_pc.pocketrecipe;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +14,7 @@ public class Receta {
     private int id;
     private String nombre;
     private String duracion;
-    private String procedimiento;
+    private ArrayList<String> procedimiento;
     private String dificultad;
     private int porciones;
     private Bitmap foto;
@@ -29,7 +30,7 @@ public class Receta {
     private ArrayList<String> listaIngredientes;
     private ArrayList<String> listaTags;
 
-    public Receta(int id, String nombre, String duracion, String procedimiento, String dificultad, int porciones, Bitmap foto,
+    public Receta(int id, String nombre, String duracion, ArrayList<String> procedimiento, String dificultad, int porciones, Bitmap foto,
                   String costo, Float calificacion, int cantCalificaciones, Boolean publico, String notas,
                   ArrayList<String> listaIngredientes,int autor,String publicacion, ArrayList<String> listaTags) {
         this.id = id;
@@ -74,11 +75,11 @@ public class Receta {
         this.duracion = duracion;
     }
 
-    public String getProcedimiento() {
+    public ArrayList<String> getProcedimiento() {
         return procedimiento;
     }
 
-    public void setProcedimiento(String procedimiento) {
+    public void setProcedimiento(ArrayList<String> procedimiento) {
         this.procedimiento = procedimiento;
     }
 

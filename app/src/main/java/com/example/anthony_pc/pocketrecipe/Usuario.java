@@ -3,6 +3,8 @@ package com.example.anthony_pc.pocketrecipe;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import java.util.ArrayList;
+
 /**
  * Created by Anthony-PC on 27/3/2018.
  */
@@ -13,13 +15,16 @@ public class Usuario {
     private Bitmap foto;
     private String descripcion;
     private String correo;
+    private String contrasena;
+    private ArrayList<Receta> recetasFavoritas;
 
-    public Usuario(int id, String nombre, Bitmap foto, String correo, String descripcion) {
+    public Usuario(int id, String nombre, Bitmap foto, String correo, String descripcion,String contrasena) {
         this.id = id;
         this.nombre = nombre;
         this.foto = foto;
         this.correo = correo;
         this.descripcion = descripcion;
+        this.contrasena = contrasena;
     }
 
     public int getId() {
@@ -60,5 +65,13 @@ public class Usuario {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 }
