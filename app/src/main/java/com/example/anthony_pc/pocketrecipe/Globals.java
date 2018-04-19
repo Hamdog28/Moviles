@@ -2,6 +2,7 @@ package com.example.anthony_pc.pocketrecipe;
 
 import android.nfc.Tag;
 
+import com.example.anthony_pc.pocketrecipe.fragments.fav.Item;
 import com.facebook.Profile;
 
 import java.lang.reflect.Array;
@@ -119,5 +120,64 @@ public class Globals {
             }
         }
     }
+
+    public ArrayList<Item> returnFavoritosList(String mensaje){
+
+        ArrayList<Item> listaItems = new ArrayList<>();
+        if(mensaje.equals("favorito")){
+            for(Favoritos i : favoritosList){
+                if(i.getIdUsuario() == getActualUser().getId()){
+                    Receta receta = getReceta(i.getId());
+                    if(receta != null) {
+                        Item item = new Item(receta.getNombre(), receta.getFoto(), receta.getCalificacion(), receta.getId());
+                        listaItems.add(item);
+                    }
+                }
+            }
+
+        }else {
+            for (Receta i : recipeList) {
+                Receta receta = getReceta(i.getId());
+                for (String j : i.getListaTags()) {
+                    if (j.equals(mensaje)) {
+                        Item item = new Item(receta.getNombre(), receta.getFoto(), receta.getCalificacion(), receta.getId());
+                        listaItems.add(item);
+                    }
+                }
+            }
+        }
+        /*else if(mensaje.equals("saludable")){
+            for(Receta i : recipeList){
+                Receta receta = getReceta(i.getId());
+                for(String j : i.getListaTags()){
+                    if(j.equals("saludable")){
+                        Item item = new Item(receta.getNombre(), receta.getFoto(), receta.getCalificacion(), receta.getId());
+                        listaItems.add(item);
+                    }
+                }
+            }
+        }
+        else if(mensaje.equals("comida_rapida")){
+
+        }
+        else if(mensaje.equals("dulce")){
+
+        }
+        else if(mensaje.equals("ocaciones_especiales")){
+
+        }
+*/
+        return listaItems;
+    }
+
+    public Receta getReceta(int recetaID){
+        for(Receta i : recipeList){
+            if(i.getId() == recetaID){
+                return i;
+            }
+        }return null;
+    }
+
+
 
 }

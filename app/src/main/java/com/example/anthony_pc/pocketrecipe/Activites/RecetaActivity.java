@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -39,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.anthony_pc.pocketrecipe.Favoritos;
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
+import com.example.anthony_pc.pocketrecipe.Receta;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -61,21 +63,23 @@ public class RecetaActivity extends AppCompatActivity {
     private Globals instance= Globals.getInstance();
     String url = "https://moviles-backoffice.herokuapp.com/favorito/";
 
-
-
     boolean followed = false;
 
-    String[] ingredientes = {"carne","aceite","carbon","mantequilla","barbacoa"};
-    String[] pasos = {"paso1","paso2","paso3","paso4","paso5"};
-    String[] tags = {"carne","familia","eventos_especiales","parrilla","rico"};
-    String texto_notas = "Perfecto para fines de semana";
+    String key = getIntent().getStringExtra("key");
+
+    ArrayList<String> ingredientes = new ArrayList<>();
+    ArrayList<String> pasos = new ArrayList<>();
+    ArrayList<String> tags = new ArrayList<>();
+    ArrayList<String> texto_notas = new ArrayList<>();
 
     LinearLayout lay_ingrediente, lay_pasos, lay_tags;
-    List<String> carrito = new ArrayList<String>(Collections.nCopies(ingredientes.length, ""));
+    List<String> carrito = new ArrayList<String>(Collections.nCopies(ingredientes.size(), ""));
 
 
     String recetaActual = "-1";
     String deleteStringID = "-1";
+
+    Receta receta;
 
     boolean editable = true;
 
@@ -86,29 +90,32 @@ public class RecetaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_receta);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Intent intent = getIntent();
+        recetaActual = intent.getStringExtra("id");
+        receta = null;
+        receta = instance.getReceta(Integer.valueOf(recetaActual));
 
         setTitle("Carne");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
-
-        recetaActual = intent.getStringExtra("id");
         deleteStringID = String.valueOf(instance.returnDeleteID(Integer.valueOf(recetaActual)));
 
         Log.e("id",String.valueOf(instance.returnDeleteID(3)));
 
-
+        ingredientes = receta.getListaIngredientes();
+        pasos = receta.getProcedimiento();
+        tags = receta.getListaTags();
 
         lay_ingrediente = (LinearLayout) findViewById(R.id.ingredientes_layout);
         lay_pasos = (LinearLayout) findViewById(R.id.pasos_layout);
         lay_tags = (LinearLayout) findViewById(R.id.tags_layout);
 
         TextView notas = (TextView)findViewById(R.id.tv_notas);
-        notas.setText(texto_notas);
+        notas.setText(receta.getNotas());
 
         rating = (RatingBar)findViewById(R.id.rating);
-        rating.setRating(total_rating/total_calificaciones);
+        rating.setRating(receta.getCantCalificaciones()/receta.getCalificacion());
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -123,9 +130,6 @@ public class RecetaActivity extends AppCompatActivity {
 
 
         final RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
-
-
-
 
 
         calificacion.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -153,7 +157,7 @@ public class RecetaActivity extends AppCompatActivity {
         ImageView imagen = (ImageView)findViewById(R.id.imagen);
 
         foto.setImageDrawable(getResources().getDrawable(R.drawable.foto_perfil));
-        imagen.setImageDrawable(getResources().getDrawable(R.drawable.carne));
+        imagen.setImageBitmap(receta.getFoto());
 
 
 
@@ -166,6 +170,21 @@ public class RecetaActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         finish();
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            if(fav) {
+                insertarFavorito();
+                Favoritos favoritoObject = new Favoritos(instance.returnLastIDFav(),Integer.valueOf(recetaActual),instance.getActualUser().getId());
+                instance.addFavoritos(favoritoObject);
+            }
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -196,9 +215,9 @@ public class RecetaActivity extends AppCompatActivity {
 
     private void populateIngredients() {
 
-        for(int i = 0; i<ingredientes.length;i++){
+        for(int i = 0; i<ingredientes.size();i++){
             final TextView ingrediente = new TextView(this);
-            ingrediente.setText("   " + ingredientes[i]);
+            ingrediente.setText("   " + ingredientes.get(i));
             ingrediente.setTextColor(Color.parseColor("#000000"));
             ingrediente.setId(i);
             ingrediente.setCompoundDrawablesWithIntrinsicBounds( R.drawable.shape_add_ingrediente, 0, 0, 0);
@@ -269,7 +288,7 @@ public class RecetaActivity extends AppCompatActivity {
 
     private void populateProcedure() {
 
-        for(int i = 0; i<pasos.length;i++){
+        for(int i = 0; i<pasos.size();i++){
             LinearLayout lay_paso = new LinearLayout(this);
             lay_paso.setOrientation(LinearLayout.HORIZONTAL);
             lay_paso.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
@@ -286,7 +305,7 @@ public class RecetaActivity extends AppCompatActivity {
             lay_paso.addView(icon);
 
 
-            paso.setText(pasos[i]);
+            paso.setText(pasos.get(i));
             paso.setTextColor(Color.parseColor("#000000"));
             paso.setId(i);
             lay_paso.addView(paso);
@@ -300,18 +319,18 @@ public class RecetaActivity extends AppCompatActivity {
     }
 
     private void populateTags(){
-        for(int i = 0; i<tags.length;i+=3){
+        for(int i = 0; i<tags.size();i+=3){
             LinearLayout lay_tag = new LinearLayout(this);
             lay_tag.setOrientation(LinearLayout.HORIZONTAL);
             lay_tag.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
             lay_tag.setDividerDrawable(getResources().getDrawable(R.drawable.empty_width_divider));
 
             for(int j = 0; j<3; j++){
-                if(i+j == tags.length)
+                if(i+j == tags.size())
                     break;
                 TextView tag = new TextView(this);
 
-                tag.setText("  #" + tags[i+j] + "  ");
+                tag.setText("  #" + tags.get(i+j) + "  ");
                 tag.setBackground(getResources().getDrawable(R.drawable.button_shape_tag));
                 tag.setTextColor(getResources().getColor(R.color.colorPrimaryLight));
 
@@ -320,10 +339,6 @@ public class RecetaActivity extends AppCompatActivity {
 
             }
             lay_tags.addView(lay_tag);
-
-
-
-
 
         }
 
@@ -366,9 +381,8 @@ public class RecetaActivity extends AppCompatActivity {
         ImageButton favorito = (ImageButton) findViewById(R.id.favorito);
         if(!fav) {
             favorito.setBackgroundResource(R.drawable.liked);
-            insertarFavorito();
-            Favoritos favoritoObject = new Favoritos(instance.returnLastIDFav(),Integer.valueOf(recetaActual),instance.getActualUser().getId());
-            instance.addFavoritos(favoritoObject);
+            //insertarFavorito();
+
             fav = true;
             Snackbar.make(view, "Receta ha sido agregada a favoritos", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();

@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
 
 
-                                Receta receta = new Receta(id,nombre,duracion,procedimiento,dificultad,porciones,foto,costo,calificacion,cantidad_calificaciones,
+                                Receta receta = new Receta(id,nombre,duracion,listaProcedimiento(procedimiento.split("\n")),dificultad,porciones,foto,costo,calificacion,cantidad_calificaciones,
                                         publico,notas,listaIngredientes(id),autor,publicacion,listaTags(id));
                                 instance.addRecipe(receta);
                                 //Log.e("cantidadREcetas",String.valueOf(instance.getRecipeList().size()));
@@ -394,6 +394,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return listaIngredientes;
+    }
+    public ArrayList<String> listaProcedimiento(String[] proc){
+        ArrayList<String> listaProcedimiento = new ArrayList<>();
+        for(String i :proc){
+            listaProcedimiento.add(i);
+        }
+        return listaProcedimiento;
     }
 
 

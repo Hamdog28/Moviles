@@ -10,15 +10,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import com.example.anthony_pc.pocketrecipe.Activites.InicioActivity;
+import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
 
 import java.util.ArrayList;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +48,8 @@ public class FavoritosFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private Globals instance= Globals.getInstance();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,10 +64,12 @@ public class FavoritosFragment extends Fragment {
         grid = (GridView) view.findViewById(R.id.grid);
 
 
-        for(int i = 0;i<title.length;i++){
+        /*for(int i = 0;i<title.length;i++){
 
             List.add(new Item(title[i],(Drawable)getResources().getDrawable(images[i]),stars[i],id[i]));
-        }
+        }*/
+        //List = null;
+        List = instance.returnFavoritosList(mensaje);
 
         adapter = new Adapter(getContext(),R.layout.grid_view_items,List);
 
@@ -74,6 +83,16 @@ public class FavoritosFragment extends Fragment {
 
             setGridViewHeightBasedOnChildren( grid,2);
         }
+
+        /*grid.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                String a = String.valueOf(position);
+                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
+            }
+        });*/
 
         //setGridViewHeightBasedOnChildren( grid,2);
         return view;

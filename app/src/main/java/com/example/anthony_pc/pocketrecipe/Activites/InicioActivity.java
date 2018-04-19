@@ -224,7 +224,7 @@ public class InicioActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_favorite) {
             setActionBarTitle("Favoritos");
-            bundle.putString("mensaje", "saludable");
+            bundle.putString("mensaje", "favorito");
             bundle.putString("orientacion", "grid");
             fragment = new FavoritosFragment();
             fragmentManager.popBackStack();

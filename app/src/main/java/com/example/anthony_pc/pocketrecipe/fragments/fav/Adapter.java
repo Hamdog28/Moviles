@@ -50,8 +50,9 @@ public class Adapter extends ArrayAdapter {
         posicion = position;
 
         textView.setText(List.get(position).getName());
-        imageView.setImageDrawable(List.get(position).getImage());
+        imageView.setImageBitmap(List.get(position).getImage());
         rating.setRating(List.get(position).getStars());
+
 
         v.setOnClickListener(new View.OnClickListener() {
 

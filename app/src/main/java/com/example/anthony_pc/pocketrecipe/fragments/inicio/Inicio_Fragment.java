@@ -7,15 +7,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 /**
@@ -61,7 +68,9 @@ public class Inicio_Fragment extends Fragment implements FavoritosFragment.OnFra
         }
 
 
-        adapter = new InicioAdapter(getContext(),R.layout.list_view_items_inicio,List);
+
+
+        adapter = new InicioAdapter(getContext(),R.layout.list_view_items_inicio,List,list);
         list.setAdapter(adapter);
         return view;
     }

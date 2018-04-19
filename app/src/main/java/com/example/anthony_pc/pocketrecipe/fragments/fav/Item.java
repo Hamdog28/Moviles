@@ -1,17 +1,18 @@
 package com.example.anthony_pc.pocketrecipe.fragments.fav;
 
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 public class Item {
 
-    String ListName;
-    Drawable ListImage;
-    int ListStars;
-    int ListId;
+    private String ListName;
+    private Bitmap ListImage;
+    private Float ListStars;
+    private int ListId;
 
 
-    public Item(String Name, Drawable Image, int Stars, int Id)
+    public Item(String Name, Bitmap Image, Float Stars, int Id)
     {
         this.ListImage = Image;
         this.ListName = Name;
@@ -22,11 +23,11 @@ public class Item {
     {
         return ListName;
     }
-    public Drawable getImage()
+    public Bitmap getImage()
     {
         return ListImage;
     }
-    public int getStars()
+    public Float getStars()
     {
         return ListStars;
     }

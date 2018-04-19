@@ -215,7 +215,7 @@ public class CURecetaActivity extends AppCompatActivity {
             insertarReceta(nombreRecetaString,duracionHorasString,duracionMinTxtString,porcionesTxtString, preparacionTxtString, notasTxtString,
                     dificultadString, costoString, imageString, String.valueOf(privacidad),tagsTxtString,lastID);
 
-            Receta receta = new Receta(lastID+1,nombreRecetaString,duracionHorasString,preparacionTxtString,dificultadString,
+            Receta receta = new Receta(lastID+1,nombreRecetaString,duracionHorasString,listaProcedimiento(preparacionTxtString.split("\n")),dificultadString,
                     Integer.parseInt(porcionesTxtString), image2,costoString,0f,0,
                     Boolean.parseBoolean(privacidadString),notasTxtString,(ArrayList)ingredientes,
                     instance.getActualUser().getId(),String.valueOf(currentTime),tagsTxtString);
@@ -227,6 +227,13 @@ public class CURecetaActivity extends AppCompatActivity {
         //0 - > Si RadioGroup
         //1 - > No
 
+    }
+    public ArrayList<String> listaProcedimiento(String[] proc){
+        ArrayList<String> listaProcedimiento = new ArrayList<>();
+        for(String i :proc){
+            listaProcedimiento.add(i);
+        }
+        return listaProcedimiento;
     }
 
     public void insertarReceta(final String nombre, final String duracionH, final String duracionM, final String porciones, final String preparacion
