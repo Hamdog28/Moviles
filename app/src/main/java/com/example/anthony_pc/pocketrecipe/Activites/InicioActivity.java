@@ -26,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -37,6 +38,8 @@ import com.example.anthony_pc.pocketrecipe.fragments.carrito.CarritoFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
 import com.example.anthony_pc.pocketrecipe.fragments.inicio.Inicio_Fragment;
 import com.example.anthony_pc.pocketrecipe.fragments.perfil.PerfilFragment;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,9 +62,12 @@ public class InicioActivity extends AppCompatActivity
 
     NavigationView navigationView;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_inicio);
 
 
@@ -108,7 +114,8 @@ public class InicioActivity extends AppCompatActivity
             if(pantalla.equals("perfil")){
                 Bundle bundle = new Bundle();
                 Bundle bundle1 = new Bundle();
-                bundle.putString("mensaje", "perfil");
+                Log.e("MENSAJE",mensaje);
+                bundle.putString("mensaje", mensaje);
                 bundle.putString("orientacion", "grid");
                 bundle1.putString("mensaje",mensaje);
                 fragment = new PerfilFragment();
@@ -125,8 +132,8 @@ public class InicioActivity extends AppCompatActivity
                 fragmentManager.beginTransaction()
                         .replace(R.id.container2, fragment1)
                         .commit();
-                fragment = new PerfilFragment();
-                fragmentManager.beginTransaction().add(R.id.container, fragment).commit();
+                //fragment = new PerfilFragment();
+                //fragmentManager.beginTransaction().add(R.id.container, fragment).commit();
 
 
                 navigationView.getMenu().getItem(1).setChecked(true);
@@ -250,22 +257,25 @@ public class InicioActivity extends AppCompatActivity
         } else if (id == R.id.nav_account) {
             setActionBarTitle("Perfil");
 
-            bundle.putString("mensaje", "perfil");
+            bundle.putString("mensaje", String.valueOf(instance.getActualUser().getId()));
             bundle.putString("orientacion", "grid");
+            Log.e("mensaje",String.valueOf(instance.getActualUser().getId()));
 
             fragment = new PerfilFragment();
+            fragment.setArguments(bundle);
             fragmentManager.popBackStack();
+
             Fragment fragment1 = new FavoritosFragment();
             fragment1.setArguments(bundle);
 
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-/*
+
             fragmentManager.beginTransaction()
                     .replace(R.id.container2, fragment1)
                     .commit();
-*/
+
         } else if (id == R.id.nav_favorite) {
             setActionBarTitle("Favoritos");
 
@@ -299,9 +309,11 @@ public class InicioActivity extends AppCompatActivity
 
         }
         else if (id == R.id.nav_logout) {
+            LoginManager.getInstance().logOut();
             finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+
         }
 
 

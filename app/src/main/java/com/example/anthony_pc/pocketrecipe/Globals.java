@@ -196,10 +196,14 @@ public class Globals {
     }
 
     public int lastIdUser(){
+        int id = -1;
         if(usersList.isEmpty())
             return 0;
-        return usersList.get(usersList.size()-1).getId();
+        for(Usuario i : usersList){
+            if(i.getId()>id){
+                id = i.getId();
+            }
+        }return id;
     }
-
 
 }

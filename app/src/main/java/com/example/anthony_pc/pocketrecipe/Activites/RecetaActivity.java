@@ -105,7 +105,7 @@ public class RecetaActivity extends AppCompatActivity {
         receta = null;
         receta = instance.getReceta(Integer.valueOf(recetaActual));
 
-        Usuario user = instance.getUser(receta.getAutor());
+        final Usuario user = instance.getUser(receta.getAutor());
 
         if(instance.checkFav(receta.getId())){
             favorito.setBackgroundResource(R.drawable.liked);
@@ -152,9 +152,7 @@ public class RecetaActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-
         });
-
 
         final RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
 
@@ -204,11 +202,10 @@ public class RecetaActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(getApplicationContext(), InicioActivity.class);
-                intent.putExtra("mensaje","0");
+                Log.e("mensaje receta activity", String.valueOf(user.getId()));
+                intent.putExtra("mensaje",String.valueOf(user.getId()));
                 intent.putExtra("pantalla","perfil");
                 startActivity(intent);
-
-
 
             }
 

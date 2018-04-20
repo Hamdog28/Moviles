@@ -113,6 +113,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
+
                 <Button
                     android:id="@+id/seguir"
                     android:layout_width="wrap_content"
