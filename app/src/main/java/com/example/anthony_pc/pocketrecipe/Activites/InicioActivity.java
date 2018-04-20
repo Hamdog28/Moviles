@@ -217,8 +217,8 @@ public class InicioActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-
-            /*fragmentManager.beginTransaction()
+/*
+            fragmentManager.beginTransaction()
                     .replace(R.id.container2, fragment1)
                     .commit();
 */
