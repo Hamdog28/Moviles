@@ -12,6 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +42,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.anthony_pc.pocketrecipe.Favoritos;
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
+
 import com.example.anthony_pc.pocketrecipe.Receta;
 import com.example.anthony_pc.pocketrecipe.Usuario;
 
@@ -64,6 +67,7 @@ public class RecetaActivity extends AppCompatActivity {
     private Globals instance= Globals.getInstance();
     String url = "https://moviles-backoffice.herokuapp.com/favorito/";
 
+    Button seguir;
     boolean followed = false;
 
     ArrayList<String> ingredientes = new ArrayList<>();
@@ -71,7 +75,11 @@ public class RecetaActivity extends AppCompatActivity {
     ArrayList<String> tags = new ArrayList<>();
     ArrayList<String> texto_notas = new ArrayList<>();
 
+    TextView nombre_autor;
     LinearLayout lay_ingrediente, lay_pasos, lay_tags;
+
+    Bundle bundle = new Bundle();
+
     List<String> carrito = new ArrayList<String>(Collections.nCopies(ingredientes.size(), ""));
 
 
@@ -81,6 +89,7 @@ public class RecetaActivity extends AppCompatActivity {
     Receta receta;
 
     boolean editable = false;
+
 
 
     @Override
@@ -107,13 +116,16 @@ public class RecetaActivity extends AppCompatActivity {
             editable = true;
         }
 
-        setTitle("Carne");
+        setTitle("Receta");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         deleteStringID = String.valueOf(instance.returnDeleteID(Integer.valueOf(recetaActual)));
 
         Log.e("id",String.valueOf(instance.returnDeleteID(3)));
+
+
+        seguir = (Button) findViewById(R.id.seguir);
 
         ingredientes = receta.getListaIngredientes();
         pasos = receta.getProcedimiento();
@@ -161,7 +173,7 @@ public class RecetaActivity extends AppCompatActivity {
                         score = calificacion.getRating();
                         calificacion.setRating(score);
                         total_rating += score;
-                        Snackbar.make(getWindow().getDecorView().getRootView(), "Gracias por su calificacion"+Float.toString(score), Snackbar.LENGTH_LONG)
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Gracias por su calificacion", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                         rating_aux.setRating((total_rating/total_calificaciones));
 
@@ -185,6 +197,24 @@ public class RecetaActivity extends AppCompatActivity {
         //Log.e("porciones", receta.getPorciones());
         porcionesTV.setText(String.valueOf(receta.getPorciones()+" " + "porciones"));
 
+
+        nombre_autor = (TextView)findViewById(R.id.autor);
+        nombre_autor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplicationContext(), InicioActivity.class);
+                intent.putExtra("mensaje","0");
+                intent.putExtra("pantalla","perfil");
+                startActivity(intent);
+
+
+
+            }
+
+        });
+
+
         TextView duracionTV = (TextView)findViewById(R.id.duracion);
         duracionTV.setText(String.valueOf(receta.getDuracion()+" " + "horas"));
 
@@ -193,6 +223,7 @@ public class RecetaActivity extends AppCompatActivity {
 
         TextView costoTV = (TextView)findViewById(R.id.costo);
         costoTV.setText(String.valueOf(receta.getCosto()));
+
 
         populateIngredients();
         populateProcedure();
@@ -221,8 +252,11 @@ public class RecetaActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (editable)
+        if (editable){
             getMenuInflater().inflate(R.menu.menu_receta, menu);
+            seguir.setVisibility(View.GONE);
+
+        }
         return true;
     }
 
@@ -238,6 +272,7 @@ public class RecetaActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CURecetaActivity.class);
             intent.putExtra("mensaje","editar");
             startActivity(intent);
+
 
             return true;
         }
@@ -376,7 +411,7 @@ public class RecetaActivity extends AppCompatActivity {
     }
 
     public void Follow(View view){
-        Button seguir = (Button) findViewById(R.id.seguir);
+
         if(!followed) {
             seguir.setText(" Dejar de seguir ");
 
@@ -390,22 +425,7 @@ public class RecetaActivity extends AppCompatActivity {
 
     }
 
-    public void Like(View view){
-        Snackbar.make(view, "Gracias por su calificacion", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
-        calificacion.getRating();
 
-
-        if(!calificado){
-            total_calificaciones++;
-            calificado = true;
-        }
-        total_rating-=score;
-        score = calificacion.getRating();
-        total_rating += score;
-        rating.setRating((total_rating/total_calificaciones));
-    }
 
 
     public void Favorito(View view){

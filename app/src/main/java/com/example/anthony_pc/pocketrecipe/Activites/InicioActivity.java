@@ -53,11 +53,18 @@ public class InicioActivity extends AppCompatActivity
     CircleImageView profile_image;
     TextView nombreTxt,correoTxt;
     int aux = 0;
+
+    String mensaje, pantalla = "";
+
+
     NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,9 +78,6 @@ public class InicioActivity extends AppCompatActivity
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(s);
 
-
-        fragment = new Inicio_Fragment();
-        fragmentManager.beginTransaction().add(R.id.container, fragment).commit();
 
 
         //getSupportFragmentManager().beginTransaction().add(R.id.container,fragment);
@@ -97,7 +101,45 @@ public class InicioActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().getItem(0).setChecked(true);
+        try {
+            mensaje = getIntent().getStringExtra("mensaje");
+            pantalla = getIntent().getStringExtra("pantalla");
+
+            if(pantalla.equals("perfil")){
+                Bundle bundle = new Bundle();
+                Bundle bundle1 = new Bundle();
+                bundle.putString("mensaje", "perfil");
+                bundle.putString("orientacion", "grid");
+                bundle1.putString("mensaje",mensaje);
+                fragment = new PerfilFragment();
+                fragmentManager.popBackStack();
+                Fragment fragment1 = new FavoritosFragment();
+                fragment1.setArguments(bundle);
+                fragment.setArguments(bundle1);
+
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .commit();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container2, fragment1)
+                        .commit();
+                fragment = new PerfilFragment();
+                fragmentManager.beginTransaction().add(R.id.container, fragment).commit();
+
+
+                navigationView.getMenu().getItem(1).setChecked(true);
+            }
+        }catch (NullPointerException e){
+            fragment = new Inicio_Fragment();
+            fragmentManager.beginTransaction().add(R.id.container, fragment).commit();
+
+
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
+
+
 
         View viewNav = navigationView.getHeaderView(0);
         profile_image = viewNav.findViewById(R.id.profile_image);
@@ -190,11 +232,13 @@ public class InicioActivity extends AppCompatActivity
 
         Bundle bundle = new Bundle();
 
-        bundle.putString("edttext", "From Activity");
+
 
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+            bundle.putString("mensaje", "");
+            bundle.putString("pantalla", "inicio");
             setActionBarTitle("Pocket Recipe");
             aux = 0;
             fragment = new Inicio_Fragment();
@@ -224,8 +268,10 @@ public class InicioActivity extends AppCompatActivity
 */
         } else if (id == R.id.nav_favorite) {
             setActionBarTitle("Favoritos");
+
             bundle.putString("mensaje", "favorito");
             bundle.putString("orientacion", "grid");
+
             fragment = new FavoritosFragment();
             fragmentManager.popBackStack();
             fragment.setArguments(bundle);
@@ -253,7 +299,9 @@ public class InicioActivity extends AppCompatActivity
 
         }
         else if (id == R.id.nav_logout) {
-
+            finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
 
 

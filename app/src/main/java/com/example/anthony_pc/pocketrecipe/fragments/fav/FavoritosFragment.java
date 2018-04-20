@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.FrameLayout;
+
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
@@ -76,25 +79,22 @@ public class FavoritosFragment extends Fragment {
 
         adapter = new Adapter(getContext(),R.layout.grid_view_items,List,grid);
 
+
         grid.setAdapter(adapter);
         if(orientacion.equals("list")){
             //list.setAdapter(adapter);
             grid.setNumColumns(1);
-            setGridViewHeightBasedOnChildren( grid,1);
-        }
-        else{
-            setGridViewHeightBasedOnChildren( grid,2);
+            //setGridViewHeightBasedOnChildren( grid,1);
         }
 
-        /*grid.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
-                String a = String.valueOf(position);
-                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
-            }
-        });*/
+        else if (orientacion.equals("profile")){
+
+            setGridViewHeightBasedOnChildren( grid,2);
+        }
+        else{
+        }
+
+
 
         //setGridViewHeightBasedOnChildren( grid,2);
         return view;
