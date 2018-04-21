@@ -33,6 +33,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 
 
 import com.example.anthony_pc.pocketrecipe.Activites.follow.FollowActivity;
@@ -74,7 +76,7 @@ public class InicioActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_inicio);
-
+        Fabric.with(this, new Crashlytics());
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -59,6 +59,10 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 import io.fabric.sdk.android.Fabric;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -73,12 +77,25 @@ public class MainActivity extends AppCompatActivity {
     private Globals instance= Globals.getInstance();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
+
+        String projectToken = "f26d849e3f8a22fa6dc32c0172510a01";
+        MixpanelAPI mixpanel = MixpanelAPI.getInstance(this, projectToken);
+        try {
+            JSONObject props = new JSONObject();
+            props.put("Loged in",false);
+            mixpanel.track("MainActivity - onCreate called",props);
+
+        }catch (JSONException e){
+            Log.e("MYAPP","No se pudieron agregar las propiedades al JSON",e);
+        }
 
         instance.setListNull();
 
