@@ -44,6 +44,7 @@ import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
 
 import com.example.anthony_pc.pocketrecipe.Receta;
+import com.example.anthony_pc.pocketrecipe.Seguidores;
 import com.example.anthony_pc.pocketrecipe.Usuario;
 
 import java.io.BufferedInputStream;
@@ -66,6 +67,7 @@ public class RecetaActivity extends AppCompatActivity {
 
     private Globals instance= Globals.getInstance();
     String url = "https://moviles-backoffice.herokuapp.com/favorito/";
+    String urlSeguidor = "https://moviles-backoffice.herokuapp.com/seguidor/";
 
     Button seguir;
     boolean followed = false;
@@ -90,7 +92,7 @@ public class RecetaActivity extends AppCompatActivity {
 
     boolean editable = false;
 
-
+    Usuario user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +107,7 @@ public class RecetaActivity extends AppCompatActivity {
         receta = null;
         receta = instance.getReceta(Integer.valueOf(recetaActual));
 
-        final Usuario user = instance.getUser(receta.getAutor());
+        user = instance.getUser(receta.getAutor());
 
         if(instance.checkFav(receta.getId())){
             favorito.setBackgroundResource(R.drawable.liked);
@@ -327,6 +329,32 @@ public class RecetaActivity extends AppCompatActivity {
 
     }
 
+    public void insertarSeguidor(){
+
+        StringRequest insertarSeguidor = new StringRequest(Request.Method.POST, urlSeguidor, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("seguidor",String.valueOf(instance.getActualUser().getId()));
+                params.put("seguido",String.valueOf(user.getId()));
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(insertarSeguidor);
+
+    }
+
     public void eliminarFavorito(String url){
 
         StringRequest eliminarFavorito = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
@@ -344,9 +372,26 @@ public class RecetaActivity extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(eliminarFavorito);
-
     }
 
+    public void eliminarSeguidor(String url){
+
+        StringRequest eliminarSeguidor = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        }){
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(eliminarSeguidor);
+    }
 
 
     private void populateProcedure() {
@@ -411,19 +456,18 @@ public class RecetaActivity extends AppCompatActivity {
 
         if(!followed) {
             seguir.setText(" Dejar de seguir ");
-
+            insertarSeguidor();
+            Seguidores seguidores = new Seguidores(instance.getFollowId()+1,instance.getActualUser().getId(),user.getId());
+            instance.addSeguidor(seguidores);
             followed = true;
         }
         else {
             seguir.setText("Seguir");
-
+            eliminarSeguidor(urlSeguidor+String.valueOf(instance.returnDeleteIdSeguidor(user.getId()))+"/");
+            instance.deleteSeguidor(user.getId());
             followed = false;
         }
-
     }
-
-
-
 
     public void Favorito(View view){
         ImageButton favorito = (ImageButton) findViewById(R.id.favorito);

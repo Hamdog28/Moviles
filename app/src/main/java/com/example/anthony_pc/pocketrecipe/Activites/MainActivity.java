@@ -307,7 +307,6 @@ public class MainActivity extends AppCompatActivity {
                                 if(!url.equals("")) {
                                     DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(image);
                                     foto = downloadTask.execute(url).get();
-                                    Log.e("foto",String.valueOf(foto));
 
                                 }else{
                                     Log.e("NO FOTO ","NO FOTO");

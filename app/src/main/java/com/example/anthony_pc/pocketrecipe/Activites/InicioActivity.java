@@ -313,7 +313,6 @@ public class InicioActivity extends AppCompatActivity
             finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-
         }
 
 

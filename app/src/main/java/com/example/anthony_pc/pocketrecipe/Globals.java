@@ -20,6 +20,7 @@ public class Globals {
     private static ArrayList<Ingrediente> ingredienteList = new ArrayList<>();
     private static ArrayList<Tags> tagList = new ArrayList<>();
     private static ArrayList<Favoritos> favoritosList = new ArrayList<>();
+    private static ArrayList<Seguidores> seguidoresList = new ArrayList<>();
 
     private static Profile profile;
 
@@ -43,6 +44,7 @@ public class Globals {
         ingredienteList = new ArrayList<>();
         tagList = new ArrayList<>();
         favoritosList = new ArrayList<>();
+        seguidoresList = new ArrayList<>();
     }
 
     public Usuario getActualUser() {
@@ -99,14 +101,57 @@ public class Globals {
 
     public void addTag(Tags tag){tagList.add(tag);}
 
+    public void addSeguidor(Seguidores seguidor){seguidoresList.add(seguidor);}
+
     public void addFavoritos(Favoritos favoritos){favoritosList.add(favoritos);}
 
     public ArrayList<Tags> getTagList() {
         return tagList;
     }
 
+    public ArrayList<Seguidores> getSeguidoresList() {
+        return seguidoresList;
+    }
+
     public ArrayList<Favoritos> getFavoritosList() {
         return favoritosList;
+    }
+
+    public ArrayList<Follow_Item> returnSeguidores(int idUser){
+        ArrayList<Follow_Item> listaSeguidores = new ArrayList<>();
+
+        for(Seguidores i : listaSeguidores){
+            Usuario user = getUser(i.getIdSeguidor());
+            if(user != null){
+                if(i.getIdSeguido() == instance.getActualUser().getId()){
+                    Item item = new Item(user.getNombre(), true);
+                    listaSeguidores.add(item);
+                }else{
+                    Item item = new Item(user.getNombre(), false);
+                    listaSeguidores.add(item);
+                }
+            }
+        }
+        return listaSeguidores;
+    }
+
+    public int getFollowId(){
+        int id = -1;
+        if(seguidoresList.isEmpty())
+            return 1;
+        for(Seguidores i : seguidoresList){
+            if(i.getId()>id){
+                id = i.getId();
+            }
+        }return id;
+    }
+
+    public void deleteSeguidor(int idSeguido){
+        for(Seguidores i : seguidoresList){
+            if(i.getIdSeguidor() == getActualUser().getId() && i.getIdSeguido() == idSeguido){
+                seguidoresList.remove(i);
+            }
+        }
     }
 
     public int returnDeleteID(int idReceta){
@@ -121,10 +166,21 @@ public class Globals {
         return -1;
     }
 
+    public int returnDeleteIdSeguidor(int idSeguido){
+        if(seguidoresList.isEmpty())
+            return 0;
+        for(Seguidores i : seguidoresList){
+            if(i.getIdSeguidor() == actualUser.getId() && i.getIdSeguido() == idSeguido){
+                return i.getId();
+            }
+        }
+        return -1;
+    }
+
     public int returnLastIDFav(){
         int id = -1;
         if(favoritosList.isEmpty())
-            return 0;
+            return 1;
         for(Favoritos i : favoritosList){
             if(i.getId()>id){
                 Log.e("ID RETURN FAV ID",String.valueOf(id));
@@ -204,13 +260,13 @@ public class Globals {
     public int lastIdUser(){
         int id = -1;
         if(usersList.isEmpty())
-            return 0;
+            return 1;
         for(Usuario i : usersList){
             if(i.getId()>id){
                 id = i.getId();
             }
         }return id;
     }
-    
+
 
 }
