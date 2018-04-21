@@ -59,10 +59,11 @@ public class FavoritosFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favoritos, container, false);
-
+        Log.i("mensajeTTTTTTT","---------------");
         String mensaje = getArguments().getString("mensaje");
         String orientacion = getArguments().getString("orientacion");
-        Log.i("mensaje",mensaje);
+        String perfil = getArguments().getString("perfil");
+
 
         grid = (GridView) view.findViewById(R.id.grid);
 
@@ -72,6 +73,7 @@ public class FavoritosFragment extends Fragment {
             List.add(new Item(title[i],(Drawable)getResources().getDrawable(images[i]),stars[i],id[i]));
         }*/
         List = new ArrayList<>();
+
         List = instance.returnFavoritosList(mensaje);
         for(Item i : List){
             Log.e("prueba", i.getName());

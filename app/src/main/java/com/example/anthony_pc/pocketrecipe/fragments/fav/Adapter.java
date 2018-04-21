@@ -51,6 +51,7 @@ public class Adapter extends ArrayAdapter {
         RatingBar rating = v.findViewById(R.id.rating);
 
         posicion = position;
+        //Log.e("ADAPTER",List.get(position).getName());
         //Log.e("nombreeee",String.valueOf(List.get(position).getName()));
         try{
             textView.setText(List.get(position).getName());

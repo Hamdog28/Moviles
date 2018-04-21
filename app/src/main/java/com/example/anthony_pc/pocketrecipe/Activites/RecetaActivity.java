@@ -203,8 +203,10 @@ public class RecetaActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), InicioActivity.class);
                 Log.e("mensaje receta activity", String.valueOf(user.getId()));
-                intent.putExtra("mensaje",String.valueOf(user.getId()));
-                intent.putExtra("pantalla","perfil");
+                String perfil = String.valueOf(user.getId())+"T"+"perfil";
+                intent.putExtra("mensaje","perfil");
+                intent.putExtra("perfil",perfil);
+                intent.putExtra("pantalla","profile");
                 startActivity(intent);
 
             }

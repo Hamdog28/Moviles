@@ -62,7 +62,7 @@ public class InicioActivity extends AppCompatActivity
     TextView nombreTxt,correoTxt;
     int aux = 0;
 
-    String mensaje, pantalla = "";
+    String mensaje, pantalla, perfil = "";
 
 
     NavigationView navigationView;
@@ -115,14 +115,15 @@ public class InicioActivity extends AppCompatActivity
         try {
             mensaje = getIntent().getStringExtra("mensaje");
             pantalla = getIntent().getStringExtra("pantalla");
+            perfil = getIntent().getStringExtra("perfil");
 
-            if(pantalla.equals("perfil")){
+            if(pantalla.equals("profile")){
                 Bundle bundle = new Bundle();
                 Bundle bundle1 = new Bundle();
-                Log.e("MENSAJE",mensaje);
-                bundle.putString("mensaje", mensaje);
+                Log.e("MENSAJE",perfil.split("T")[0]);
+                bundle.putString("mensaje", perfil);
                 bundle.putString("orientacion", "grid");
-                bundle1.putString("mensaje",mensaje);
+                bundle1.putString("perfil",perfil.split("T")[0]);
                 fragment = new PerfilFragment();
                 fragmentManager.popBackStack();
                 Fragment fragment1 = new FavoritosFragment();
@@ -264,6 +265,7 @@ public class InicioActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+           // mensaje = String.valueOf(instance.getActualUser().getId());
             bundle.putString("mensaje", "");
             bundle.putString("pantalla", "inicio");
             setActionBarTitle("Pocket Recipe");
@@ -276,9 +278,10 @@ public class InicioActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_account) {
             setActionBarTitle("Perfil");
-            mensaje = String.valueOf(instance.getActualUser().getId());
+            perfil = String.valueOf(instance.getActualUser().getId()+"T"+"perfil");
 
-            bundle.putString("mensaje", mensaje);
+            bundle.putString("mensaje", "perfil");
+            bundle.putString("perfil",perfil.split("T")[0]);
             bundle.putString("orientacion", "profile");
             Log.e("mensaje",String.valueOf(instance.getActualUser().getId()));
 
@@ -343,7 +346,7 @@ public class InicioActivity extends AppCompatActivity
     public void verSeguidores(View view){
         Intent intent = new Intent(getApplicationContext(), FollowActivity.class);
         intent.putExtra("titulo","Seguidores");
-        intent.putExtra("mensaje",mensaje);
+        intent.putExtra("mensaje",perfil.split("T")[0]);
         startActivity(intent);
         Log.e("iddddd",String.valueOf(mensaje));
     }
@@ -351,12 +354,11 @@ public class InicioActivity extends AppCompatActivity
     public void verSeguidos(View view){
         Intent intent = new Intent(getApplicationContext(), FollowActivity.class);
         intent.putExtra("titulo","Seguidos");
-        intent.putExtra("mensaje",mensaje);
+        intent.putExtra("mensaje",perfil.split("T")[0]);
         startActivity(intent);
         Log.e("iddddd",String.valueOf(mensaje));
 
     }
-
 
 }
 

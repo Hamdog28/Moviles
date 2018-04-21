@@ -229,6 +229,27 @@ public class Globals {
                 listaItems.add(item);
             }
         }
+        else if(mensaje.equals("perfil")){
+            for (Receta i : recipeList) {
+                Receta receta = getReceta(i.getId());
+                if (i.getAutor() == getActualUser().getId()) {
+                    Item item = new Item(receta.getNombre(), receta.getFoto(), receta.getCalificacion(), receta.getId());
+                    listaItems.add(item);
+                }
+            }
+        }
+        else if(mensaje.contains("T")){
+            String[] idString = mensaje.split("T");
+            int id = Integer.valueOf(idString[0]);
+            for (Receta i : recipeList) {
+                Receta receta = getReceta(i.getId());
+                if (i.getAutor() == getUser(id).getId()) {
+                    Item item = new Item(receta.getNombre(), receta.getFoto(), receta.getCalificacion(), receta.getId());
+                    listaItems.add(item);
+                }
+            }
+
+        }
 
         else {
             for (Receta i : recipeList) {

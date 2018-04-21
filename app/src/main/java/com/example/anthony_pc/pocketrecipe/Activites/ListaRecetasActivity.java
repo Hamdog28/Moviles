@@ -108,7 +108,9 @@ public class ListaRecetasActivity extends AppCompatActivity implements Favoritos
             FavoritosFragment fragment = new FavoritosFragment();
 
             Bundle bundle = new Bundle();
+
             bundle.putString("mensaje",mensaje);
+            bundle.putString("receta",mensaje);
 
             switch (position){
                 case 0:

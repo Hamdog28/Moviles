@@ -63,7 +63,7 @@ public class PerfilFragment extends Fragment {
         setHasOptionsMenu(true);
 
         try{
-            id = Integer.parseInt(getArguments().getString("mensaje"));
+            id = Integer.parseInt(getArguments().getString("perfil"));
         }catch (NullPointerException e){
             Toast.makeText(getContext(),String.valueOf(id) +  "  Error",Toast.LENGTH_SHORT).show();
         }
@@ -81,7 +81,6 @@ public class PerfilFragment extends Fragment {
         seguir.setVisibility(View.GONE);
         imageButton.setVisibility(View.GONE);
 
-        Log.e("onCREATE", String.valueOf(id));
         profileImage.setImageBitmap(instance.getUser(id).getFoto());
         nombreTV.setText(instance.getUser(id).getNombre());
 
