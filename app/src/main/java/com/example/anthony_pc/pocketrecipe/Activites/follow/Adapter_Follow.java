@@ -95,7 +95,7 @@ public class Adapter_Follow extends ArrayAdapter {
             @Override
             public void onClick(View v) {
 
-                if (List.get(position).getFollowed()) {
+                if (!List.get(position).getFollowed()) {
                     Log.i("boton seguir",Boolean.toString(List.get(position).getFollowed()));
                     holder.seguir.setText(" Dejar de seguir ");
 
