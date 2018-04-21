@@ -82,10 +82,10 @@ public class Adapter_Follow extends ArrayAdapter {
         posicion = position;
         //Log.e("nombreeee",String.valueOf(List.get(position).getName()));
         if (!List.get(position).getFollowed()) {
-            seguir.setText(" Dejar de seguir ");
+            seguir.setText("Seguir");
 
         } else {
-            seguir.setText("Seguir");
+            holder.seguir.setText(" Dejar de seguir ");
 
         }
         textView.setText(List.get(position).getName());

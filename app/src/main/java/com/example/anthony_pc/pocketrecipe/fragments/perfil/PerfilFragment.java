@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.anthony_pc.pocketrecipe.Activites.EditarPerfilActivity;
 import com.example.anthony_pc.pocketrecipe.Globals;
@@ -50,6 +51,8 @@ public class PerfilFragment extends Fragment {
 
     View v;
 
+    int id = -1;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +61,15 @@ public class PerfilFragment extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_perfil, container, false);
         setHasOptionsMenu(true);
+
+        try{
+            id = Integer.parseInt(getArguments().getString("mensaje"));
+        }catch (NullPointerException e){
+            Toast.makeText(getContext(),String.valueOf(id) +  "  Error",Toast.LENGTH_SHORT).show();
+        }
+
+
+
         ImageButton imageButton = v.findViewById(R.id.settings_button);
         mPopupMenu = new PopupMenu(getContext(), imageButton);
 
@@ -66,11 +78,15 @@ public class PerfilFragment extends Fragment {
         publicacioneTV = v.findViewById(R.id.publicacionesTV);
         descripcionTV = v.findViewById(R.id.descripcionTV);
         seguir = v.findViewById(R.id.seguir);
+        seguir.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
 
-        profileImage.setImageBitmap(instance.getActualUser().getFoto());
-        nombreTV.setText(instance.getActualUser().getNombre());
+        Log.e("onCREATE", String.valueOf(id));
+        profileImage.setImageBitmap(instance.getUser(id).getFoto());
+        nombreTV.setText(instance.getUser(id).getNombre());
 
-        descripcionTV.setText(instance.getActualUser().getDescripcion());
+        descripcionTV.setText(instance.getUser(id).getDescripcion());
+
 
 
         if (my_profile){
@@ -94,6 +110,11 @@ public class PerfilFragment extends Fragment {
             imageButton.setVisibility(View.GONE);
         }
 
+        if (id == instance.getActualUser().getId()){
+            imageButton.setVisibility(View.VISIBLE);
+        }else{
+            seguir.setVisibility(View.VISIBLE);
+        }
 
         MenuInflater menuInflater = mPopupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.perfil_settings, mPopupMenu.getMenu());
@@ -128,11 +149,15 @@ public class PerfilFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        profileImage.setImageBitmap(instance.getActualUser().getFoto());
-        nombreTV.setText(instance.getActualUser().getNombre());
 
-        descripcionTV.setText(instance.getActualUser().getDescripcion());
 
+       //id = Integer.parseInt(getArguments().getString("mensaje"));
+        Log.e("onRESUME", String.valueOf(id));
+        /*profileImage.setImageBitmap(instance.getUser(id).getFoto());
+        nombreTV.setText(instance.getUser(id).getNombre());
+
+        descripcionTV.setText(instance.getUser(id).getDescripcion());
+*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event

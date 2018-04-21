@@ -37,6 +37,14 @@ public class Globals {
         return instance;
     }
 
+    public void setListNull(){
+        usersList = new ArrayList<>();
+        recipeList = new ArrayList<>();
+        ingredienteList = new ArrayList<>();
+        tagList = new ArrayList<>();
+        favoritosList = new ArrayList<>();
+    }
+
     public Usuario getActualUser() {
         return actualUser;
     }
@@ -119,6 +127,7 @@ public class Globals {
             return 0;
         for(Favoritos i : favoritosList){
             if(i.getId()>id){
+                Log.e("ID RETURN FAV ID",String.valueOf(id));
                 id = i.getId();
             }
         }return id;
@@ -145,10 +154,7 @@ public class Globals {
         if(mensaje.equals("favorito")){
             for(Favoritos i : favoritosList){
                 if(i.getIdUsuario() == getActualUser().getId()){
-
-
                     Receta receta = getReceta(i.getIdReceta());
-
                     if(receta != null) {
                         Log.e("receta",String.valueOf(receta.getNombre()));
                         Item item = new Item(receta.getNombre(), receta.getFoto(), receta.getCalificacion(), receta.getId());
@@ -196,10 +202,15 @@ public class Globals {
     }
 
     public int lastIdUser(){
+        int id = -1;
         if(usersList.isEmpty())
             return 0;
-        return usersList.get(usersList.size()-1).getId();
+        for(Usuario i : usersList){
+            if(i.getId()>id){
+                id = i.getId();
+            }
+        }return id;
     }
-
+    
 
 }

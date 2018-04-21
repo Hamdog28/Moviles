@@ -93,8 +93,13 @@ public class RecetaActivity extends AppCompatActivity {
         receta = null;
         receta = instance.getReceta(Integer.valueOf(recetaActual));
 
-        Usuario user = instance.getUser(receta.getAutor());
+
+
+
+        final Usuario user = instance.getUser(receta.getAutor());
+
         correo_autor = user.getCorreo();
+
 
         if(instance.checkFav(receta.getId())){
             favorito.setBackgroundResource(R.drawable.liked);
@@ -142,9 +147,7 @@ public class RecetaActivity extends AppCompatActivity {
                 intent.putExtra("mensaje",correo_autor);
                 startActivity(intent);
             }
-
         });
-
 
         final RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
 
@@ -194,12 +197,12 @@ public class RecetaActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(getApplicationContext(), InicioActivity.class);
-                intent.putExtra("mensaje","0");
+                Log.e("mensaje receta activity", String.valueOf(user.getId()));
+                intent.putExtra("mensaje",String.valueOf(user.getId()));
                 intent.putExtra("pantalla","perfil");
                 startActivity(intent);
 
             }
-
         });
 
 
@@ -308,6 +311,8 @@ public class RecetaActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
+                Log.e("PERSONA FAV ID",String.valueOf(instance.getActualUser().getId()));
+                Log.e("RECETA FAV ID",String.valueOf(recetaActual));
                 params.put("persona",String.valueOf(instance.getActualUser().getId()));
                 params.put("receta",recetaActual);
                 return params;
@@ -318,9 +323,9 @@ public class RecetaActivity extends AppCompatActivity {
 
     }
 
-    public void eliminarFavorito(){
+    public void eliminarFavorito(String url){
 
-        StringRequest eliminarFavorito = new StringRequest(Request.Method.DELETE, url+deleteStringID+"/", new Response.Listener<String>() {
+        StringRequest eliminarFavorito = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -430,7 +435,7 @@ public class RecetaActivity extends AppCompatActivity {
         }
         else {
             favorito.setBackgroundResource(R.drawable.like);
-            eliminarFavorito();
+            eliminarFavorito(url+String.valueOf(instance.returnLastIDFav())+"/");
             instance.deleteFavorito(Integer.valueOf(recetaActual));
             fav = false;
         }

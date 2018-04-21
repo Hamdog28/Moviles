@@ -74,13 +74,9 @@ public class RegistroActivity extends AppCompatActivity {
             new downloadImage((ImageView)findViewById(R.id.image)).execute(getIntent().getExtras().getString("persona"));
         }
 
-
-
         Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/greatvibes_regular.ttf");
         TextView titulo = (TextView) findViewById(R.id.titulo);
         titulo.setTypeface(custom_font);
-
-
 
 
     }
@@ -97,6 +93,11 @@ public class RegistroActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
         Bitmap image2 = ((BitmapDrawable)image.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+
         if(name.equals("") || email.equals("") || password.equals("")){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Aviso")
@@ -108,14 +109,15 @@ public class RegistroActivity extends AppCompatActivity {
                         }
                     }).show();
         }else{
-            insertUser("https://moviles-backoffice.herokuapp.com/persona/",name,email,password,image2);
+            insertUser("https://moviles-backoffice.herokuapp.com/persona/",name,email,password,imageString);
             Usuario user = new Usuario(instance.lastIdUser()+1,name,image2,email,"",password);
+            Log.e("IDE USUARIO CREADO", String.valueOf(instance.lastIdUser()+1));
             instance.addUser(user);
         }
 
     }
 
-    public void insertUser(String url, final String nombre, final String email, final String contrasena, final Bitmap image2){
+    public void insertUser(String url, final String nombre, final String email, final String contrasena,final String imageString){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -132,11 +134,6 @@ public class RegistroActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                image2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageBytes = baos.toByteArray();
-                final String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
 
                 params.put("nombre",nombre);
                 params.put("correo",email);

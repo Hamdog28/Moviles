@@ -52,10 +52,12 @@ public class Adapter extends ArrayAdapter {
 
         posicion = position;
         //Log.e("nombreeee",String.valueOf(List.get(position).getName()));
-
-        textView.setText(List.get(position).getName());
-        imageView.setImageBitmap(List.get(position).getImage());
-        rating.setRating(List.get(position).getStars());
+        try{
+            textView.setText(List.get(position).getName());
+            imageView.setImageBitmap(List.get(position).getImage());
+            rating.setRating(List.get(position).getStars());
+        }
+        catch(IndexOutOfBoundsException e){}
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

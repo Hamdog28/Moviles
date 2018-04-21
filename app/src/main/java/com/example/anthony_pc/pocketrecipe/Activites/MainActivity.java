@@ -33,12 +33,16 @@ import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.Receta;
 import com.example.anthony_pc.pocketrecipe.Tags;
 import com.example.anthony_pc.pocketrecipe.Usuario;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -72,7 +76,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Answers());
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
+        instance.setListNull();
 
         getSupportActionBar().hide();
         image = (ImageView)findViewById(R.id.image);
@@ -84,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         emailTxt.setText("luci@gmail.com");
         passwordTxt.setText("133456");
         loginButton.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
+
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -130,13 +138,25 @@ public class MainActivity extends AppCompatActivity {
         getAllRecipes("https://moviles-backoffice.herokuapp.com/receta/?format=json");
 
         getAllFavs("https://moviles-backoffice.herokuapp.com/favorito/?format=json");
-
-
-
-
     }
 
-    public void displayInfo(JSONObject object,Profile profile ){
+    @Override
+    protected void onResume() {
+        super.onResume();
+        /*Profile profile = Profile.getCurrentProfile();
+        instance.setProfile(profile);
+        //ingresar(null);
+*/
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+       /* accessTokenTracker.stopTracking();
+        profileTracker.stopTracking();;*/
+    }
+
+    public void displayInfo(JSONObject object, Profile profile ){
         String first_name , last_name, email;
         email = "";
         last_name = "";
@@ -245,8 +265,12 @@ public class MainActivity extends AppCompatActivity {
 
                                 Favoritos fav = new Favoritos(id,recetaID,persona);
                                 instance.addFavoritos(fav);
+                                Log.e("id RECETA",String.valueOf(recetaID));
+                                Log.e("id persona",String.valueOf(persona));
                                 //Log.e("cantidad ingredientes",String.valueOf(instance.getIngredienteList().size()));
-                            }
+
+
+                            }//Log.e("LARGO FAVORITOS", String.valueOf(instance.getFavoritosList().size()));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

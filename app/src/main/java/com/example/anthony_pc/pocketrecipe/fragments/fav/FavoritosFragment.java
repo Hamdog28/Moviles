@@ -71,7 +71,7 @@ public class FavoritosFragment extends Fragment {
 
             List.add(new Item(title[i],(Drawable)getResources().getDrawable(images[i]),stars[i],id[i]));
         }*/
-        List = null;
+        List = new ArrayList<>();
         List = instance.returnFavoritosList(mensaje);
         for(Item i : List){
             Log.e("prueba", i.getName());
