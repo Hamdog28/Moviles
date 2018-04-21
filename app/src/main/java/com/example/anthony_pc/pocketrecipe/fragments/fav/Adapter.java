@@ -1,6 +1,5 @@
 package com.example.anthony_pc.pocketrecipe.fragments.fav;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.anthony_pc.pocketrecipe.Activites.ListaRecetasActivity;
 import com.example.anthony_pc.pocketrecipe.Activites.RecetaActivity;
 import com.example.anthony_pc.pocketrecipe.R;
 
@@ -49,7 +47,7 @@ public class Adapter extends ArrayAdapter {
         v = inflater.inflate(R.layout.grid_view_items, null);
 
         TextView textView = v.findViewById(R.id.titulo);
-        ImageView imageView = v.findViewById(R.id.imagen);
+        ImageView imageView = v.findViewById(R.id.foto);
         RatingBar rating = v.findViewById(R.id.rating);
 
         posicion = position;

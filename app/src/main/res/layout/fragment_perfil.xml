@@ -8,6 +8,13 @@
     <!-- TODO: Update blank fragment layout -->
 
     <View android:layout_width="fill_parent" android:id="@+id/focus_view" android:layout_height="0dp" android:focusable="true" android:focusableInTouchMode="true"><requestFocus/></View>
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -28,9 +35,9 @@
                     android:id="@+id/seguir"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:layout_alignBottom="@+id/settings_button"
-                    android:layout_marginStart="18dp"
-                    android:layout_toEndOf="@+id/profile_image"
+                    android:layout_alignBottom="@+id/profile_image"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@+id/profile_image"
                     android:layout_weight="1"
                     android:background="@drawable/button_shape_seguir"
                     android:onClick="Follow"
@@ -221,4 +228,5 @@
 
         </LinearLayout>
     </ScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

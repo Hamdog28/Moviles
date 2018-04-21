@@ -82,7 +82,6 @@ public class FavoritosFragment extends Fragment {
 
         grid.setAdapter(adapter);
         if(orientacion.equals("list")){
-            //list.setAdapter(adapter);
             grid.setNumColumns(1);
             //setGridViewHeightBasedOnChildren( grid,1);
         }
@@ -93,7 +92,7 @@ public class FavoritosFragment extends Fragment {
         }
         else{
         }
-
+        //setGridViewHeightBasedOnChildren( grid,2);
 
 
         //setGridViewHeightBasedOnChildren( grid,2);
@@ -115,11 +114,12 @@ public class FavoritosFragment extends Fragment {
         listItem.measure(0, 0);
         totalHeight = listItem.getMeasuredHeight();
 
-        float x = 1;
+        float x = 1f;
         if( items > columns ){
-            x = items/columns;
-            rows = (int) (x + 1);
-            totalHeight *= rows-1;
+            x = (float)items/columns;
+            x = Math.round(x);
+            rows = (int) (x);
+            totalHeight *= rows;
         }
 
         ViewGroup.LayoutParams params = gridView.getLayoutParams();

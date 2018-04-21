@@ -1,20 +1,11 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,7 +13,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -46,9 +36,6 @@ import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.Receta;
 import com.example.anthony_pc.pocketrecipe.Usuario;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,6 +66,7 @@ public class RecetaActivity extends AppCompatActivity {
     LinearLayout lay_ingrediente, lay_pasos, lay_tags;
 
     Bundle bundle = new Bundle();
+    String correo_autor;
 
     List<String> carrito = new ArrayList<String>(Collections.nCopies(ingredientes.size(), ""));
 
@@ -106,6 +94,7 @@ public class RecetaActivity extends AppCompatActivity {
         receta = instance.getReceta(Integer.valueOf(recetaActual));
 
         Usuario user = instance.getUser(receta.getAutor());
+        correo_autor = user.getCorreo();
 
         if(instance.checkFav(receta.getId())){
             favorito.setBackgroundResource(R.drawable.liked);
@@ -149,8 +138,9 @@ public class RecetaActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(),Correo_Activity.class);
+                intent.putExtra("mensaje",correo_autor);
+                startActivity(intent);
             }
 
         });
@@ -181,7 +171,7 @@ public class RecetaActivity extends AppCompatActivity {
         });
 
         ImageView foto = (ImageView)findViewById(R.id.foto);
-        ImageView imagen = (ImageView)findViewById(R.id.imagen);
+        ImageView imagen = (ImageView)findViewById(R.id.foto);
 
         TextView autorNombre = (TextView)findViewById(R.id.autor);
         autorNombre.setText(user.getNombre());
@@ -207,8 +197,6 @@ public class RecetaActivity extends AppCompatActivity {
                 intent.putExtra("mensaje","0");
                 intent.putExtra("pantalla","perfil");
                 startActivity(intent);
-
-
 
             }
 

@@ -1,6 +1,8 @@
 package com.example.anthony_pc.pocketrecipe.Activites;
 
+import android.app.Dialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.net.Uri;
@@ -9,12 +11,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.InflateException;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -30,6 +34,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 
+import com.example.anthony_pc.pocketrecipe.Activites.follow.FollowActivity;
 import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.Receta;
@@ -155,6 +160,8 @@ public class InicioActivity extends AppCompatActivity
         } catch (NullPointerException e) {
 
         }
+
+
     }
 
     public void imprimirDatos(){
@@ -186,12 +193,25 @@ public class InicioActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setMessage("¿Desea salir de la aplicacion?");
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //if user pressed "yes", then he is allowed to exit from application
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //if user select "No", just cancel this dialog and continue with app
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     @Override
@@ -250,8 +270,8 @@ public class InicioActivity extends AppCompatActivity
         } else if (id == R.id.nav_account) {
             setActionBarTitle("Perfil");
 
-            bundle.putString("mensaje", "perfil");
-            bundle.putString("orientacion", "grid");
+            bundle.putString("mensaje", "favorito");
+            bundle.putString("orientacion", "profile");
 
             fragment = new PerfilFragment();
             fragmentManager.popBackStack();
@@ -262,10 +282,10 @@ public class InicioActivity extends AppCompatActivity
                     .replace(R.id.container, fragment)
                     .commit();
 
-            /*fragmentManager.beginTransaction()
+            fragmentManager.beginTransaction()
                     .replace(R.id.container2, fragment1)
                     .commit();
-*/
+
         } else if (id == R.id.nav_favorite) {
             setActionBarTitle("Favoritos");
 
@@ -279,23 +299,11 @@ public class InicioActivity extends AppCompatActivity
                     .replace(R.id.container, fragment)
                     .commit();
 
-        } else if (id == R.id.nav_cart) {
-            setActionBarTitle("Carrito");
-            fragment = new CarritoFragment();
-            //fragmentManager.beginTransaction()
-              //      .replace(R.id.container, fragment)
-                //    .commit();
-
-
-        } else if (id == R.id.nav_create) {
+        }else if (id == R.id.nav_create) {
             aux = 0;
             Intent intent = new Intent(this, CURecetaActivity.class);
             intent.putExtra("mensaje","crear");
             startActivity(intent);
-
-        } else if (id == R.id.nav_settings) {
-            setActionBarTitle("Ajustes");
-
 
         }
         else if (id == R.id.nav_logout) {
@@ -310,36 +318,6 @@ public class InicioActivity extends AppCompatActivity
 
         return true;
     }
-    protected void setMenuBackground(){
-        // Log.d(TAG, "Enterting setMenuBackGround");
-        getLayoutInflater().setFactory( new LayoutInflater.Factory() {
-            public View onCreateView(String name, Context context, AttributeSet attrs) {
-                if ( name.equalsIgnoreCase( "com.android.internal.view.menu.IconMenuItemView" ) ) {
-                    try { // Ask our inflater to create the view
-                        LayoutInflater f = getLayoutInflater();
-                        final View view = f.createView( name, null, attrs );
-                        /* The background gets refreshed each time a new item is added the options menu.
-                        * So each time Android applies the default background we need to set our own
-                        * background. This is done using a thread giving the background change as runnable
-                        * object */
-                        new Handler().post(new Runnable() {
-                            public void run () {
-                                // sets the background color
-                                view.setBackgroundResource( R.color.colorPrimary);
-                                // sets the text color
-                                ((TextView) view).setTextColor(Color.WHITE);
-                                // sets the text size
-                                ((TextView) view).setTextSize(18);
-                            }
-                        } );
-                        return view;
-                    }
-                    catch ( InflateException e ) {}
-                    catch ( ClassNotFoundException e ) {}
-                }
-                return null;
-            }});
-    }
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }
@@ -348,5 +326,19 @@ public class InicioActivity extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+    public void verSeguidores(View view){
+        Intent intent = new Intent(getApplicationContext(), FollowActivity.class);
+        intent.putExtra("titulo","Seguidores");
+        startActivity(intent);
+
+    }
+    public void verSeguidos(View view){
+        Intent intent = new Intent(getApplicationContext(), FollowActivity.class);
+        intent.putExtra("titulo","Seguidos");
+        startActivity(intent);
+
+    }
+
+
 }
 
