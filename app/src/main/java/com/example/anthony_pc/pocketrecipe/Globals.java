@@ -3,6 +3,7 @@ package com.example.anthony_pc.pocketrecipe;
 import android.nfc.Tag;
 import android.util.Log;
 
+import com.example.anthony_pc.pocketrecipe.Activites.follow.Follow_Item;
 import com.example.anthony_pc.pocketrecipe.fragments.fav.Item;
 import com.facebook.Profile;
 
@@ -119,19 +120,22 @@ public class Globals {
 
     public ArrayList<Follow_Item> returnSeguidores(int idUser){
         ArrayList<Follow_Item> listaSeguidores = new ArrayList<>();
-
-        for(Seguidores i : listaSeguidores){
-            Usuario user = getUser(i.getIdSeguidor());
-            if(user != null){
-                if(i.getIdSeguido() == instance.getActualUser().getId()){
-                    Item item = new Item(user.getNombre(), true);
-                    listaSeguidores.add(item);
-                }else{
-                    Item item = new Item(user.getNombre(), false);
-                    listaSeguidores.add(item);
+        Log.e("LARGO LISTA SEGUIDORES", String.valueOf(seguidoresList.size()));
+        for(Seguidores i : seguidoresList) {
+            if (i.getIdSeguido() == idUser) {
+                Usuario user = getUser(i.getIdSeguidor());
+                if (user != null) {
+                    if (i.getIdSeguidor() == instance.getActualUser().getId()) {
+                        Follow_Item item = new Follow_Item(user.getNombre(), user.getFoto(), true);
+                        listaSeguidores.add(item);
+                    } else {
+                        Follow_Item item = new Follow_Item(user.getNombre(), user.getFoto(), false);
+                        listaSeguidores.add(item);
+                    }
                 }
             }
         }
+        Log.e("LARGO LISTA SEGUIDORES", String.valueOf(listaSeguidores.size()));
         return listaSeguidores;
     }
 

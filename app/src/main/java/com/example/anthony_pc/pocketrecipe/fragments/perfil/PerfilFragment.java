@@ -184,22 +184,6 @@ public class PerfilFragment extends Fragment {
     }
 
 
-    public void verSeguidos(View view){}
-
-    public void Follow(View view){
-
-        if(!followed) {
-            seguir.setText(" Dejar de seguir ");
-
-            followed = true;
-        }
-        else {
-            seguir.setText("Seguir");
-
-            followed = false;
-        }
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this

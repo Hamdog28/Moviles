@@ -7,15 +7,13 @@ public class Follow_Item {
 
     private String ListName;
     private Bitmap ListImage;
-    private int ListId;
     private boolean ListFollowed;
 
 
-    public Follow_Item(String Name, Bitmap Image, int Id,boolean Followed)
+    public Follow_Item(String Name, Bitmap Image,boolean Followed)
     {
         this.ListImage = Image;
         this.ListName = Name;
-        this.ListId = Id;
         this.ListFollowed = Followed;
     }
     public String getName()
@@ -25,10 +23,6 @@ public class Follow_Item {
     public Bitmap getImage()
     {
         return ListImage;
-    }
-    public int getId()
-    {
-        return ListId;
     }
     public boolean getFollowed()
     {

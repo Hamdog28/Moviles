@@ -101,14 +101,26 @@ public class RecetaActivity extends AppCompatActivity {
 
         correo_autor = user.getCorreo();
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),Correo_Activity.class);
+                intent.putExtra("mensaje",correo_autor);
+                startActivity(intent);
+            }
+        });
+
 
         if(instance.checkFav(receta.getId())){
             favorito.setBackgroundResource(R.drawable.liked);
             fav = true;
+
         }
 
         if(user.getId() == instance.getActualUser().getId()){
             editable = true;
+            fab.setVisibility(View.GONE);
         }
 
         setTitle("Receta");
@@ -140,15 +152,7 @@ public class RecetaActivity extends AppCompatActivity {
         rating.setRating(receta.getCantCalificaciones()/receta.getCalificacion());
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),Correo_Activity.class);
-                intent.putExtra("mensaje",correo_autor);
-                startActivity(intent);
-            }
-        });
+
 
         final RatingBar calificacion = (RatingBar) findViewById(R.id.calificar);
 
