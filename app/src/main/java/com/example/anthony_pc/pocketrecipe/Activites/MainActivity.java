@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
+        instance.setListNull();
 
         getSupportActionBar().hide();
         image = (ImageView)findViewById(R.id.image);
@@ -264,8 +265,12 @@ public class MainActivity extends AppCompatActivity {
 
                                 Favoritos fav = new Favoritos(id,recetaID,persona);
                                 instance.addFavoritos(fav);
+                                Log.e("id RECETA",String.valueOf(recetaID));
+                                Log.e("id persona",String.valueOf(persona));
                                 //Log.e("cantidad ingredientes",String.valueOf(instance.getIngredienteList().size()));
-                            }
+
+
+                            }//Log.e("LARGO FAVORITOS", String.valueOf(instance.getFavoritosList().size()));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
