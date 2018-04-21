@@ -31,6 +31,7 @@ import com.example.anthony_pc.pocketrecipe.Globals;
 import com.example.anthony_pc.pocketrecipe.Ingrediente;
 import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.Receta;
+import com.example.anthony_pc.pocketrecipe.Seguidores;
 import com.example.anthony_pc.pocketrecipe.Tags;
 import com.example.anthony_pc.pocketrecipe.Usuario;
 import com.facebook.AccessToken;
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         mQueue = Volley.newRequestQueue(this);
+        getAllSeguidores("https://moviles-backoffice.herokuapp.com/seguidor/");
 
         getAllUsers("https://moviles-backoffice.herokuapp.com/persona/?format=json");
         getAllTags("https://moviles-backoffice.herokuapp.com/tag/?format=json");
@@ -202,6 +204,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void getAllSeguidores(String url){
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            for (int i  = 0; i <response.length(); i++){
+
+                                int id = Integer.parseInt(response.getJSONObject(i).getString("id"));
+                                int idSeguidor = Integer.parseInt(response.getJSONObject(i).getString("seguidor"));
+                                int idSeguido = Integer.parseInt(response.getJSONObject(i).getString("seguido"));
+
+                                Seguidores seguidores = new Seguidores(id,idSeguidor,idSeguido);
+                                instance.addSeguidor(seguidores);
+                                //Log.e("cantidad tags",String.valueOf(instance.getTagList().size()));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(jsonArrayRequest);
+
+    }
     public void getAllTags(String url){
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET,
                 url, null,
@@ -324,7 +357,6 @@ public class MainActivity extends AppCompatActivity {
                                 if(!url.equals("")) {
                                     DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(image);
                                     foto = downloadTask.execute(url).get();
-                                    Log.e("foto",String.valueOf(foto));
 
                                 }else{
                                     Log.e("NO FOTO ","NO FOTO");

@@ -142,22 +142,21 @@ public class PerfilFragment extends Fragment {
         });
 
         return v;
+
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-
-
+        
 
        //id = Integer.parseInt(getArguments().getString("mensaje"));
         Log.e("onRESUME", String.valueOf(id));
-        /*profileImage.setImageBitmap(instance.getUser(id).getFoto());
+        profileImage.setImageBitmap(instance.getUser(id).getFoto());
         nombreTV.setText(instance.getUser(id).getNombre());
-
         descripcionTV.setText(instance.getUser(id).getDescripcion());
-*/
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -185,22 +184,6 @@ public class PerfilFragment extends Fragment {
     }
 
 
-    public void verSeguidos(View view){}
-
-    public void Follow(View view){
-
-        if(!followed) {
-            seguir.setText(" Dejar de seguir ");
-
-            followed = true;
-        }
-        else {
-            seguir.setText("Seguir");
-
-            followed = false;
-        }
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this

@@ -278,9 +278,9 @@ public class InicioActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_account) {
             setActionBarTitle("Perfil");
+            mensaje = String.valueOf(instance.getActualUser().getId());
 
-
-            bundle.putString("mensaje", String.valueOf(instance.getActualUser().getId()));
+            bundle.putString("mensaje", mensaje);
             bundle.putString("orientacion", "profile");
             Log.e("mensaje",String.valueOf(instance.getActualUser().getId()));
 
@@ -325,7 +325,6 @@ public class InicioActivity extends AppCompatActivity
             finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
-
         }
 
 
@@ -342,16 +341,21 @@ public class InicioActivity extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
     public void verSeguidores(View view){
         Intent intent = new Intent(getApplicationContext(), FollowActivity.class);
         intent.putExtra("titulo","Seguidores");
+        intent.putExtra("mensaje",mensaje);
         startActivity(intent);
-
+        Log.e("iddddd",String.valueOf(mensaje));
     }
+
     public void verSeguidos(View view){
         Intent intent = new Intent(getApplicationContext(), FollowActivity.class);
         intent.putExtra("titulo","Seguidos");
+        intent.putExtra("mensaje",mensaje);
         startActivity(intent);
+        Log.e("iddddd",String.valueOf(mensaje));
 
     }
 

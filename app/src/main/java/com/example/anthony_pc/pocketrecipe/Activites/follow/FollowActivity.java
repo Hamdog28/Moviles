@@ -1,5 +1,6 @@
 package com.example.anthony_pc.pocketrecipe.Activites.follow;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -49,12 +50,15 @@ public class FollowActivity extends AppCompatActivity {
 
         Usuario user = instance.getActualUser();
 
+        int id = Integer.valueOf(getIntent().getExtras().getString("mensaje"));
+        List = instance.returnSeguidores(id);
 
-        for(int i = 0;i<title.length;i++){
+
+       /* for(int i = 0;i<title.length;i++){
 
             List.add(new Follow_Item(title[i],user.getFoto(),  ids[i],follow[i]));
         }
-
+*/
         adapter = new Adapter_Follow(getApplicationContext(),R.layout.list_view_items_follow,List,list);
 
 
