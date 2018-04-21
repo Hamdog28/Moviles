@@ -76,7 +76,7 @@ public class Correo_Activity extends AppCompatActivity {
             GmailScopes.GMAIL_READONLY,
             GmailScopes.MAIL_GOOGLE_COM
     };
-    String mensaje ="marilau63@gmail.com";
+    String mensaje ="";
     private InternetDetector internetDetector;
     private final int SELECT_PHOTO = 1;
     public String fileName = "";
@@ -85,7 +85,8 @@ public class Correo_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_correo_);
-
+        Intent intent = getIntent();
+        mensaje =intent.getStringExtra("mensaje");
         init();
 
         findViewById(R.id.attachment).setOnClickListener(new View.OnClickListener() {
@@ -108,7 +109,7 @@ public class Correo_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getResultsFromApi(view);
-                finish();
+
             }
         });
 
@@ -145,6 +146,7 @@ public class Correo_Activity extends AppCompatActivity {
 
     private void showMessage(View view, String message) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
+        //finish();
     }
 
     private void getResultsFromApi(View view) {

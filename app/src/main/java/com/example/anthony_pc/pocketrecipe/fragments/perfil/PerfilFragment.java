@@ -88,6 +88,28 @@ public class PerfilFragment extends Fragment {
         descripcionTV.setText(instance.getUser(id).getDescripcion());
 
 
+
+        if (my_profile){
+            seguir.setVisibility(View.GONE);
+        }
+        else{
+            seguir.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    if (!followed) {
+                        seguir.setText(" Dejar de seguir ");
+
+                        followed = true;
+                    } else {
+                        seguir.setText("Seguir");
+
+                        followed = false;
+                    }
+                }
+            });
+            imageButton.setVisibility(View.GONE);
+        }
+
         if (id == instance.getActualUser().getId()){
             imageButton.setVisibility(View.VISIBLE);
         }else{
@@ -161,7 +183,7 @@ public class PerfilFragment extends Fragment {
         mListener = null;
     }
 
-    public void verSeguidores(View view){}
+
     public void verSeguidos(View view){}
 
     public void Follow(View view){

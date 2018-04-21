@@ -3,28 +3,21 @@ package com.example.anthony_pc.pocketrecipe.fragments.inicio;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
-import com.example.anthony_pc.pocketrecipe.Activites.InicioActivity;
 import com.example.anthony_pc.pocketrecipe.Activites.ListaRecetasActivity;
 import com.example.anthony_pc.pocketrecipe.R;
 import com.example.anthony_pc.pocketrecipe.fragments.fav.FavoritosFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class InicioAdapter extends ArrayAdapter implements FavoritosFragment.OnFragmentInteractionListener{
 
@@ -54,7 +47,7 @@ public class InicioAdapter extends ArrayAdapter implements FavoritosFragment.OnF
         v = inflater.inflate(R.layout.list_view_items_inicio, null);
         posicion=position;
         TextView textView = v.findViewById(R.id.titulo);
-        ImageView imageView = v.findViewById(R.id.imagen);
+        ImageView imageView = v.findViewById(R.id.foto);
 
 
         textView.setText(List.get(position).getName());

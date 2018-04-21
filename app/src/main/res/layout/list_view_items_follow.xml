@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    tools:context="com.example.anthony_pc.pocketrecipe.Activites.InicioActivity">
+
+    <RelativeLayout
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="7dp"
+        android:elevation="50dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="2dp">
+
+        <ImageView
+            android:id="@+id/foto"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:adjustViewBounds="true"
+            android:elevation="50dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/foto_perfil" />
+
+        <TextView
+            android:id="@+id/nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="11dp"
+            android:layout_toEndOf="@+id/foto"
+            android:layout_weight="1"
+            android:maxWidth="180dp"
+            android:text="Lucia Pizarro"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:id="@+id/seguir"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/nombre"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="14dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_shape_seguir"
+            android:onClick="Follow"
+            android:text="Seguir"
+            android:textAllCaps="false"
+            android:textColor="#5DADE2"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

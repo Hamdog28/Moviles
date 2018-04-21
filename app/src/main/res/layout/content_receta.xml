@@ -21,8 +21,8 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imagen"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/foto"
+                    android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:contentDescription="TODO"
                     android:scaleType="fitXY" />

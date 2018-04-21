@@ -478,6 +478,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, InicioActivity.class);
             instance.setActualUser(user);
             startActivity(intent);
+            finish();
         }else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Aviso")
