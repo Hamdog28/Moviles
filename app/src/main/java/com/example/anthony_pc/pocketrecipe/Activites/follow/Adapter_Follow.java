@@ -1,22 +1,17 @@
 package com.example.anthony_pc.pocketrecipe.Activites.follow;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.anthony_pc.pocketrecipe.Activites.RecetaActivity;
 import com.example.anthony_pc.pocketrecipe.R;
-import com.example.anthony_pc.pocketrecipe.fragments.fav.Item;
 
 import java.util.ArrayList;
 
@@ -66,7 +61,7 @@ public class Adapter_Follow extends ArrayAdapter {
             v = inflater.inflate(R.layout.list_view_items_follow, null);
             holder = new ViewHolder();
             holder.textView = v.findViewById(R.id.nombre);
-            holder.imageView = v.findViewById(R.id.foto);
+            holder.imageView = v.findViewById(R.id.imagen);
             holder.seguir = v.findViewById(R.id.seguir);
 
             v.setTag(holder);
@@ -74,7 +69,7 @@ public class Adapter_Follow extends ArrayAdapter {
             holder = (ViewHolder) v.getTag();
         }
         TextView textView = v.findViewById(R.id.nombre);
-        ImageView imageView = v.findViewById(R.id.foto);
+        ImageView imageView = v.findViewById(R.id.imagen);
         Button seguir = v.findViewById(R.id.seguir);
 
         //holder.seguir.setTag(position);

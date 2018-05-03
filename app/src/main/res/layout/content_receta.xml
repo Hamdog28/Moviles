@@ -21,7 +21,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/foto"
+                    android:id="@+id/imagen"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:contentDescription="TODO"
@@ -42,19 +42,19 @@
                     android:scaleType="fitXY" />
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/nombre"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:fontFamily="sans-serif"
+                    android:maxWidth="250dp"
                     android:text="@string/nombre"
                     android:textColor="@android:color/black"
                     android:textSize="30sp"
@@ -65,16 +65,17 @@
                     style="?android:attr/ratingBarStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginEnd="50dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="57dp"
                     android:isIndicator="true"
                     android:numStars="5"
-                    android:stepSize="0.5"
+                    android:paddingLeft="5dp"
                     android:rating="1"
                     android:scaleX="1.5"
-                    android:scaleY="1.5" />
-            </LinearLayout>
+                    android:scaleY="1.5"
+                    android:stepSize="0.5" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -88,7 +89,7 @@
                     android:layout_height="30dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitXY" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -285,7 +286,7 @@
             <LinearLayout
                 android:id="@+id/pasos_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:divider="@drawable/empty_tall_divider"
@@ -337,21 +338,6 @@
                 android:layout_gravity="center"
                 android:isIndicator="false"
                 android:numStars="5" />
-
-            <TextView
-                android:id="@+id/title_comentarios"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/seccion_receta"
-                android:drawableLeft="@drawable/icon_ingrediente"
-                android:gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:text="  Comentarios"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>

@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -179,7 +180,7 @@ public class RecetaActivity extends AppCompatActivity {
         });
 
         ImageView foto = (ImageView)findViewById(R.id.foto);
-        ImageView imagen = (ImageView)findViewById(R.id.foto);
+        ImageView imagen = (ImageView)findViewById(R.id.imagen);
 
         TextView autorNombre = (TextView)findViewById(R.id.autor);
         autorNombre.setText(user.getNombre());
@@ -286,6 +287,7 @@ public class RecetaActivity extends AppCompatActivity {
             ingrediente.setId(i);
             ingrediente.setCompoundDrawablesWithIntrinsicBounds( R.drawable.shape_add_ingrediente, 0, 0, 0);
             lay_ingrediente.addView(ingrediente);
+            /*
             ingrediente.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -298,7 +300,7 @@ public class RecetaActivity extends AppCompatActivity {
                         carrito.set(ingrediente.getId(),(String)ingrediente.getText());
                     }
                 }
-            });
+            });*/
         }
     }
 
@@ -397,7 +399,12 @@ public class RecetaActivity extends AppCompatActivity {
 
     private void populateProcedure() {
 
+
         for(int i = 0; i<pasos.size();i++){
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0,40,0,0);
+
+
             LinearLayout lay_paso = new LinearLayout(this);
             lay_paso.setOrientation(LinearLayout.HORIZONTAL);
             lay_paso.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
@@ -411,12 +418,15 @@ public class RecetaActivity extends AppCompatActivity {
             icon.setGravity(Gravity.CENTER);
             icon.setTextColor(getResources().getColor(R.color.colorPrimary));
             icon.setTypeface(null, Typeface.BOLD);
+            icon.setLayoutParams(params);
             lay_paso.addView(icon);
 
 
             paso.setText(pasos.get(i));
             paso.setTextColor(Color.parseColor("#000000"));
             paso.setId(i);
+            paso.setPadding(0, 0, 0, 40);
+
             lay_paso.addView(paso);
 
             icon.setBackground(getResources().getDrawable(R.drawable.shape_circulo));

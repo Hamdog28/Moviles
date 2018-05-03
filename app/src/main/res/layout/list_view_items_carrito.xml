@@ -18,7 +18,7 @@
         tools:layout_editor_absoluteY="2dp">
 
         <ImageView
-            android:id="@+id/foto"
+            android:id="@+id/imagen"
             android:layout_width="match_parent"
             android:layout_height="175dp"
             android:layout_alignParentEnd="true"
@@ -33,7 +33,7 @@
             android:id="@+id/titulo"
             android:layout_width="match_parent"
             android:layout_height="25dp"
-            android:layout_alignBottom="@+id/foto"
+            android:layout_alignBottom="@+id/imagen"
             android:layout_alignParentStart="true"
             android:layout_marginTop="75dp"
             android:background="#77000000"

@@ -47,7 +47,7 @@ public class Adapter extends ArrayAdapter {
         v = inflater.inflate(R.layout.grid_view_items, null);
 
         TextView textView = v.findViewById(R.id.titulo);
-        ImageView imageView = v.findViewById(R.id.foto);
+        ImageView imageView = v.findViewById(R.id.imagen);
         RatingBar rating = v.findViewById(R.id.rating);
 
         posicion = position;

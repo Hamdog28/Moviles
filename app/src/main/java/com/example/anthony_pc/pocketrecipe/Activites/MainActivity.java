@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         emailTxt = (TextInputEditText) findViewById(R.id.correoTxt);
         passwordTxt = (TextInputEditText) findViewById(R.id.passwordTxt);
-        emailTxt.setText("luci@gmail.com");
-        passwordTxt.setText("133456");
+        //emailTxt.setText("luci@gmail.com");
+        //passwordTxt.setText("133456");
         loginButton.setReadPermissions(Arrays.asList("public_profile","email","user_birthday","user_friends"));
 
 

@@ -20,7 +20,7 @@
         tools:layout_editor_absoluteY="2dp">
 
         <ImageView
-            android:id="@+id/foto"
+            android:id="@+id/imagen"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
@@ -38,7 +38,7 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="11dp"
-            android:layout_toEndOf="@+id/foto"
+            android:layout_toEndOf="@+id/imagen"
             android:layout_weight="1"
             android:maxWidth="180dp"
             android:text="Lucia Pizarro"

@@ -64,7 +64,7 @@ public class InicioActivity extends AppCompatActivity
     TextView nombreTxt,correoTxt;
     int aux = 0;
 
-    String mensaje, pantalla, perfil = "";
+    String mensaje="", pantalla, perfil = "";
 
 
     NavigationView navigationView;
@@ -124,7 +124,8 @@ public class InicioActivity extends AppCompatActivity
                 Bundle bundle1 = new Bundle();
                 Log.e("MENSAJE",perfil.split("T")[0]);
                 bundle.putString("mensaje", perfil);
-                bundle.putString("orientacion", "grid");
+                bundle.putString("orientacion", "profile");
+                //bundle.putString("perfil",perfil.split("T")[0]);
                 bundle1.putString("perfil",perfil.split("T")[0]);
                 fragment = new PerfilFragment();
                 fragmentManager.popBackStack();
@@ -203,25 +204,30 @@ public class InicioActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setMessage("¿Desea salir de la aplicacion?");
-        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //if user pressed "yes", then he is allowed to exit from application
-                finish();
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //if user select "No", just cancel this dialog and continue with app
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+        if(mensaje ==null || !mensaje.equals("perfil")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setMessage("¿Desea salir de la aplicacion?");
+            builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //if user pressed "yes", then he is allowed to exit from application
+                    finish();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //if user select "No", just cancel this dialog and continue with app
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else{
+            finish();
+        }
     }
 
     @Override

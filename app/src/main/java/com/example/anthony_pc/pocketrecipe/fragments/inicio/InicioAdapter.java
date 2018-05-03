@@ -47,7 +47,7 @@ public class InicioAdapter extends ArrayAdapter implements FavoritosFragment.OnF
         v = inflater.inflate(R.layout.list_view_items_inicio, null);
         posicion=position;
         TextView textView = v.findViewById(R.id.titulo);
-        ImageView imageView = v.findViewById(R.id.foto);
+        ImageView imageView = v.findViewById(R.id.imagen);
 
 
         textView.setText(List.get(position).getName());
